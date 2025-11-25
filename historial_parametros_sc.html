@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Parámetros - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.2);
+            border-left-color: #667eea;
+        }
+
+        .search-input {
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .table-row {
+            transition: all 0.2s ease;
+        }
+
+        .table-row:hover {
+            background: rgba(102, 126, 234, 0.05);
+            transform: scale(1.01);
+        }
+
+        .value-changed {
+            color: #10b981;
+            font-weight: 600;
+            animation: highlightValue 0.5s ease;
+        }
+
+        @keyframes highlightValue {
+            0% {
+                background: rgba(16, 185, 129, 0.2);
+            }
+
+            100% {
+                background: transparent;
+            }
+        }
+
+        .hash-link {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .hash-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(102, 126, 234, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 min-h-screen text-white p-6 fixed left-0 top-0 bottom-0 overflow-y-auto">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fas fa-cube"></i>
+                TrazaNet
+            </h1>
+            <p class="text-sm text-gray-400 mt-1">Blockchain Traceability</p>
+        </div>
+
+        <nav class="space-y-2">
+            <a href="trazabilidad.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-route w-5"></i>
+                <span>Trazabilidad</span>
+            </a>
+            <a href="blockchain.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-cubes w-5"></i>
+                <span>Blockchain Explorer</span>
+            </a>
+            <a href="carga.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-upload w-5"></i>
+                <span>Carga de Datos</span>
+            </a>
+            <a href="auditoria_detalle.html"
+                class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-clipboard-check w-5"></i>
+                <span>Auditoría</span>
+            </a>
+            <a href="registro_transporte.html"
+                class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-truck w-5"></i>
+                <span>Registro Transporte</span>
+            </a>
+            <a href="registro_procesamiento.html"
+                class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-industry w-5"></i>
+                <span>Registro Procesamiento</span>
+            </a>
+            <a href="registro_empaque.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-box w-5"></i>
+                <span>Registro Empaque</span>
+            </a>
+            <a href="transaccion_lote.html" class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-exchange-alt w-5"></i>
+                <span>Transacción de Lote</span>
+            </a>
+            <a href="administracion_smart_contracts.html"
+                class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-cog w-5"></i>
+                <span>Admin Smart Contracts</span>
+            </a>
+            <a href="historial_parametros_sc.html"
+                class="nav-item active flex items-center gap-3 px-4 py-3 rounded-lg text-white">
+                <i class="fas fa-history w-5"></i>
+                <span>Historial Parámetros</span>
+            </a>
+            <a href="reporte_auditoria_final.html"
+                class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300">
+                <i class="fas fa-file-alt w-5"></i>
+                <span>Reporte Auditoría</span>
+            </a>
+        </nav>
+
+        <div class="mt-8 pt-8 border-t border-gray-700">
+            <a href="index.html"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-red-500/20 hover:text-red-400 transition-all">
+                <i class="fas fa-sign-out-alt w-5"></i>
+                <span>Cerrar Sesión</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 p-8">
+        <!-- Header -->
+        <div class="glass-card p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
+                        <i class="fas fa-history text-purple-600"></i>
+                        Historial de Parámetros Smart Contract
+                    </h2>
+                    <p class="text-gray-600 mt-2">Gobernanza de Reglas - Registro de Cambios en Parámetros de Evaluación
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">Última actualización</p>
+                    <p class="text-lg font-semibold text-gray-800" id="last-update">--</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Total Cambios</p>
+                        <p class="text-4xl font-bold mt-2" id="total-changes">0</p>
+                    </div>
+                    <i class="fas fa-edit text-5xl text-white/20"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Parámetros Afectados</p>
+                        <p class="text-4xl font-bold mt-2" id="affected-params">0</p>
+                    </div>
+                    <i class="fas fa-sliders-h text-5xl text-white/20"></i>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/80 text-sm">Último Cambio</p>
+                        <p class="text-xl font-bold mt-2" id="last-change">--</p>
+                    </div>
+                    <i class="fas fa-clock text-5xl text-white/20"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="glass-card p-6 mb-8">
+            <div class="flex items-center gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-input" placeholder="Buscar por parámetro, wallet ID o lote..."
+                            class="search-input w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500"
+                            oninput="filterHistory(this.value)">
+                    </div>
+                </div>
+                <button onclick="refreshHistory()"
+                    class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl hover:shadow-lg transition-all flex items-center gap-2">
+                    <i class="fas fa-sync-alt"></i>
+                    Actualizar
+                </button>
+            </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="glass-card p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fas fa-table text-purple-600"></i>
+                    Registro de Cambios
+                </h3>
+                <span class="badge badge-primary" id="visible-count">0 registros</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b-2 border-gray-200">
+                            <th class="text-left py-4 px-4 text-gray-600 font-semibold">
+                                <i class="fas fa-clock mr-2"></i>Timestamp
+                            </th>
+                            <th class="text-left py-4 px-4 text-gray-600 font-semibold">
+                                <i class="fas fa-tag mr-2"></i>Parámetro Afectado
+                            </th>
+                            <th class="text-left py-4 px-4 text-gray-600 font-semibold">
+                                <i class="fas fa-arrow-left mr-2"></i>Valor Anterior
+                            </th>
+                            <th class="text-left py-4 px-4 text-gray-600 font-semibold">
+                                <i class="fas fa-arrow-right mr-2"></i>Nuevo Valor
+                            </th>
+                            <th class="text-left py-4 px-4 text-gray-600 font-semibold">
+                                <i class="fas fa-wallet mr-2"></i>Wallet ID
+                            </th>
+                            <th class="text-left py-4 px-4 text-gray-600 font-semibold">
+                                <i class="fas fa-link mr-2"></i>Transaction Hash
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <tr>
+                            <td colspan="6" class="text-center py-12">
+                                <div class="loading-spinner mx-auto"></div>
+                                <p class="text-gray-500 mt-4">Cargando historial...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle text-2xl"></i>
+        <span id="toast-message">Hash copiado al portapapeles</span>
+    </div>
+
+    <script>
+        // Simulated threshold history data
+        const thresholdHistory = [
+            {
+                timestamp: "2025-11-20 10:15:22",
+                parametroAfectado: "MIN_DRY_MATTER_PCT",
+                valorAnterior: 20.0,
+                nuevoValor: 21.0,
+                walletId: "0xABC123...456DEF",
+                transactionHash: "0x8f0d9c4e...a3b1c5d7"
+            },
+            {
+                timestamp: "2025-11-19 14:30:45",
+                parametroAfectado: "MAX_TEMP_TRANSPORT_C",
+                valorAnterior: 8.0,
+                nuevoValor: 7.5,
+                walletId: "0xDEF789...012GHI",
+                transactionHash: "0x3a7f2b1c...9d4e8f6a"
+            },
+            {
+                timestamp: "2025-11-18 09:22:11",
+                parametroAfectado: "MAX_TRANSPORT_HOURS",
+                valorAnterior: 48,
+                nuevoValor: 36,
+                walletId: "0xGHI345...678JKL",
+                transactionHash: "0x5c9d8e2f...1a6b3c7d"
+            },
+            {
+                timestamp: "2025-11-17 16:45:33",
+                parametroAfectado: "MIN_CALIBER_MM",
+                valorAnterior: 50,
+                nuevoValor: 55,
+                walletId: "0xJKL901...234MNO",
+                transactionHash: "0x7e1f4a8b...2c9d5e3f"
+            },
+            {
+                timestamp: "2025-11-16 11:10:58",
+                parametroAfectado: "MAX_HUMIDITY_PCT",
+                valorAnterior: 85.0,
+                nuevoValor: 80.0,
+                walletId: "0xMNO567...890PQR",
+                transactionHash: "0x9b3c6d1e...4f7a8b2c"
+            },
+            {
+                timestamp: "2025-11-15 13:55:27",
+                parametroAfectado: "MIN_WEIGHT_KG",
+                valorAnterior: 10.0,
+                nuevoValor: 12.0,
+                walletId: "0xPQR123...456STU",
+                transactionHash: "0x1d5e9f2a...6b8c3d7e"
+            },
+            {
+                timestamp: "2025-11-14 08:20:14",
+                parametroAfectado: "MAX_DEFECT_RATE_PCT",
+                valorAnterior: 5.0,
+                nuevoValor: 3.0,
+                walletId: "0xSTU789...012VWX",
+                transactionHash: "0x3f7a1b4c...8d9e2f5a"
+            },
+            {
+                timestamp: "2025-11-13 15:40:50",
+                parametroAfectado: "MIN_SEAL_INTEGRITY_SCORE",
+                valorAnterior: 8,
+                nuevoValor: 9,
+                walletId: "0xVWX345...678YZA",
+                transactionHash: "0x5a8b2c6d...1e9f3a7b"
+            },
+            {
+                timestamp: "2025-11-12 12:05:39",
+                parametroAfectado: "MAX_PROCESSING_DELAY_HOURS",
+                valorAnterior: 24,
+                nuevoValor: 18,
+                walletId: "0xYZA901...234BCD",
+                transactionHash: "0x7c1d4e8f...2a6b9c3d"
+            }
+        ];
+
+        // Fetch threshold history (async simulation)
+        async function fetchThresholdHistory() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(thresholdHistory);
+                }, 500);
+            });
+        }
+
+        // Render history table
+        function renderHistoryTable(history) {
+            const tbody = document.getElementById('history-table-body');
+
+            if (history.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-12">
+                            <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500">No se encontraron registros</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = history.map(item => {
+                const isValueChanged = item.valorAnterior !== item.nuevoValor;
+                const valueClass = isValueChanged ? 'value-changed' : '';
+
+                return `
+                    <tr class="table-row border-b border-gray-100" data-param="${item.parametroAfectado.toLowerCase()}" data-wallet="${item.walletId.toLowerCase()}">
+                        <td class="py-4 px-4">
+                            <span class="text-gray-700 font-medium">${item.timestamp}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="badge badge-primary">${item.parametroAfectado}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="text-gray-600">${item.valorAnterior}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="${valueClass}">${item.nuevoValor}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="text-gray-700 font-mono text-sm">${item.walletId}</span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <a class="hash-link font-mono text-sm flex items-center gap-2" onclick="copyHash('${item.transactionHash}')">
+                                ${item.transactionHash}
+                                <i class="fas fa-copy text-xs"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            updateVisibleCount();
+        }
+
+        // Filter history by search term
+        function filterHistory(searchTerm) {
+            const rows = document.querySelectorAll('#history-table-body tr');
+            const term = searchTerm.toLowerCase().trim();
+
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                if (!row.dataset.param) return; // Skip loading/empty rows
+
+                const param = row.dataset.param;
+                const wallet = row.dataset.wallet;
+                const cells = row.querySelectorAll('td');
+                const timestamp = cells[0]?.textContent.toLowerCase() || '';
+
+                const matches = param.includes(term) ||
+                    wallet.includes(term) ||
+                    timestamp.includes(term);
+
+                if (matches) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            document.getElementById('visible-count').textContent = `${visibleCount} registro${visibleCount !== 1 ? 's' : ''}`;
+        }
+
+        // Copy transaction hash to clipboard
+        function copyHash(hash) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(hash)
+                    .then(() => {
+                        showToast('Hash copiado al portapapeles');
+                    })
+                    .catch(err => {
+                        console.error('Error al copiar:', err);
+                        showToast('Error al copiar hash', 'error');
+                    });
+            } else {
+                // Fallback for browsers that don't support clipboard API
+                const textarea = document.createElement('textarea');
+                textarea.value = hash;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Hash copiado al portapapeles');
+                } catch (err) {
+                    console.error('Error al copiar:', err);
+                    showToast('Error al copiar hash', 'error');
+                }
+                document.body.removeChild(textarea);
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+
+            toastMessage.textContent = message;
+
+            if (type === 'error') {
+                toast.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+            } else {
+                toast.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            }
+
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Update statistics
+        function updateStatistics(history) {
+            const totalChanges = history.length;
+            const uniqueParams = new Set(history.map(item => item.parametroAfectado)).size;
+            const lastChange = history.length > 0 ? history[0].parametroAfectado : '--';
+
+            document.getElementById('total-changes').textContent = totalChanges;
+            document.getElementById('affected-params').textContent = uniqueParams;
+            document.getElementById('last-change').textContent = lastChange;
+        }
+
+        // Update visible count
+        function updateVisibleCount() {
+            const rows = document.querySelectorAll('#history-table-body tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                if (row.style.display !== 'none' && row.dataset.param) {
+                    visibleCount++;
+                }
+            });
+
+            document.getElementById('visible-count').textContent = `${visibleCount} registro${visibleCount !== 1 ? 's' : ''}`;
+        }
+
+        // Update last update time
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const formatted = now.toLocaleString('es-ES', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('last-update').textContent = formatted;
+        }
+
+        // Refresh history
+        async function refreshHistory() {
+            const tbody = document.getElementById('history-table-body');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-12">
+                        <div class="loading-spinner mx-auto"></div>
+                        <p class="text-gray-500 mt-4">Actualizando historial...</p>
+                    </td>
+                </tr>
+            `;
+
+            const history = await fetchThresholdHistory();
+            renderHistoryTable(history);
+            updateStatistics(history);
+            updateLastUpdateTime();
+
+            // Clear search input
+            document.getElementById('search-input').value = '';
+        }
+
+        // Initialize on page load
+        async function init() {
+            updateLastUpdateTime();
+            const history = await fetchThresholdHistory();
+            renderHistoryTable(history);
+            updateStatistics(history);
+        }
+
+        // Run initialization
+        init();
+    </script>
+</body>
+
+</html>

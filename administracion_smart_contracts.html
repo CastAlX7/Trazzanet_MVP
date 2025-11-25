@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Smart Contracts - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contract-row {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .contract-row:hover {
+            background-color: #f8fafc;
+        }
+
+        .contract-row.selected {
+            background-color: #eef2ff;
+            border-left: 4px solid #4f46e5;
+        }
+
+        .param-input {
+            transition: all 0.2s ease;
+        }
+
+        .param-input:focus {
+            transform: scale(1.01);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .loading-spinner {
+            border-top-color: #4f46e5;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col fixed h-full z-20 shadow-xl">
+            <div class="p-6 border-b border-slate-100">
+                <h1
+                    class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                    TrazaNet</h1>
+                <p class="text-xs text-slate-500 mt-1">Administración Blockchain</p>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                <a href="dashboard.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="carga.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <span class="font-medium">Carga de Datos</span>
+                </a>
+                <a href="trazabilidad.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <span class="font-medium">Trazabilidad</span>
+                </a>
+                <a href="auditoria.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <span class="font-medium">Auditoría</span>
+                </a>
+                <a href="smart_contracts.html"
+                    class="flex items-center p-3.5 bg-indigo-50 text-indigo-700 rounded-xl transition-all shadow-sm">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-white text-indigo-600 flex items-center justify-center mr-3 shadow-sm">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <span class="font-medium">Smart Contracts</span>
+                </a>
+                <a href="gestor_certificaciones.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <span class="font-medium">Certificaciones</span>
+                </a>
+                <a href="blockchain.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <span class="font-medium">Blockchain</span>
+                </a>
+                <a href="transparencia_cliente.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <span class="font-medium">Transparencia</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-slate-100">
+                <div class="flex items-center">
+                    <div
+                        class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold mr-3">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-sm font-semibold text-slate-700">Administrador</p>
+                        <p class="text-xs text-slate-500 truncate" id="user-id-display">Cargando ID...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-72 p-8 lg:p-12">
+            <!-- Header -->
+            <header class="mb-10">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800 flex items-center">
+                            <i class="fas fa-cogs text-indigo-600 mr-3"></i>
+                            Administración de Smart Contracts
+                        </h2>
+                        <p class="text-slate-500 mt-2">Gestión de reglas y umbrales de evaluación automática</p>
+                    </div>
+                    <button onclick="showDeployModal()"
+                        class="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-lg hover:shadow-lg hover:scale-105 transition-all flex items-center shadow-md">
+                        <i class="fas fa-plus-circle mr-2"></i> Desplegar Nuevo Contrato
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Grid: Contracts List + Parameters Panel -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+
+                <!-- Left Panel: Contracts List (2 columns) -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
+                            <h3 class="font-semibold text-slate-800 flex items-center">
+                                <i class="fas fa-file-contract text-indigo-500 mr-2"></i> Contratos Desplegados
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Seleccione un contrato para configurar</p>
+                        </div>
+
+                        <div class="overflow-y-auto max-h-[600px]">
+                            <table class="min-w-full divide-y divide-slate-100">
+                                <thead class="bg-slate-50 sticky top-0 z-10">
+                                    <tr>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                            Nombre del Contrato
+                                        </th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                            Estado
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contracts-table-body" class="bg-white divide-y divide-slate-100">
+                                    <!-- Rows will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Contract Info Card -->
+                    <div id="contract-info-card"
+                        class="mt-6 bg-gradient-to-br from-indigo-50 to-violet-50 rounded-2xl p-6 border border-indigo-100 hidden">
+                        <h4 class="font-semibold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-info-circle text-indigo-600 mr-2"></i> Información del Contrato
+                        </h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-600">Dirección:</span>
+                                <span class="font-mono text-xs text-slate-700 bg-white px-2 py-1 rounded"
+                                    id="contract-address-display">--</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600">Versión:</span>
+                                <span class="font-semibold text-slate-700" id="contract-version-display">--</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600">Última Actualización:</span>
+                                <span class="text-slate-700" id="contract-last-update-display">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Parameters Configuration (3 columns) -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-violet-50">
+                            <h3 class="font-semibold text-slate-800 flex items-center">
+                                <i class="fas fa-sliders-h text-indigo-600 mr-2"></i> Configuración de Umbrales
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1" id="selected-contract-name">Seleccione un contrato
+                                para editar parámetros</p>
+                        </div>
+
+                        <div id="no-contract-selected" class="p-12 text-center">
+                            <div
+                                class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-hand-pointer text-3xl text-slate-400"></i>
+                            </div>
+                            <p class="text-slate-500 font-medium">Seleccione un contrato de la lista</p>
+                            <p class="text-sm text-slate-400 mt-1">para comenzar a editar sus parámetros</p>
+                        </div>
+
+                        <form id="parameters-form" class="hidden p-6">
+                            <div class="space-y-6">
+
+                                <!-- Temperature Threshold -->
+                                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex-1">
+                                            <label for="max-temp"
+                                                class="block text-sm font-semibold text-slate-700 mb-1">
+                                                <i class="fas fa-thermometer-half text-red-500 mr-2"></i>
+                                                Umbral de Temperatura Máxima (°C)
+                                            </label>
+                                            <p class="text-xs text-slate-500">Parámetro crítico para Smart Contract de
+                                                transporte</p>
+                                        </div>
+                                        <span class="badge badge-warning">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i> Crítico
+                                        </span>
+                                    </div>
+                                    <input type="number" id="max-temp" name="max-temp" step="0.1" required
+                                        class="param-input mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 text-lg font-semibold"
+                                        placeholder="Ej: 8.0">
+                                    <p class="text-xs text-slate-400 mt-2">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Afecta a: <code
+                                            class="bg-white px-2 py-0.5 rounded text-indigo-600">registro_transporte.html</code>
+                                    </p>
+                                </div>
+
+                                <!-- Weight Deviation -->
+                                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex-1">
+                                            <label for="max-weight-deviation"
+                                                class="block text-sm font-semibold text-slate-700 mb-1">
+                                                <i class="fas fa-balance-scale text-yellow-600 mr-2"></i>
+                                                Porcentaje Máximo de Desviación de Peso (%)
+                                            </label>
+                                            <p class="text-xs text-slate-500">Verifica integridad logística en
+                                                procesamiento</p>
+                                        </div>
+                                        <span class="badge badge-warning">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i> Crítico
+                                        </span>
+                                    </div>
+                                    <input type="number" id="max-weight-deviation" name="max-weight-deviation"
+                                        step="0.1" required
+                                        class="param-input mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 text-lg font-semibold"
+                                        placeholder="Ej: 5.0">
+                                    <p class="text-xs text-slate-400 mt-2">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Afecta a: <code
+                                            class="bg-white px-2 py-0.5 rounded text-indigo-600">registro_procesamiento.html</code>
+                                    </p>
+                                </div>
+
+                                <!-- Dry Matter Threshold -->
+                                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex-1">
+                                            <label for="min-dry-matter"
+                                                class="block text-sm font-semibold text-slate-700 mb-1">
+                                                <i class="fas fa-leaf text-green-600 mr-2"></i>
+                                                Umbral Mínimo de Materia Seca (%)
+                                            </label>
+                                            <p class="text-xs text-slate-500">Control de calidad en empaque</p>
+                                        </div>
+                                        <span class="badge badge-success">
+                                            <i class="fas fa-check-circle mr-1"></i> Calidad
+                                        </span>
+                                    </div>
+                                    <input type="number" id="min-dry-matter" name="min-dry-matter" step="0.1" required
+                                        class="param-input mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3 text-lg font-semibold"
+                                        placeholder="Ej: 20.0">
+                                    <p class="text-xs text-slate-400 mt-2">
+                                        <i class="fas fa-info-circle mr-1"></i>
+                                        Afecta a: <code
+                                            class="bg-white px-2 py-0.5 rounded text-indigo-600">registro_empaque.html</code>
+                                    </p>
+                                </div>
+
+                                <!-- Additional Parameters Section -->
+                                <div class="border-t border-slate-200 pt-6">
+                                    <h4 class="text-sm font-semibold text-slate-700 mb-4 flex items-center">
+                                        <i class="fas fa-cog text-slate-500 mr-2"></i>
+                                        Parámetros Adicionales
+                                    </h4>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <!-- Gas Limit -->
+                                        <div>
+                                            <label for="gas-limit"
+                                                class="block text-xs font-medium text-slate-600 mb-1">
+                                                Gas Limit (Transacción)
+                                            </label>
+                                            <input type="number" id="gas-limit" name="gas-limit"
+                                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 text-sm"
+                                                placeholder="300000">
+                                        </div>
+
+                                        <!-- Timeout -->
+                                        <div>
+                                            <label for="timeout" class="block text-xs font-medium text-slate-600 mb-1">
+                                                Timeout (segundos)
+                                            </label>
+                                            <input type="number" id="timeout" name="timeout"
+                                                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 text-sm"
+                                                placeholder="30">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="flex items-center justify-between mt-8 pt-6 border-t border-slate-200">
+                                <button type="button" onclick="resetForm()"
+                                    class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center">
+                                    <i class="fas fa-undo mr-2"></i> Restablecer
+                                </button>
+                                <button type="submit"
+                                    class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg hover:shadow-lg hover:scale-105 transition-all flex items-center shadow-md">
+                                    <i class="fas fa-paper-plane mr-2"></i> Actualizar Parámetros en Blockchain
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Recent Updates Log -->
+                    <div class="mt-6 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                        <h4 class="font-semibold text-slate-800 mb-4 flex items-center">
+                            <i class="fas fa-history text-indigo-500 mr-2"></i> Actualizaciones Recientes
+                        </h4>
+                        <div id="updates-log" class="space-y-3 max-h-60 overflow-y-auto">
+                            <div class="text-sm text-slate-400 text-center py-4">
+                                <i class="fas fa-inbox text-2xl mb-2"></i>
+                                <p>No hay actualizaciones recientes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Deploy Contract Modal -->
+    <div id="deploy-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden">
+            <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white">
+                <h3 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-rocket mr-2"></i> Desplegar Nuevo Smart Contract
+                </h3>
+            </div>
+            <form id="deploy-form" class="p-6">
+                <div class="space-y-5">
+                    <div>
+                        <label for="contract-name" class="block text-sm font-medium text-slate-700 mb-1">
+                            Nombre del Contrato
+                        </label>
+                        <input type="text" id="contract-name" name="contract-name" required
+                            class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3"
+                            placeholder="Ej: QualityControl">
+                    </div>
+
+                    <div>
+                        <label for="contract-description" class="block text-sm font-medium text-slate-700 mb-1">
+                            Descripción
+                        </label>
+                        <textarea id="contract-description" name="contract-description" rows="3"
+                            class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-3"
+                            placeholder="Describe la funcionalidad del contrato..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="contract-file" class="block text-sm font-medium text-slate-700 mb-1">
+                            Archivo del Contrato (.sol)
+                        </label>
+                        <div
+                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors">
+                            <div class="space-y-1 text-center">
+                                <i class="fas fa-file-code text-4xl text-slate-400 mb-3"></i>
+                                <div class="flex text-sm text-slate-600">
+                                    <label for="contract-file"
+                                        class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                        <span>Subir archivo</span>
+                                        <input id="contract-file" name="contract-file" type="file" accept=".sol,.txt"
+                                            class="sr-only">
+                                    </label>
+                                    <p class="pl-1">o arrastrar y soltar</p>
+                                </div>
+                                <p class="text-xs text-slate-500">Solidity (.sol) hasta 10MB</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mt-0.5 mr-3"></i>
+                            <div class="text-sm text-yellow-800">
+                                <p class="font-semibold mb-1">Advertencia</p>
+                                <p>El despliegue de un nuevo contrato es una operación irreversible. Asegúrese de que el
+                                    código ha sido auditado y probado.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-slate-200">
+                    <button type="button" onclick="hideDeployModal()"
+                        class="px-5 py-2.5 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-lg hover:shadow-lg transition-all flex items-center">
+                        <i class="fas fa-rocket mr-2"></i> Desplegar Contrato
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="success-toast"
+        class="hidden fixed top-6 right-6 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 flex items-center">
+        <i class="fas fa-check-circle text-xl mr-3"></i>
+        <span id="success-message">Operación exitosa</span>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+        let selectedContract = null;
+        let contracts = [];
+
+        // Mock data for contracts (in production, this would come from blockchain)
+        const mockContracts = [
+            {
+                id: 'qc-001',
+                name: 'QualityControl',
+                address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+                version: '1.2.0',
+                status: 'active',
+                lastUpdate: '2024-11-20T10:30:00Z',
+                parameters: {
+                    maxTemp: 8.0,
+                    maxWeightDeviation: 5.0,
+                    minDryMatter: 20.0,
+                    gasLimit: 300000,
+                    timeout: 30
+                }
+            },
+            {
+                id: 'ic-002',
+                name: 'IntegrityCheck',
+                address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+                version: '1.1.5',
+                status: 'active',
+                lastUpdate: '2024-11-18T14:20:00Z',
+                parameters: {
+                    maxTemp: 10.0,
+                    maxWeightDeviation: 3.0,
+                    minDryMatter: 22.0,
+                    gasLimit: 250000,
+                    timeout: 25
+                }
+            },
+            {
+                id: 'tc-003',
+                name: 'TransportControl',
+                address: '0x1a9C8182C09F50C8318d769245beA52c32BE35BC',
+                version: '2.0.1',
+                status: 'active',
+                lastUpdate: '2024-11-22T09:15:00Z',
+                parameters: {
+                    maxTemp: 7.5,
+                    maxWeightDeviation: 4.0,
+                    minDryMatter: 21.0,
+                    gasLimit: 350000,
+                    timeout: 35
+                }
+            }
+        ];
+
+        // Utility: Get or create user ID
+        function getOrCreateUserId() {
+            let storedUserId = sessionStorage.getItem('trazanet_user_id');
+            if (!storedUserId) {
+                storedUserId = 'admin-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                sessionStorage.setItem('trazanet_user_id', storedUserId);
+            }
+            return storedUserId;
+        }
+
+        // Initialize
+        function init() {
+            const userId = getOrCreateUserId();
+            document.getElementById('user-id-display').textContent = userId;
+
+            // Load contracts
+            loadContracts();
+
+            // Setup form handlers
+            document.getElementById('parameters-form').addEventListener('submit', handleParametersSubmit);
+            document.getElementById('deploy-form').addEventListener('submit', handleDeploySubmit);
+        }
+
+        // Load contracts list
+        function loadContracts() {
+            contracts = mockContracts;
+            renderContractsTable();
+        }
+
+        // Render contracts table
+        function renderContractsTable() {
+            const tbody = document.getElementById('contracts-table-body');
+            tbody.innerHTML = '';
+
+            contracts.forEach(contract => {
+                const row = document.createElement('tr');
+                row.className = 'contract-row';
+                row.onclick = () => selectContract(contract.id);
+
+                const statusBadge = contract.status === 'active'
+                    ? '<span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i> Activo</span>'
+                    : '<span class="badge badge-warning"><i class="fas fa-pause-circle mr-1"></i> Pausado</span>';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-800">${contract.name}</p>
+                                <p class="text-xs text-slate-500 font-mono">${contract.address.substring(0, 10)}...</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        ${statusBadge}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Select a contract
+        function selectContract(contractId) {
+            selectedContract = contracts.find(c => c.id === contractId);
+
+            // Update UI
+            document.querySelectorAll('.contract-row').forEach(row => row.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            // Show parameters form
+            document.getElementById('no-contract-selected').classList.add('hidden');
+            document.getElementById('parameters-form').classList.remove('hidden');
+            document.getElementById('contract-info-card').classList.remove('hidden');
+
+            // Update form header
+            document.getElementById('selected-contract-name').textContent = `Editando: ${selectedContract.name}`;
+
+            // Populate contract info
+            document.getElementById('contract-address-display').textContent = selectedContract.address;
+            document.getElementById('contract-version-display').textContent = `v${selectedContract.version}`;
+            document.getElementById('contract-last-update-display').textContent = new Date(selectedContract.lastUpdate).toLocaleDateString();
+
+            // Populate form with current parameters
+            document.getElementById('max-temp').value = selectedContract.parameters.maxTemp;
+            document.getElementById('max-weight-deviation').value = selectedContract.parameters.maxWeightDeviation;
+            document.getElementById('min-dry-matter').value = selectedContract.parameters.minDryMatter;
+            document.getElementById('gas-limit').value = selectedContract.parameters.gasLimit;
+            document.getElementById('timeout').value = selectedContract.parameters.timeout;
+        }
+
+        // Handle parameters form submission
+        function handleParametersSubmit(e) {
+            e.preventDefault();
+
+            if (!selectedContract) {
+                alert('Por favor seleccione un contrato primero');
+                return;
+            }
+
+            // Get form values
+            const newParams = {
+                maxTemp: parseFloat(document.getElementById('max-temp').value),
+                maxWeightDeviation: parseFloat(document.getElementById('max-weight-deviation').value),
+                minDryMatter: parseFloat(document.getElementById('min-dry-matter').value),
+                gasLimit: parseInt(document.getElementById('gas-limit').value) || selectedContract.parameters.gasLimit,
+                timeout: parseInt(document.getElementById('timeout').value) || selectedContract.parameters.timeout
+            };
+
+            // Simulate blockchain transaction
+            simulateBlockchainUpdate(selectedContract, newParams);
+        }
+
+        // Simulate blockchain update
+        function simulateBlockchainUpdate(contract, newParams) {
+            // Show loading state
+            const submitBtn = document.querySelector('#parameters-form button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando a Blockchain...';
+            submitBtn.disabled = true;
+
+            // Simulate network delay
+            setTimeout(() => {
+                // Update contract parameters
+                contract.parameters = newParams;
+                contract.lastUpdate = new Date().toISOString();
+
+                // Add to updates log
+                addUpdateLog(contract, newParams);
+
+                // Restore button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                // Show success message
+                showSuccessToast(`Parámetros actualizados exitosamente para ${contract.name}`);
+
+                // Update contract info display
+                document.getElementById('contract-last-update-display').textContent = new Date(contract.lastUpdate).toLocaleDateString();
+
+            }, 2000);
+        }
+
+        // Add update to log
+        function addUpdateLog(contract, params) {
+            const logContainer = document.getElementById('updates-log');
+
+            // Clear "no updates" message
+            if (logContainer.querySelector('.text-slate-400')) {
+                logContainer.innerHTML = '';
+            }
+
+            const logEntry = document.createElement('div');
+            logEntry.className = 'bg-slate-50 rounded-lg p-3 border border-slate-200';
+            logEntry.innerHTML = `
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-slate-700">${contract.name}</p>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Temp: ${params.maxTemp}°C | Peso: ${params.maxWeightDeviation}% | MS: ${params.minDryMatter}%
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-400">${new Date().toLocaleTimeString()}</span>
+                </div>
+            `;
+
+            logContainer.insertBefore(logEntry, logContainer.firstChild);
+
+            // Keep only last 5 entries
+            while (logContainer.children.length > 5) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            if (selectedContract) {
+                selectContract(selectedContract.id);
+            }
+        }
+
+        // Show deploy modal
+        function showDeployModal() {
+            document.getElementById('deploy-modal').classList.remove('hidden');
+        }
+
+        // Hide deploy modal
+        function hideDeployModal() {
+            document.getElementById('deploy-modal').classList.add('hidden');
+            document.getElementById('deploy-form').reset();
+        }
+
+        // Handle deploy form submission
+        function handleDeploySubmit(e) {
+            e.preventDefault();
+
+            const contractName = document.getElementById('contract-name').value;
+            const contractDescription = document.getElementById('contract-description').value;
+            const contractFile = document.getElementById('contract-file').files[0];
+
+            // Show loading state
+            const submitBtn = document.querySelector('#deploy-form button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Desplegando...';
+            submitBtn.disabled = true;
+
+            // Simulate deployment
+            setTimeout(() => {
+                // Generate mock contract
+                const newContract = {
+                    id: 'new-' + Date.now(),
+                    name: contractName,
+                    address: '0x' + Math.random().toString(16).substr(2, 40),
+                    version: '1.0.0',
+                    status: 'active',
+                    lastUpdate: new Date().toISOString(),
+                    parameters: {
+                        maxTemp: 8.0,
+                        maxWeightDeviation: 5.0,
+                        minDryMatter: 20.0,
+                        gasLimit: 300000,
+                        timeout: 30
+                    }
+                };
+
+                contracts.push(newContract);
+                renderContractsTable();
+
+                // Restore button and close modal
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                hideDeployModal();
+
+                showSuccessToast(`Contrato ${contractName} desplegado exitosamente`);
+            }, 3000);
+        }
+
+        // Show success toast
+        function showSuccessToast(message) {
+            const toast = document.getElementById('success-toast');
+            document.getElementById('success-message').textContent = message;
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

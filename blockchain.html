@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Explorer - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .7;
+            }
+        }
+
+        .hash-text {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 p-4 flex flex-col shadow-lg">
+            <h1 class="text-2xl font-bold text-indigo-600 mb-8">TrazaNet</h1>
+            <nav class="space-y-2">
+                <a href="dashboard.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="carga.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-upload w-5 h-5 mr-3"></i>
+                    Carga de Datos
+                </a>
+                <a href="trazabilidad.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-project-diagram w-5 h-5 mr-3"></i>
+                    Trazabilidad
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">Blockchain Explorer</h2>
+                    <p class="text-gray-600 mt-2">Visualización en tiempo real de la red descentralizada</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center bg-green-100 px-4 py-2 rounded-full">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                        <span class="text-green-700 font-medium text-sm">Red Activa</span>
+                    </div>
+                    <button id="refresh-btn" class="p-2 text-gray-500 hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Network Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <!-- Total Blocks -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500 text-sm font-medium">Total Bloques</h3>
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-900" id="total-blocks">0</span>
+                        <span class="ml-2 text-sm text-green-500 font-medium">+1 hoy</span>
+                    </div>
+                </div>
+
+                <!-- Total Transactions -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500 text-sm font-medium">Transacciones</h3>
+                        <div
+                            class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-900" id="total-transactions">0</span>
+                    </div>
+                </div>
+
+                <!-- Hash Rate -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500 text-sm font-medium">Tasa de Hash</h3>
+                        <div
+                            class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-900" id="hash-rate">0 TH/s</span>
+                    </div>
+                </div>
+
+                <!-- Avg Block Time -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500 text-sm font-medium">Tiempo Bloque</h3>
+                        <div class="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center text-cyan-600">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-900" id="last-block-time">12.5s</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Latest Blocks -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-gray-800">Últimos Bloques (Lotes)</h3>
+                        <button class="text-indigo-600 text-sm font-medium hover:text-indigo-800">Ver Todo</button>
+                    </div>
+                    <div class="divide-y divide-gray-100" id="blocks-container">
+                        <!-- Blocks will be inserted here -->
+                        <div class="p-8 text-center text-gray-500">
+                            <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                            <p>Cargando bloques...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Latest Transactions -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-gray-800">Últimas Transacciones (Frutos)</h3>
+                        <button class="text-indigo-600 text-sm font-medium hover:text-indigo-800">Ver Todo</button>
+                    </div>
+                    <div class="divide-y divide-gray-100" id="transactions-container">
+                        <!-- Transactions will be inserted here -->
+                        <div class="p-8 text-center text-gray-500">
+                            <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                            <p>Cargando transacciones...</p>
+                        </div>
+                        <!DOCTYPE html>
+                        <html lang="es">
+
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Blockchain Explorer - TrazaNet</title>
+                            <script src="https://cdn.tailwindcss.com"></script>
+                            <link rel="stylesheet"
+                                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                            <link
+                                href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+                                rel="stylesheet">
+                            <script
+                                src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+                            <style>
+                                body {
+                                    font-family: 'Inter', sans-serif;
+                                }
+
+                                .card {
+                                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                                }
+
+                                .card:hover {
+                                    transform: translateY(-3px);
+                                    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                                }
+
+                                .animate-pulse-slow {
+                                    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                                }
+
+                                @keyframes pulse {
+
+                                    0%,
+                                    100% {
+                                        opacity: 1;
+                                    }
+
+                                    50% {
+                                        opacity: .7;
+                                    }
+                                }
+
+                                .hash-text {
+                                    font-family: 'Courier New', Courier, monospace;
+                                }
+                            </style>
+                        </head>
+
+                        <body class="bg-gray-50">
+
+                            <div class="flex min-h-screen">
+                                <!-- Sidebar -->
+                                <aside class="w-64 bg-white border-r border-gray-200 p-4 flex flex-col shadow-lg">
+                                    <h1 class="text-2xl font-bold text-indigo-600 mb-8">TrazaNet</h1>
+                                    <nav class="space-y-2">
+                                        <a href="dashboard.html"
+                                            class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                                            <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+                                            Dashboard
+                                        </a>
+                                        <a href="carga.html"
+                                            class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                                            <i class="fas fa-upload w-5 h-5 mr-3"></i>
+                                            Carga de Datos
+                                        </a>
+                                        <a href="trazabilidad.html"
+                                            class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                                            <i class="fas fa-project-diagram w-5 h-5 mr-3"></i>
+                                            Trazabilidad
+                                        </a>
+                                        <a href="auditoria.html"
+                                            class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                                            <i class="fas fa-clipboard-check w-5 h-5 mr-3"></i>
+                                            Auditoría
+                                        </a>
+                                        <a href="blockchain.html"
+                                            class="sidebar-link flex items-center p-3.5 bg-indigo-50 text-indigo-600 font-semibold rounded-xl transition-all group">
+                                            <div
+                                                class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 transition-colors">
+                                                <i class="fas fa-link"></i>
+                                            </div>
+                                            <span class="font-medium">Blockchain</span>
+                                        </a>
+                                    </nav>
+                                    <div class="mt-auto pt-4 border-t border-gray-200">
+                                        <p class="text-xs text-gray-500 truncate" id="user-id-display">ID Usuario:
+                                            Cargando...</p>
+                                    </div>
+                                </aside>
+
+                                <!-- Main Content -->
+                                <main class="flex-1 p-8">
+                                    <!-- Header -->
+                                    <div class="flex justify-between items-center mb-8">
+                                        <div>
+                                            <h2 class="text-3xl font-bold text-gray-800">Blockchain Explorer</h2>
+                                            <p class="text-gray-600 mt-2">Visualización en tiempo real de la red
+                                                descentralizada</p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex items-center bg-green-100 px-4 py-2 rounded-full">
+                                                <div class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                                                <span class="text-green-700 font-medium text-sm">Red Activa</span>
+                                            </div>
+                                            <button id="refresh-btn"
+                                                class="p-2 text-gray-500 hover:text-indigo-600 transition-colors">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Network Stats -->
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                                        <!-- Total Blocks -->
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <h3 class="text-gray-500 text-sm font-medium">Total Bloques</h3>
+                                                <div
+                                                    class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                                    <i class="fas fa-cube"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-baseline">
+                                                <span class="text-3xl font-bold text-gray-900"
+                                                    id="total-blocks">0</span>
+                                                <span class="ml-2 text-sm text-green-500 font-medium">+1 hoy</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Total Transactions -->
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <h3 class="text-gray-500 text-sm font-medium">Transacciones</h3>
+                                                <div
+                                                    class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+                                                    <i class="fas fa-exchange-alt"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-baseline">
+                                                <span class="text-3xl font-bold text-gray-900"
+                                                    id="total-transactions">0</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Hash Rate -->
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <h3 class="text-gray-500 text-sm font-medium">Tasa de Hash</h3>
+                                                <div
+                                                    class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                                                    <i class="fas fa-microchip"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-baseline">
+                                                <span class="text-3xl font-bold text-gray-900" id="hash-rate">0
+                                                    TH/s</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Avg Block Time -->
+                                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <h3 class="text-gray-500 text-sm font-medium">Tiempo Bloque</h3>
+                                                <div
+                                                    class="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center text-cyan-600">
+                                                    <i class="fas fa-clock"></i>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-baseline">
+                                                <span class="text-3xl font-bold text-gray-900"
+                                                    id="last-block-time">12.5s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                        <!-- Latest Blocks -->
+                                        <div
+                                            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                                            <div
+                                                class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                                                <h3 class="font-bold text-gray-800">Últimos Bloques (Lotes)</h3>
+                                                <button
+                                                    class="text-indigo-600 text-sm font-medium hover:text-indigo-800">Ver
+                                                    Todo</button>
+                                            </div>
+                                            <div class="divide-y divide-gray-100" id="blocks-container">
+                                                <!-- Blocks will be inserted here -->
+                                                <div class="p-8 text-center text-gray-500">
+                                                    <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                                                    <p>Cargando bloques...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Latest Transactions -->
+                                        <div
+                                            class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                                            <div
+                                                class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                                                <h3 class="font-bold text-gray-800">Últimas Transacciones (Frutos)</h3>
+                                                <button
+                                                    class="text-indigo-600 text-sm font-medium hover:text-indigo-800">Ver
+                                                    Todo</button>
+                                            </div>
+                                            <div class="divide-y divide-gray-100" id="transactions-container">
+                                                <!-- Transactions will be inserted here -->
+                                                <div class="p-8 text-center text-gray-500">
+                                                    <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                                                    <p>Cargando transacciones...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </main>
+                            </div>
+
+                            <script>
+                                const API_BASE_URL = 'http://localhost:3000/api';
+                                let allBlocks = [];
+                                let allTransactions = [];
+                                let isProcessing = false;
+
+                                // ===============================================
+                                // FUNCIONES DE UTILIDAD
+                                // ===============================================
+
+                                function getOrCreateUserId() {
+                                    let storedUserId = sessionStorage.getItem('trazanet_user_id');
+                                    if (!storedUserId) {
+                                        storedUserId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                                        sessionStorage.setItem('trazanet_user_id', storedUserId);
+                                    }
+                                    return storedUserId;
+                                }
+
+                                function formatTimeAgo(dateString) {
+                                    const date = new Date(dateString);
+                                    const now = new Date();
+                                    const seconds = Math.floor((now - date) / 1000);
+
+                                    if (seconds < 60) return `${seconds} seg`;
+                                    const minutes = Math.floor(seconds / 60);
+                                    if (minutes < 60) return `${minutes} min`;
+                                    const hours = Math.floor(minutes / 60);
+                                    if (hours < 24) return `${hours} h`;
+                                    return `${Math.floor(hours / 24)} d`;
+                                }
+
+                                function truncateHash(hash) {
+                                    if (!hash) return '0x000...000';
+                                    return hash.substring(0, 6) + '...' + hash.substring(hash.length - 4);
+                                }
+
+                                // ===============================================
+                                // LÓGICA DE DATOS
+                                // ===============================================
+
+                                async function fetchBatchContent(filename) {
+                                    try {
+                                        const response = await fetch(`${API_BASE_URL}/uploads/${filename}`);
+                                        if (!response.ok) throw new Error('Error fetching file');
+                                        const text = await response.text();
+                                        return text;
+                                    } catch (error) {
+                                        console.error('Error fetching batch content:', error);
+                                        return null;
+                                    }
+                                }
+
+                                function parseCSV(csvText) {
+                                    return new Promise((resolve) => {
+                                        Papa.parse(csvText, {
+                                            header: true,
+                                            skipEmptyLines: true,
+                                            complete: function (results) {
+                                                resolve(results.data);
+                                            },
+                                            error: function (error) {
+                                                console.error('Error parsing CSV:', error);
+                                                resolve([]);
+                                            }
+                                        });
+                                    });
+                                }
+
+                                async function processBlockchainData() {
+                                    if (isProcessing) return;
+                                    isProcessing = true;
+
+                                    const refreshBtn = document.getElementById('refresh-btn');
+                                    if (refreshBtn) refreshBtn.classList.add('fa-spin');
+
+                                    try {
+                                        // 1. Fetch History (Blocks)
+                                        const userId = getOrCreateUserId();
+                                        console.log('Fetching history for user:', userId);
+
+                                        // Try fetching with userId first
+                                        const response = await fetch(`${API_BASE_URL}/history?userId=${userId}`);
+                                        const result = await response.json();
+
+                                        if (!result.success) throw new Error('Failed to fetch history: ' + (result.message || 'Unknown error'));
+
+                                        const batches = result.data;
+                                        console.log('Batches fetched:', batches.length);
+                                        allBlocks = batches; // Each batch is a block
+
+                                        // 2. Process Transactions (Rows in CSV)
+                                        let tempTransactions = [];
+
+                                        // Process only the latest 5 batches to avoid performance issues
+                                        const batchesToProcess = batches.slice(0, 5);
+
+                                        for (const batch of batchesToProcess) {
+                                            if (batch.savedFileName) {
+                                                console.log('Fetching content for batch:', batch.savedFileName);
+                                                const csvContent = await fetchBatchContent(batch.savedFileName);
+                                                if (csvContent) {
+                                                    const rows = await parseCSV(csvContent);
+                                                    console.log(`Parsed ${rows.length} rows from ${batch.savedFileName}`);
+
+                                                    // Map rows to transactions
+                                                    const batchTransactions = rows.map((row, index) => ({
+                                                        hash: '0x' + Math.random().toString(16).substr(2, 40), // Simulated tx hash
+                                                        blockHash: batch.transactionId,
+                                                        blockNumber: batch.id.substring(0, 8).toUpperCase(),
+                                                        from: batch.processedBy || 'System',
+                                                        to: 'TrazaNet Contract',
+                                                        value: row.PESO_NETO_KG || '0',
+                                                        timestamp: batch.date, // Use batch date for simplicity
+                                                        type: 'Fruit Scan',
+                                                        status: row.CALIDAD_STATUS || 'OK',
+                                                        details: row
+                                                    }));
+
+                                                    tempTransactions = [...tempTransactions, ...batchTransactions];
+                                                }
+                                            }
+                                        }
+
+                                        allTransactions = tempTransactions;
+                                        updateUI();
+
+                                    } catch (error) {
+                                        console.error('Error processing blockchain data:', error);
+                                    } finally {
+                                        isProcessing = false;
+                                        if (refreshBtn) refreshBtn.classList.remove('fa-spin');
+                                    }
+                                }
+
+                                function calculateNetworkStats() {
+                                    // Simulated Hash Rate based on transaction volume
+                                    const txCount = allTransactions.length;
+                                    const hashRate = (txCount * 0.5 + Math.random() * 10).toFixed(2);
+
+                                    return {
+                                        totalBlocks: allBlocks.length,
+                                        totalTransactions: allTransactions.length, // This is only from latest batches, in real app would be total
+                                        hashRate: `${hashRate} TH/s`,
+                                        lastBlockTime: '12.5s' // Fixed for now
+                                    };
+                                }
+
+                                // ===============================================
+                                // RENDERIZADO
+                                // ===============================================
+
+                                function updateUI() {
+                                    renderBlocks();
+                                    renderTransactions();
+                                    renderStats();
+                                }
+
+                                function renderStats() {
+                                    const stats = calculateNetworkStats();
+                                    document.getElementById('total-blocks').textContent = stats.totalBlocks;
+                                    document.getElementById('total-transactions').textContent = stats.totalTransactions.toLocaleString();
+                                    document.getElementById('hash-rate').textContent = stats.hashRate;
+                                    document.getElementById('last-block-time').textContent = stats.lastBlockTime;
+                                }
+
+                                function renderBlocks() {
+                                    const container = document.getElementById('blocks-container');
+                                    container.innerHTML = '';
+
+                                    if (allBlocks.length === 0) {
+                                        container.innerHTML = '<div class="p-6 text-center text-gray-500">No hay bloques minados aún.</div>';
+                                        return;
+                                    }
+
+                                    // Show latest 5 blocks
+                                    allBlocks.slice(0, 5).forEach(block => {
+                                        const blockEl = document.createElement('div');
+                                        blockEl.className = 'p-4 hover:bg-gray-50 transition-colors flex items-center justify-between group';
+                                        blockEl.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 font-bold text-lg">
+                            Bk
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-indigo-600 font-bold">#${block.id.substring(0, 8)}</span>
+                                <span class="text-xs text-gray-400">${formatTimeAgo(block.date)}</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                Minado por <span class="text-gray-700 font-medium">${block.processedBy || 'Unknown'}</span>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-0.5 hash-text">
+                                Hash: ${truncateHash(block.transactionId)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-medium text-gray-900">${block.calidadFruta ? block.calidadFruta.total : 0} Txns</div>
+                        <div class="text-xs text-gray-500">${(block.size / 1024).toFixed(2)} KB</div>
+                    </div>
+                `;
+                                        container.appendChild(blockEl);
+                                    });
+                                }
+
+                                function renderTransactions() {
+                                    const container = document.getElementById('transactions-container');
+                                    container.innerHTML = '';
+
+                                    if (allTransactions.length === 0) {
+                                        container.innerHTML = '<div class="p-6 text-center text-gray-500">No hay transacciones recientes.</div>';
+                                        return;
+                                    }
+
+                                    // Show latest 10 transactions
+                                    allTransactions.slice(0, 10).forEach(tx => {
+                                        const txEl = document.createElement('div');
+                                        txEl.className = 'p-4 hover:bg-gray-50 transition-colors flex items-center justify-between';
+
+                                        const statusColor = tx.status === 'OK' ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
+                                        const icon = tx.status === 'OK' ? 'fa-check' : 'fa-exclamation-triangle';
+
+                                        txEl.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full ${statusColor} flex items-center justify-center text-sm">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-indigo-600 font-medium hash-text">${truncateHash(tx.hash)}</span>
+                                <span class="text-xs text-gray-400">${formatTimeAgo(tx.timestamp)}</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                De <span class="text-gray-700">${truncateHash(tx.from)}</span> 
+                                a <span class="text-gray-700">${truncateHash(tx.to)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-bold text-gray-900">${tx.value} kg</div>
+                        <div class="text-xs text-gray-500">${tx.details.VARIEDAD || 'Fruta'}</div>
+                    </div>
+                `;
+                                        container.appendChild(txEl);
+                                    });
+                                }
+
+                                // ===============================================
+                                // INICIALIZACIÓN
+                                // ===============================================
+
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const userId = getOrCreateUserId();
+                                    document.getElementById('user-id-display').textContent = `ID Usuario: ${userId}`;
+
+                                    document.getElementById('refresh-btn').addEventListener('click', processBlockchainData);
+
+                                    // Initial load
+                                    processBlockchainData();
+
+                                    // Auto refresh every 30s
+                                    setInterval(processBlockchainData, 30000);
+                                });
+
+                            </script>
+                        </body>
+
+                        </html>

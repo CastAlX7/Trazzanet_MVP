@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Auditoría - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Modules -->
+    <script src="Recursos/js/aiAnalysis.js"></script>
+    <script src="Recursos/js/timelineGenerator.js"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .loading-spinner {
+            border-top-color: #4f46e5;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .insight-card {
+            transition: all 0.2s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateX(4px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col fixed h-full z-20 shadow-xl">
+            <div class="p-6 border-b border-slate-100">
+                <h1
+                    class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                    TrazaNet</h1>
+                <p class="text-xs text-slate-500 mt-1">Inteligencia en Auditoría</p>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                <a href="dashboard.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="carga.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <span class="font-medium">Carga de Datos</span>
+                </a>
+                <a href="trazabilidad.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <span class="font-medium">Trazabilidad</span>
+                </a>
+                <a href="auditoria.html"
+                    class="flex items-center p-3.5 bg-indigo-50 text-indigo-700 rounded-xl transition-all shadow-sm">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-white text-indigo-600 flex items-center justify-center mr-3 shadow-sm">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <span class="font-medium">Auditoría</span>
+                </a>
+                <a href="smart_contracts.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <span class="font-medium">Smart Contracts</span>
+                </a>
+                <a href="gestor_certificaciones.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <span class="font-medium">Certificaciones</span>
+                </a>
+                <a href="blockchain.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <span class="font-medium">Blockchain</span>
+                </a>
+                <a href="transparencia_cliente.html"
+                    class="flex items-center p-3.5 text-slate-600 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all group">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <span class="font-medium">Transparencia</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-slate-100">
+                <div class="flex items-center">
+                    <div
+                        class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold mr-3">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-sm font-semibold text-slate-700">Usuario Activo</p>
+                        <p class="text-xs text-slate-500 truncate" id="user-id-display">Cargando ID...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-72 p-8 lg:p-12">
+            <!-- Header -->
+            <header class="flex items-center justify-between mb-10">
+                <div class="flex items-center">
+                    <a href="auditoria.html"
+                        class="mr-6 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800">Detalle de Auditoría</h2>
+                        <p class="text-slate-500 mt-1">Análisis profundo y trazabilidad del lote</p>
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="window.print()"
+                        class="px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors flex items-center shadow-sm">
+                        <i class="fas fa-print mr-2"></i> Imprimir
+                    </button>
+                    <button
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center shadow-md shadow-indigo-200">
+                        <i class="fas fa-download mr-2"></i> Exportar PDF
+                    </button>
+                </div>
+            </header>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="flex flex-col items-center justify-center py-20">
+                <div class="loading-spinner w-16 h-16 border-4 rounded-full border-slate-200 mb-6"></div>
+                <p class="text-lg text-slate-600 font-medium">Recuperando datos del lote...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state"
+                class="hidden max-w-2xl mx-auto bg-red-50 border border-red-100 p-8 rounded-2xl text-center">
+                <div
+                    class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-red-800 mb-2">Error al cargar los datos</h3>
+                <p id="error-message" class="text-red-600 mb-6">No se pudo recuperar la información solicitada.</p>
+                <a href="auditoria.html"
+                    class="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors shadow-lg shadow-red-200">
+                    <i class="fas fa-arrow-left mr-2"></i> Volver a Auditoría
+                </a>
+            </div>
+
+            <!-- Content State -->
+            <div id="content-state" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left Column: Main Content -->
+                    <div class="lg:col-span-2 space-y-8">
+
+                        <!-- Stats Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Total Items -->
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 card-hover">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p class="text-xs text-slate-500 uppercase font-semibold">Total Items</p>
+                                    <i class="fas fa-boxes text-indigo-500"></i>
+                                </div>
+                                <p class="text-2xl font-bold text-slate-800" id="total-items-card">0</p>
+                            </div>
+
+                            <!-- Quality Score -->
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 card-hover">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p class="text-xs text-slate-500 uppercase font-semibold">Calidad</p>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                </div>
+                                <p class="text-2xl font-bold text-slate-800" id="quality-score-card">0%</p>
+                            </div>
+
+                            <!-- Defects Count -->
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 card-hover">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p class="text-xs text-slate-500 uppercase font-semibold">Defectos</p>
+                                    <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                </div>
+                                <p class="text-2xl font-bold text-slate-800" id="defects-count-card">0</p>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-4 card-hover">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p class="text-xs text-slate-500 uppercase font-semibold">Estado</p>
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                </div>
+                                <p class="text-sm font-bold text-slate-800" id="status-card">Pendiente</p>
+                            </div>
+                        </div>
+
+                        <!-- File Info Section -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                            <div
+                                class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                                <h3 class="font-semibold text-slate-800 flex items-center">
+                                    <i class="fas fa-file-alt text-indigo-500 mr-2"></i> Información del Archivo
+                                </h3>
+                                <span id="file-date"
+                                    class="text-sm text-slate-500 bg-white px-3 py-1 rounded-full border border-slate-200"></span>
+                            </div>
+                            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Nombre
+                                        del Archivo</p>
+                                    <p id="file-name" class="text-slate-700 font-medium break-all">--</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">ID de
+                                        Transacción (Blockchain)</p>
+                                    <div class="flex items-center">
+                                        <p id="tx-id"
+                                            class="text-slate-600 font-mono text-xs bg-slate-100 px-2 py-1 rounded truncate flex-1">
+                                            --</p>
+                                        <button class="ml-2 text-indigo-500 hover:text-indigo-700" title="Copiar ID">
+                                            <i class="far fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Tamaño
+                                    </p>
+                                    <p id="file-size" class="text-slate-700 font-medium">--</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">
+                                        Usuario</p>
+                                    <p id="file-user" class="text-slate-700 font-medium">--</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                            <h3 class="font-semibold text-slate-800 mb-6 flex items-center">
+                                <i class="fas fa-chart-pie text-indigo-500 mr-2"></i> Análisis de Calidad
+                            </h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <!-- Doughnut Chart -->
+                                <div class="flex flex-col items-center">
+                                    <h4 class="text-sm font-medium text-slate-500 mb-4">Distribución General</h4>
+                                    <div class="relative w-64 h-64">
+                                        <canvas id="qualityChart"></canvas>
+                                        <div
+                                            class="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+                                            <span class="text-3xl font-bold text-slate-800" id="chart-total">0</span>
+                                            <span class="text-xs text-slate-400 uppercase">Total</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bar Chart -->
+                                <div class="flex flex-col">
+                                    <h4 class="text-sm font-medium text-slate-500 mb-4">Desglose de Defectos</h4>
+                                    <div class="flex-1 min-h-[250px]">
+                                        <canvas id="defectsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Table -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                                <h3 class="font-semibold text-slate-800">Detalle de Defectos Detectados</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-slate-100">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th
+                                                class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                                Defecto</th>
+                                            <th
+                                                class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                                Severidad</th>
+                                            <th
+                                                class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                                Cantidad</th>
+                                            <th
+                                                class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                                                % Impacto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="defects-table-body" class="bg-white divide-y divide-slate-100">
+                                        <!-- Rows will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Timeline & AI Analysis -->
+                    <div class="space-y-8">
+
+                        <!-- AI Insights / Observations -->
+                        <div
+                            class="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl shadow-lg p-6 text-white relative overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl">
+                            </div>
+                            <div
+                                class="absolute bottom-0 left-0 -mb-4 -ml-4 w-24 h-24 bg-indigo-400 opacity-20 rounded-full blur-xl">
+                            </div>
+
+                            <h3 class="font-semibold text-lg mb-4 flex items-center relative z-10">
+                                <i class="fas fa-robot mr-2"></i> Análisis Inteligente
+                            </h3>
+
+                            <div id="ai-insights" class="space-y-3 relative z-10">
+                                <!-- Insights will be injected here -->
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-indigo-400/30 relative z-10">
+                                <h4 class="text-sm font-semibold mb-3">Recomendaciones</h4>
+                                <div id="ai-recommendations" class="space-y-2">
+                                    <!-- Recommendations will be injected here -->
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-indigo-400/30 relative z-10">
+                                <h4 class="text-sm font-semibold mb-2">Vida Útil Estimada</h4>
+                                <div id="shelf-life-info" class="bg-white/10 rounded-lg p-3">
+                                    <!-- Shelf life info will be injected here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Traceability Timeline -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                            <h3 class="font-semibold text-slate-800 mb-6 flex items-center">
+                                <i class="fas fa-history text-indigo-500 mr-2"></i> Línea de Tiempo
+                            </h3>
+
+                            <div class="relative pl-4 space-y-8" id="timeline-container">
+                                <div class="timeline-line"></div>
+                                <!-- Timeline items will be injected here -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api';
+        let qualityChartInstance = null;
+        let defectsChartInstance = null;
+
+        // Utility: Get ID from URL
+        function getBatchIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // Utility: Get or create user ID
+        function getOrCreateUserId() {
+            let storedUserId = sessionStorage.getItem('trazanet_user_id');
+            if (!storedUserId) {
+                storedUserId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                sessionStorage.setItem('trazanet_user_id', storedUserId);
+            }
+            return storedUserId;
+        }
+
+        // Utility: Format Bytes
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        async function init() {
+            const userId = getOrCreateUserId();
+            document.getElementById('user-id-display').textContent = userId;
+
+            const batchId = getBatchIdFromUrl();
+            if (!batchId) {
+                showError('No se proporcionó un ID de lote válido.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/batch/${batchId}`);
+                const result = await response.json();
+
+                if (!result.success || !result.data) {
+                    throw new Error(result.message || 'No se encontraron datos para este lote.');
+                }
+
+                const batch = result.data;
+                renderBatchDetails(batch);
+
+                // Show content, hide loading
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('content-state').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading batch:', error);
+                showError(error.message);
+            }
+        }
+
+        function renderBatchDetails(batch) {
+            // File Info
+            document.getElementById('file-name').textContent = batch.fileName;
+            document.getElementById('file-size').textContent = formatBytes(batch.size);
+            document.getElementById('file-user').textContent = batch.processedBy || 'Desconocido';
+            document.getElementById('file-date').textContent = new Date(batch.date).toLocaleDateString();
+            document.getElementById('tx-id').textContent = batch.transactionId || 'Pendiente';
+
+            // Stats Cards
+            const total = batch.calidadFruta ? batch.calidadFruta.total : 0;
+            const conformes = batch.calidadFruta ? batch.calidadFruta.conformes : 0;
+            const defectsCount = batch.calidadFruta ? (batch.calidadFruta.hallazgosMenores + batch.calidadFruta.noAdmitidas) : 0;
+            const qualityScore = total > 0 ? ((conformes / total) * 100).toFixed(1) : 0;
+
+            document.getElementById('total-items-card').textContent = total;
+            document.getElementById('quality-score-card').textContent = `${qualityScore}%`;
+            document.getElementById('defects-count-card').textContent = defectsCount;
+            document.getElementById('status-card').textContent = batch.simResult || 'Pendiente';
+
+            if (batch.calidadFruta) {
+                renderCharts(batch.calidadFruta);
+                renderDefectsTable(batch.calidadFruta.defectos);
+            }
+
+            // Enhanced AI Analysis & Timeline
+            renderEnhancedAIAnalysis(batch);
+            renderEnhancedTimeline(batch);
+        }
+
+        function renderCharts(data) {
+            // Doughnut Chart
+            const ctxQuality = document.getElementById('qualityChart').getContext('2d');
+            document.getElementById('chart-total').textContent = data.total;
+
+            if (qualityChartInstance) qualityChartInstance.destroy();
+
+            qualityChartInstance = new Chart(ctxQuality, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Conforme', 'Hallazgos', 'No Admitida'],
+                    datasets: [{
+                        data: [data.conformes, data.hallazgosMenores, data.noAdmitidas],
+                        backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    cutout: '75%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const val = context.raw;
+                                    const pct = ((val / data.total) * 100).toFixed(1);
+                                    return ` ${context.label}: ${val} (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Bar Chart
+            const ctxDefects = document.getElementById('defectsChart').getContext('2d');
+            const defects = data.defectos || [];
+
+            if (defectsChartInstance) defectsChartInstance.destroy();
+
+            if (defects.length > 0) {
+                const labels = defects.map(d => d.nombre);
+                const values = defects.map(d => d.cantidad);
+                const colors = defects.map(d => d.severidad === 'No Admitida' ? '#ef4444' : '#f59e0b');
+
+                defectsChartInstance = new Chart(ctxDefects, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: values,
+                            backgroundColor: colors,
+                            borderRadius: 6,
+                            barThickness: 20
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: '#f1f5f9' },
+                                ticks: { font: { family: 'Outfit' } }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { family: 'Outfit' } }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+        }
+
+        function renderDefectsTable(defectos) {
+            const tbody = document.getElementById('defects-table-body');
+            tbody.innerHTML = '';
+
+            if (!defectos || defectos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-slate-400 text-sm">No se encontraron defectos</td></tr>`;
+                return;
+            }
+
+            defectos.forEach(d => {
+                const row = document.createElement('tr');
+                const severityClass = d.severidad === 'No Admitida' ? 'text-red-600 bg-red-50' : 'text-yellow-600 bg-yellow-50';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-sm font-medium text-slate-700">${d.nombre}</td>
+                    <td class="px-6 py-4 text-sm"><span class="px-2 py-1 rounded-md text-xs font-semibold ${severityClass}">${d.severidad}</span></td>
+                    <td class="px-6 py-4 text-sm text-right text-slate-600 font-mono">${d.cantidad}</td>
+                    <td class="px-6 py-4 text-sm text-right text-slate-600 font-mono">${d.porcentaje}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderEnhancedAIAnalysis(batch) {
+            // Use AI Analysis module
+            const insights = AIAnalysis.generateInsights(batch);
+            const recommendations = AIAnalysis.getRecommendations(batch);
+            const shelfLife = AIAnalysis.predictShelfLife(batch);
+
+            // Render Insights
+            const insightsContainer = document.getElementById('ai-insights');
+            insightsContainer.innerHTML = '';
+
+            insights.forEach(insight => {
+                const insightEl = document.createElement('div');
+                insightEl.className = 'insight-card bg-white/10 rounded-lg p-3 text-sm';
+                insightEl.innerHTML = `
+                    <div class="flex items-start">
+                        <span class="text-lg mr-2">${insight.icon}</span>
+                        <div class="flex-1">
+                            <h5 class="font-semibold mb-1">${insight.title}</h5>
+                            <p class="text-indigo-100 text-xs leading-relaxed">${insight.message}</p>
+                        </div>
+                    </div>
+                `;
+                insightsContainer.appendChild(insightEl);
+            });
+
+            // Render Recommendations
+            const recsContainer = document.getElementById('ai-recommendations');
+            recsContainer.innerHTML = '';
+
+            recommendations.slice(0, 3).forEach(rec => {
+                const recEl = document.createElement('div');
+                recEl.className = 'text-xs bg-white/10 rounded px-2 py-1.5';
+                recEl.innerHTML = `
+                    <span class="font-semibold">${rec.category}:</span> ${rec.action}
+                `;
+                recsContainer.appendChild(recEl);
+            });
+
+            // Render Shelf Life
+            const shelfLifeContainer = document.getElementById('shelf-life-info');
+            const urgencyColors = {
+                'critical': 'text-red-200',
+                'high': 'text-orange-200',
+                'medium': 'text-yellow-200',
+                'normal': 'text-green-200'
+            };
+            shelfLifeContainer.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-indigo-100">Días estimados</p>
+                        <p class="text-2xl font-bold ${urgencyColors[shelfLife.urgency]}">${shelfLife.days} días</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-indigo-100">Vence</p>
+                        <p class="text-sm font-semibold">${shelfLife.expiryDate}</p>
+                    </div>
+                </div>
+                <p class="text-xs text-indigo-100 mt-2">Confianza: ${shelfLife.confidence}</p>
+            `;
+        }
+
+        function renderEnhancedTimeline(batch) {
+            // Use Timeline Generator module
+            const events = TimelineGenerator.generateTimeline(batch);
+            const container = document.getElementById('timeline-container');
+
+            // Clear existing except line
+            container.innerHTML = '<div class="timeline-line"></div>';
+
+            events.forEach((event, index) => {
+                const eventHTML = TimelineGenerator.formatEventHTML(event, index);
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = eventHTML;
+                container.appendChild(tempDiv.firstElementChild);
+            });
+        }
+
+        function showError(msg) {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = msg;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+
+</html>

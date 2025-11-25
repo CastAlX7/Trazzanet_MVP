@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carga de Datos - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(72, 118, 255, 0.2), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .flex {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Sidebar */
+        aside {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo Animation */
+        .logo-icon {
+            transition: transform 0.3s ease;
+        }
+
+        aside:hover .logo-icon {
+            transform: rotate(360deg);
+        }
+
+        /* Navigation Links with Hover Effects */
+        nav a {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            transform: translateX(4px);
+        }
+
+        /* Main Content Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Enhanced Drag Area */
+        .drag-area {
+            border: 3px dashed rgba(99, 102, 241, 0.4);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(243, 244, 246, 0.9) 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drag-area::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .drag-area:hover::before {
+            opacity: 1;
+        }
+
+        .drag-area:hover {
+            border-color: #6366f1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(238, 242, 255, 1) 100%);
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+        }
+
+        .drag-area.drag-over {
+            border-color: #4f46e5;
+            background: linear-gradient(135deg, rgba(238, 242, 255, 1) 0%, rgba(224, 231, 255, 1) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Upload Icon Animation */
+        .upload-icon {
+            transition: all 0.3s ease;
+        }
+
+        .drag-area:hover .upload-icon {
+            transform: translateY(-8px);
+            color: #6366f1 !important;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            border-top-color: #6366f1;
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Progress Animation */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .processing-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Status Areas with Enhanced Styling */
+        .status-area {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Table Enhancements */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Badge Animations */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Button Hover Effects */
+        button {
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        /* Title Gradient */
+        .page-title {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Auth Loading */
+        .auth-loading {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        /* Fade In Animation for Cards */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+            <div class="h-16 flex items-center px-6 border-b border-gray-200">
+                <div class="flex items-center gap-2 text-blue-500 font-bold text-xl">
+                    <i class="fa-solid fa-microchip logo-icon"></i>
+                    <span>TrazaNet</span>
+                </div>
+            </div>
+            <nav class="flex-grow p-4 space-y-2">
+                <a href="dashboard.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-gray-100 rounded-lg transition duration-150">
+                    <i class="fas fa-home w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="carga.html"
+                    class="flex items-center p-3 text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg transition duration-150 shadow-lg">
+                    <i class="fas fa-upload w-5 h-5 mr-3"></i>
+                    Carga de Datos
+                </a>
+                <a href="auditoria.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-gray-100 rounded-lg transition duration-150">
+                    <i class="fas fa-search w-5 h-5 mr-3"></i>
+                    Auditoría
+                </a>
+                <a href="usuarios.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-gray-100 rounded-lg transition duration-150">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    Usuarios
+                </a>
+                <a href="blockchain.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-gray-100 rounded-lg transition duration-150">
+                    <i class="fas fa-link w-5 h-5 mr-3"></i>
+                    Blockchain
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-200">
+                <p id="user-id-display" class="text-xs text-gray-500 truncate">ID Usuario: Cargando...</p>
+                <button onclick="window.location.href='index.html'"
+                    class="w-full mt-2 text-sm text-red-500 hover:text-red-700 transition duration-150 text-left">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <h1 class="text-4xl font-bold page-title mb-6 animate-fade-in">Carga de Datos</h1>
+
+            <div class="space-y-8">
+                <!-- Zona de Carga de Archivos -->
+                <div class="glass-card p-8 rounded-2xl shadow-2xl animate-fade-in">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-cloud-upload-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Cargar Archivo de Trazabilidad</h2>
+                            <p class="text-sm text-gray-500">Formatos: CSV, XLSX</p>
+                        </div>
+                    </div>
+
+                    <div id="dragArea" class="drag-area p-12 rounded-2xl text-center cursor-pointer">
+                        <input type="file" id="fileInput" class="hidden" accept=".csv, .xlsx">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon text-indigo-500 text-6xl mb-4"></i>
+                        <p class="text-gray-700 font-semibold text-lg">Arrastra y suelta tu archivo aquí</p>
+                        <p class="text-sm text-gray-500 mt-2">o haz clic para seleccionar un archivo</p>
+                        <div class="mt-6 flex items-center justify-center gap-4 text-xs text-gray-400">
+                            <span class="flex items-center gap-1">
+                                <i class="fas fa-file-csv"></i> CSV
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="fas fa-file-excel"></i> XLSX
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="fas fa-weight-hanging"></i> Máx. 10MB
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="processingArea"
+                        class="hidden mt-6 status-area processing-pulse bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 p-5 rounded-xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center gap-3">
+                            <div class="loading-spinner w-6 h-6 border-3 rounded-full border-blue-400"></div>
+                            <div>
+                                <span class="text-blue-800 font-semibold block">Procesando archivo</span>
+                                <span id="fileNameDisplay" class="text-blue-600 text-sm font-mono"></span>
+                            </div>
+                        </div>
+                        <span id="progressText" class="text-blue-700 text-lg font-bold">0%</span>
+                    </div>
+
+                    <div id="successArea"
+                        class="hidden mt-6 status-area bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-5 rounded-xl flex items-center justify-between shadow-md">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-check text-white text-lg"></i>
+                            </div>
+                            <div>
+                                <span class="text-green-800 font-semibold block">¡Carga completada!</span>
+                                <span class="text-green-600 text-sm">Registrado en la Blockchain (simulada)</span>
+                            </div>
+                        </div>
+                        <span id="transactionId"
+                            class="text-green-700 text-sm font-mono bg-green-100 px-3 py-1 rounded-lg"></span>
+                    </div>
+
+                    <div id="errorArea"
+                        class="hidden mt-6 bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-300 p-5 rounded-xl flex items-center gap-3 shadow-md">
+                        <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-exclamation-triangle text-white text-lg"></i>
+                        </div>
+                        <span id="errorMessage" class="text-red-800 font-medium"></span>
+                    </div>
+                </div>
+
+                <!-- Historial de Cargas -->
+                <div class="glass-card p-8 rounded-2xl shadow-2xl animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                            <i class="fas fa-history text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Historial de Cargas</h2>
+                            <p class="text-sm text-gray-500">Todas tus cargas de datos anteriores</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-gray-200">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                                <tr class="text-xs text-gray-600 uppercase tracking-wider">
+                                    <th class="px-6 py-4 text-left font-bold">ID de Carga</th>
+                                    <th class="px-6 py-4 text-left font-bold">Nombre del Archivo</th>
+                                    <th class="px-6 py-4 text-left font-bold">Fecha</th>
+                                    <th class="px-6 py-4 text-left font-bold">Estado</th>
+                                    <th class="px-6 py-4 text-left font-bold">ID de Transacción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTable" class="divide-y divide-gray-200 text-sm bg-white">
+                                <tr id="loading-row-history">
+                                    <td colspan="5" class="p-8 text-center auth-loading">
+                                        <div class="flex items-center justify-center">
+                                            <div
+                                                class="loading-spinner w-6 h-6 border-4 rounded-full border-gray-200 !border-t-indigo-500 mr-3">
+                                            </div>
+                                            <span class="text-gray-500 font-medium">Cargando historial...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div
+                        class="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200 text-center mt-6 rounded-xl">
+                        <p class="text-xs text-gray-500 font-medium">© 2025 TrazaNet. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Localhost API Logic Script -->
+    <script>
+        // ===============================================
+        // CONFIGURACIÓN DEL SERVIDOR LOCAL
+        // ===============================================
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        // ===============================================
+        // VARIABLES GLOBALES
+        // ===============================================
+        let userId = null;
+        let historyPollingInterval = null;
+
+        // Elementos del DOM
+        const dragArea = document.getElementById('dragArea');
+        const fileInput = document.getElementById('fileInput');
+        const processingArea = document.getElementById('processingArea');
+        const successArea = document.getElementById('successArea');
+        const errorArea = document.getElementById('errorArea');
+        const errorMessage = document.getElementById('errorMessage');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const progressText = document.getElementById('progressText');
+        const historyTable = document.getElementById('historyTable');
+
+        // ===============================================
+        // FUNCIONES DE UTILIDAD
+        // ===============================================
+
+        /**
+         * Genera o recupera un ID de usuario local único
+         */
+        function getOrCreateUserId() {
+            let storedUserId = sessionStorage.getItem('trazanet_user_id');
+            if (!storedUserId) {
+                storedUserId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                sessionStorage.setItem('trazanet_user_id', storedUserId);
+            }
+            return storedUserId;
+        }
+
+        /**
+         * Muestra un mensaje de error en la UI y oculta otros estados.
+         * @param {string} message - El mensaje de error a mostrar.
+         */
+        function showError(message) {
+            processingArea.classList.add('hidden');
+            successArea.classList.add('hidden');
+            errorArea.classList.remove('hidden');
+            errorMessage.textContent = message;
+        }
+
+        /**
+         * Verifica que el servidor esté disponible
+         */
+        async function checkServerHealth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                return data.status === 'ok';
+            } catch (error) {
+                console.error('❌ Error al verificar el servidor:', error);
+                return false;
+            }
+        }
+
+        /**
+         * Procesa y sube el archivo al servidor local
+         * @param {File} file - El objeto File seleccionado.
+         */
+        async function processFile(file) {
+            // Validar tamaño del archivo (10MB máximo)
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                showError('El archivo excede el tamaño máximo permitido de 10MB.');
+                return;
+            }
+
+            // Validar extensión
+            const allowedExtensions = ['.csv', '.xlsx'];
+            const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+            if (!allowedExtensions.includes(fileExtension)) {
+                showError('Formato de archivo no soportado. Solo se permiten archivos .csv y .xlsx');
+                return;
+            }
+
+            // Resetear estados
+            errorArea.classList.add('hidden');
+            successArea.classList.add('hidden');
+            processingArea.classList.remove('hidden');
+            fileNameDisplay.textContent = file.name;
+            progressText.textContent = '0%';
+
+            // 1. Simular progreso de carga
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 5;
+                progressText.textContent = `${progress}%`;
+                if (progress >= 95) {
+                    clearInterval(progressInterval);
+                    progressText.textContent = '99%';
+                }
+            }, 150);
+
+            try {
+                // 2. Preparar FormData para enviar el archivo
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('userId', userId);
+
+                // 3. Enviar al servidor
+                const response = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                clearInterval(progressInterval);
+                progressText.textContent = '100%';
+
+                if (result.success) {
+                    // 4. Mostrar éxito en la UI
+                    processingArea.classList.add('hidden');
+                    successArea.classList.remove('hidden');
+                    document.getElementById('transactionId').textContent =
+                        result.data.transactionId.substring(0, 10) + '...';
+
+                    console.log('✅ Archivo cargado exitosamente:', result.data);
+
+                    // 5. Actualizar historial inmediatamente
+                    await loadHistory();
+                } else {
+                    showError(result.message || 'Error al cargar el archivo');
+                }
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                console.error('❌ ERROR al subir el archivo:', error);
+
+                if (error.message.includes('Failed to fetch')) {
+                    showError('No se puede conectar con el servidor. Asegúrate de que el servidor esté ejecutándose en http://localhost:3000');
+                } else {
+                    showError(`Error al procesar la carga: ${error.message}`);
+                }
+            }
+        }
+
+        /**
+         * Renderiza las filas de la tabla con los datos del historial.
+         * @param {Array<Object>} historyData - Lista de registros de carga.
+         */
+        function renderHistory(historyData) {
+            const loadingRow = document.getElementById('loading-row-history');
+            if (loadingRow) loadingRow.remove();
+            historyTable.innerHTML = '';
+
+            if (historyData.length === 0) {
+                historyTable.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500 font-medium">No hay historial de cargas.</td></tr>`;
+                return;
+            }
+
+            historyData.forEach(item => {
+                const date = item.date ? new Date(item.date).toLocaleDateString('es-ES') : 'N/A';
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition duration-150';
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-mono text-gray-700 text-xs">${item.id.substring(0, 8)}...</td>
+                    <td class="px-6 py-4 font-semibold text-gray-900">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-file-${item.fileName.endsWith('.csv') ? 'csv' : 'excel'} text-indigo-500"></i>
+                            ${item.fileName}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600">${date}</td>
+                    <td class="px-6 py-4">
+                        <span class="status-badge">${item.status}</span>
+                    </td>
+                    <td class="px-6 py-4 font-mono text-gray-700 text-xs bg-gray-50 rounded">${item.transactionId.substring(0, 15)}...</td>
+                `;
+                historyTable.appendChild(row);
+            });
+        }
+
+        /**
+         * Carga el historial desde el servidor
+         */
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/history?userId=${userId}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    renderHistory(result.data);
+                    console.log(`✅ ${result.count} registros de historial cargados.`);
+                } else {
+                    console.error('❌ Error al cargar historial:', result.message);
+                }
+            } catch (error) {
+                console.error('❌ Error al obtener historial:', error);
+                const loadingRow = document.getElementById('loading-row-history');
+                if (loadingRow) loadingRow.remove();
+                historyTable.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-600 font-semibold">
+                        Error al cargar el historial. Verifica que el servidor esté ejecutándose.
+                    </td></tr>`;
+            }
+        }
+
+        /**
+         * Inicia el polling periódico del historial
+         */
+        function startHistoryPolling() {
+            // Cargar inmediatamente
+            loadHistory();
+
+            // Actualizar cada 5 segundos
+            historyPollingInterval = setInterval(loadHistory, 5000);
+        }
+
+        // ===============================================
+        // EVENT HANDLERS PARA DRAG & DROP
+        // ===============================================
+
+        dragArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        });
+
+        dragArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragArea.classList.add('drag-over');
+        });
+
+        dragArea.addEventListener('dragleave', () => {
+            dragArea.classList.remove('drag-over');
+        });
+
+        dragArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dragArea.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                processFile(file);
+            }
+        });
+
+        // ===============================================
+        // INICIALIZACIÓN
+        // ===============================================
+
+        /**
+         * Inicializa la aplicación
+         */
+        async function initializeApp() {
+            // 1. Generar o recuperar User ID
+            userId = getOrCreateUserId();
+            document.getElementById('user-id-display').textContent = `ID Usuario: ${userId}`;
+            console.log(`✅ User ID: ${userId}`);
+
+            // 2. Verificar que el servidor esté disponible
+            const serverAvailable = await checkServerHealth();
+            if (!serverAvailable) {
+                showError('⚠️ No se puede conectar con el servidor. Asegúrate de ejecutar: npm start');
+                const loadingRow = document.getElementById('loading-row-history');
+                if (loadingRow) loadingRow.remove();
+                historyTable.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-orange-600 font-semibold">
+                        ⚠️ Servidor no disponible. Ejecuta "npm start" en la terminal.
+                    </td></tr>`;
+                return;
+            }
+
+            console.log('✅ Servidor disponible');
+
+            // 3. Iniciar polling del historial
+            startHistoryPolling();
+        }
+
+        // Iniciar la aplicación al cargar el DOM
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Limpiar el intervalo cuando se cierra la página
+        window.addEventListener('beforeunload', () => {
+            if (historyPollingInterval) {
+                clearInterval(historyPollingInterval);
+            }
+        });
+    </script>
+</body>
+
+</html>

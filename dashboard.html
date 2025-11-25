@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-animate {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .5;
+            }
+        }
+
+        .chart-bar {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 p-4 flex flex-col shadow-lg">
+            <h1 class="text-2xl font-bold text-indigo-600 mb-8">TrazaNet</h1>
+            <nav class="space-y-2">
+                <a href="dashboard.html"
+                    class="flex items-center p-3 bg-indigo-50 text-indigo-600 font-semibold rounded-lg transition duration-150">
+                    <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="carga.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-upload w-5 h-5 mr-3"></i>
+                    Carga de Datos
+                </a>
+                <a href="trazabilidad.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-project-diagram w-5 h-5 mr-3"></i>
+                    Trazabilidad
+                </a>
+                <a href="auditoria.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-clipboard-check w-5 h-5 mr-3"></i>
+                    Auditoría
+                </a>
+                <a href="gestor_certificaciones.html"
+                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
+                    <i class="fas fa-certificate w-5 h-5 mr-3"></i>
+                    Certificaciones
+                </a>
+            </nav>
+            <div class="mt-auto pt-4 border-t border-gray-200">
+                <p class="text-xs text-gray-500 truncate" id="user-id-display">ID Usuario: Cargando...</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard de Trazabilidad</h2>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+                <!-- Card 1: Lotes Activos -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-500 card-animate">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500">Lotes Activos</p>
+                        <i class="fas fa-boxes text-indigo-500 text-2xl"></i>
+                    </div>
+                    <p class="text-4xl font-bold text-gray-900 mt-2" id="lotes-activos">0</p>
+                    <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i>Actualizado</p>
+                </div>
+
+                <!-- Card 2: Transacciones Recientes -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-green-500 card-animate"
+                    style="animation-delay: 0.1s;">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500">Transacciones Confirmadas</p>
+                        <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                    </div>
+                    <p class="text-4xl font-bold text-gray-900 mt-2" id="transacciones-confirmadas">0</p>
+                    <p class="text-xs text-gray-500 mt-1">Total de transacciones en cadena</p>
+                </div>
+
+                <!-- Card 3: Alertas Pendientes -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-red-500 card-animate"
+                    style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500">Alertas Críticas</p>
+                        <i class="fas fa-exclamation-triangle text-red-500 text-2xl pulse-dot"></i>
+                    </div>
+                    <p class="text-4xl font-bold text-gray-900 mt-2 text-red-600" id="alertas-criticas">0</p>
+                    <button onclick="verAlerta()" class="text-xs text-indigo-500 hover:underline mt-1 block">Ver
+                        Detalle</button>
+                </div>
+
+                <!-- Card 4: Dirección de Billetera -->
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-yellow-500 card-animate"
+                    style="animation-delay: 0.3s;">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-gray-500">Mi Dirección</p>
+                        <i class="fas fa-wallet text-yellow-500 text-2xl"></i>
+                    </div>
+                    <p class="text-lg font-mono text-gray-900 mt-2 truncate" id="wallet-address">
+                        0x71C7656EC7ab88b098def...</p>
+                    <button onclick="copiarDireccion()"
+                        class="text-xs text-indigo-500 hover:underline mt-1 block">Copiar</button>
+                </div>
+            </div>
+
+            <!-- Main Sections -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Left Column: Activity Feed -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg card-animate">
+                    <h3 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4 flex items-center">
+                        <i class="fas fa-stream mr-2 text-indigo-500"></i>
+                        Feed de Actividad Reciente
+                    </h3>
+
+                    <ul id="activity-feed" class="divide-y divide-gray-100">
+                        <!-- Feed items generated by JS -->
+                    </ul>
+                    <div class="mt-4 text-center">
+                        <button onclick="crearNuevoLote()"
+                            class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-150">
+                            <i class="fas fa-plus mr-2"></i> Crear Nuevo Lote de Traza
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Charts/Status -->
+                <div class="lg:col-span-1 space-y-6">
+                    <!-- Chart Simulation -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg card-animate" style="animation-delay: 0.5s;">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Métricas de Calidad</h3>
+                        <div class="space-y-4">
+                            <!-- Simulated bars -->
+                            <div class="relative">
+                                <p class="text-sm text-gray-600 mb-1">Temperatura</p>
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <div class="chart-bar h-full bg-green-500 rounded-full" style="width: 95%;"></div>
+                                </div>
+                                <span class="absolute right-0 top-0 text-xs font-medium text-gray-700">95% OK</span>
+                            </div>
+                            <div class="relative">
+                                <p class="text-sm text-gray-600 mb-1">Humedad</p>
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <div class="chart-bar h-full bg-yellow-500 rounded-full" style="width: 80%;"></div>
+                                </div>
+                                <span class="absolute right-0 top-0 text-xs font-medium text-gray-700">80% OK</span>
+                            </div>
+                            <div class="relative">
+                                <p class="text-sm text-gray-600 mb-1">Origen Verificado</p>
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <div class="chart-bar h-full bg-indigo-500 rounded-full" style="width: 100%;"></div>
+                                </div>
+                                <span class="absolute right-0 top-0 text-xs font-medium text-gray-700">100% OK</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ===========================================
+        // CONFIGURACIÓN Y VARIABLES GLOBALES
+        // ===========================================
+        const API_BASE_URL = 'http://localhost:3000/api';
+        let userId = null;
+        let recentActivity = [];
+
+        /**
+         * Genera o recupera un ID de usuario local único
+         */
+        function getOrCreateUserId() {
+            let storedUserId = sessionStorage.getItem('trazanet_user_id');
+            if (!storedUserId) {
+                storedUserId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                sessionStorage.setItem('trazanet_user_id', storedUserId);
+            }
+            return storedUserId;
+        }
+
+        /**
+         * Muestra un mensaje temporal de estado
+         */
+        function showStatusMessage(message, type = 'info') {
+            const modal = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-500' : (type === 'error' ? 'bg-red-500' : 'bg-blue-500');
+
+            modal.className = `${bgColor} text-white p-4 rounded-lg shadow-xl mb-4 fixed top-4 right-4 z-50 transition duration-300 opacity-0`;
+            modal.innerHTML = `<p class="font-semibold">${message}</p>`;
+
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            setTimeout(() => {
+                modal.classList.add('opacity-0');
+                modal.addEventListener('transitionend', () => modal.remove());
+            }, 5000);
+        }
+
+        /**
+         * Calcula tiempo transcurrido
+         */
+        function timeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const minutes = Math.floor((now - date) / 60000);
+
+            const timeAgoElement = document.createElement('span');
+            timeAgoElement.className = 'text-xs text-gray-500';
+
+            if (minutes < 60) {
+                timeAgoElement.textContent = `Hace ${minutes} min`;
+            } else if (minutes < 1440) {
+                const hours = Math.floor(minutes / 60);
+                timeAgoElement.textContent = `Hace ${hours} hr`;
+            } else {
+                const days = Math.floor(minutes / 1440);
+                timeAgoElement.textContent = `Hace ${days} días`;
+            }
+            return timeAgoElement;
+        }
+
+        // ===========================================
+        // CARGAR ESTADÍSTICAS DEL DASHBOARD
+        // ===========================================
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/dashboard/stats?userId=${userId}`);
+                if (!response.ok) throw new Error('Error al cargar estadísticas');
+
+                const result = await response.json();
+                if (result.success) {
+                    const stats = result.data;
+
+                    // Actualizar tarjetas
+                    document.getElementById('lotes-activos').textContent = stats.lotesActivos;
+                    document.getElementById('transacciones-confirmadas').textContent = stats.transaccionesConfirmadas.toLocaleString();
+                    document.getElementById('alertas-criticas').textContent = stats.alertasCriticas;
+
+                    // Actualizar métricas de calidad
+                    updateQualityMetrics(stats.metricas);
+                }
+            } catch (error) {
+                console.error('Error al cargar estadísticas:', error);
+            }
+        }
+
+        /**
+         * Actualizar métricas de calidad
+         */
+        function updateQualityMetrics(metricas) {
+            const bars = document.querySelectorAll('.chart-bar');
+            if (bars[0]) bars[0].style.width = `${metricas.temperatura}%`;
+            if (bars[1]) bars[1].style.width = `${metricas.humedad}%`;
+            if (bars[2]) bars[2].style.width = `${metricas.origenVerificado}%`;
+
+            const percentages = document.querySelectorAll('.chart-bar + span');
+            if (percentages[0]) percentages[0].textContent = `${metricas.temperatura}% OK`;
+            if (percentages[1]) percentages[1].textContent = `${metricas.humedad}% OK`;
+            if (percentages[2]) percentages[2].textContent = `${metricas.origenVerificado}% OK`;
+        }
+
+        // ===========================================
+        // CARGAR ACTIVIDAD RECIENTE
+        // ===========================================
+        async function loadRecentActivity() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/history?userId=${userId}`);
+                if (!response.ok) throw new Error('Error al cargar actividad');
+
+                const result = await response.json();
+                if (result.success) {
+                    recentActivity = result.data.slice(0, 5); // Últimas 5 actividades
+                    renderActivityFeed();
+                }
+            } catch (error) {
+                console.error('Error al cargar actividad:', error);
+                renderActivityFeed(); // Renderizar vacío
+            }
+        }
+
+        /**
+         * Renderizar feed de actividad
+         */
+        function renderActivityFeed() {
+            const feed = document.getElementById('activity-feed');
+            feed.innerHTML = '';
+
+            if (recentActivity.length === 0) {
+                feed.innerHTML = '<li class="py-8 text-center text-gray-500">No hay actividad reciente</li>';
+                return;
+            }
+
+            recentActivity.forEach(record => {
+                const li = document.createElement('li');
+                li.className = 'py-3 flex justify-between items-center hover:bg-gray-50 p-2 -mx-2 rounded-lg cursor-pointer transition duration-150';
+                li.onclick = () => verDetalles(record);
+
+                let iconClass = 'fas fa-upload text-indigo-500';
+                let evento = 'Carga de Archivo';
+
+                if (record.simResult === 'Conforme') {
+                    iconClass = 'fas fa-clipboard-check text-green-500';
+                    evento = 'Auditoría Aprobada';
+                } else if (record.simResult === 'Hallazgo') {
+                    iconClass = 'fas fa-exclamation-triangle text-yellow-500';
+                    evento = 'Hallazgo Detectado';
+                } else if (record.simResult === 'Descarte') {
+                    iconClass = 'fas fa-trash-alt text-red-500';
+                    evento = 'Lote para Descarte';
+                }
+
+                li.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="${iconClass} w-5 h-5 mr-3"></i>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">${evento}</p>
+                            <p class="text-xs text-gray-500 font-mono truncate">${record.transactionId.substring(0, 15)}...</p>
+                        </div>
+                    </div>
+                    ${timeAgo(record.date).outerHTML}
+                `;
+                feed.appendChild(li);
+            });
+        }
+
+        // ===========================================
+        // FUNCIONES DE INTERACCIÓN
+        // ===========================================
+        window.crearNuevoLote = function () {
+            window.location.href = 'carga.html';
+        }
+
+        window.verAlerta = function () {
+            window.location.href = 'auditoria.html';
+        }
+
+        window.verDetalles = function (record) {
+            if (record.id) {
+                window.location.href = `auditoria_detalle.html?id=${record.id}`;
+            } else {
+                const detailsMessage = `📋 DETALLES DE TRANSACCIÓN<br>Hash: ${record.transactionId}<br>Archivo: ${record.fileName}<br>Estado: ${record.status}`;
+                showStatusMessage(detailsMessage, 'info');
+            }
+        }
+
+        window.copiarDireccion = function () {
+            const address = document.getElementById('wallet-address').textContent;
+
+            const tempInput = document.createElement('input');
+            tempInput.value = address;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showStatusMessage('Dirección copiada al portapapeles.', 'info');
+        }
+
+        // ===========================================
+        // INICIALIZACIÓN
+        // ===========================================
+        async function initializeApp() {
+            userId = getOrCreateUserId();
+            document.getElementById('user-id-display').textContent = `ID Usuario: ${userId}`;
+
+            console.log('🚀 Iniciando Dashboard...');
+
+            await Promise.all([
+                loadDashboardStats(),
+                loadRecentActivity()
+            ]);
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Actualizar cada 30 segundos
+        setInterval(() => {
+            loadDashboardStats();
+            loadRecentActivity();
+        }, 30000);
+    </script>
+</body>
+
+</html>

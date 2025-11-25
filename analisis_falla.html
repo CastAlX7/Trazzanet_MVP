@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Falla - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .rule-row {
+            transition: all 0.2s ease;
+        }
+
+        .rule-row:hover {
+            background-color: #f9fafb;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .status-pass {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-fail {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <nav class="bg-white border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clipboard-check text-blue-600 text-2xl"></i>
+                    <h1 class="text-xl font-bold text-gray-800">TrazaNet</h1>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="gestor_certificaciones.html"
+                        class="flex items-center text-gray-600 hover:text-blue-600 transition">
+                        <i class="fas fa-certificate mr-2"></i>
+                        Gestor de Certificaciones
+                    </a>
+                    <a href="auditoria.html"
+                        class="flex items-center text-blue-600 font-semibold border-b-2 border-blue-600 pb-1">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Simulador de Auditoría
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="p-2 text-gray-600 hover:text-gray-800 transition">
+                    <i class="fas fa-search text-lg"></i>
+                </button>
+                <button class="p-2 text-gray-600 hover:text-gray-800 transition">
+                    <i class="fas fa-bell text-lg"></i>
+                </button>
+                <button class="p-2 text-gray-600 hover:text-gray-800 transition">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-8">
+        <div class="mb-6">
+            <a href="auditoria.html" class="text-sm text-gray-500 hover:text-gray-700 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Análisis de Fallas
+            </a>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Análisis de Falla</h2>
+
+        <!-- Estado del Lote -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Estado del Lote</h3>
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xl font-bold text-gray-900" id="lote-id">Lote: AVO-123</p>
+                </div>
+                <div>
+                    <span class="px-4 py-2 bg-red-100 text-red-700 font-bold rounded-full text-sm">
+                        FALLÓ
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalle de Reglas de Auditoría -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Detalle de Reglas de Auditoría</h3>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Regla</th>
+                            <th
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Estado</th>
+                            <th
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Valor Esperado</th>
+                            <th
+                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Valor Real</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rules-table-body" class="divide-y divide-gray-200">
+                        <!-- Las filas se generarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between text-sm text-gray-500">
+            <p>&copy; 2025 TrazaNet. Todos los derechos reservados.</p>
+            <div class="flex items-center space-x-6">
+                <a href="#" class="hover:text-gray-700">Política de Privacidad</a>
+                <a href="#" class="hover:text-gray-700">Términos de Servicio</a>
+                <a href="#" class="hover:text-gray-700">Soporte</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reglas de auditoría simuladas
+        const auditRules = [
+            {
+                name: "Porcentaje de descarte de fruta < 5%",
+                passed: false,
+                expectedValue: "< 5%",
+                actualValue: "8%"
+            },
+            {
+                name: "Nivel de humedad óptima: 75-80%",
+                passed: false,
+                expectedValue: "75-80%",
+                actualValue: "72%"
+            },
+            {
+                name: "Ausencia total de contaminantes visibles",
+                passed: true,
+                expectedValue: "Ausente",
+                actualValue: "Ausente"
+            },
+            {
+                name: "Calibre de la fruta dentro del rango especificado (130-200g)",
+                passed: true,
+                expectedValue: "130-200g",
+                actualValue: "175g"
+            },
+            {
+                name: "Integridad del empaque sin daños ni perforaciones",
+                passed: true,
+                expectedValue: "Íntegro",
+                actualValue: "Íntegro"
+            },
+            {
+                name: "Temperatura de almacenamiento: 5-7°C",
+                passed: false,
+                expectedValue: "5-7°C",
+                actualValue: "9°C"
+            },
+            {
+                name: "Etiquetado completo y legible",
+                passed: true,
+                expectedValue: "Completo y legible",
+                actualValue: "Completo y legible"
+            }
+        ];
+
+        // Obtener el loteId de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const loteId = urlParams.get('id') || 'AVO-123';
+
+        // Actualizar el título del lote
+        document.getElementById('lote-id').textContent = `Lote: ${loteId}`;
+
+        // Renderizar la tabla de reglas
+        function renderRulesTable() {
+            const tbody = document.getElementById('rules-table-body');
+            tbody.innerHTML = '';
+
+            auditRules.forEach(rule => {
+                const row = document.createElement('tr');
+                row.className = 'rule-row';
+
+                const statusIcon = rule.passed
+                    ? '<div class="status-icon status-pass"><i class="fas fa-check"></i></div>'
+                    : '<div class="status-icon status-fail"><i class="fas fa-times"></i></div>';
+
+                const actualValueColor = rule.passed ? 'text-gray-700' : 'text-red-600 font-semibold';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-700">${rule.name}</td>
+                    <td class="px-6 py-4 text-center">${statusIcon}</td>
+                    <td class="px-6 py-4 text-center text-sm text-gray-700">${rule.expectedValue}</td>
+                    <td class="px-6 py-4 text-center text-sm ${actualValueColor}">${rule.actualValue}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRulesTable();
+        });
+    </script>
+</body>
+
+</html>

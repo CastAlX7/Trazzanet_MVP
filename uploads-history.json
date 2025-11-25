@@ -1,0 +1,2509 @@
+[
+  {
+    "id": 1763838038163,
+    "txHash": "0xe4f490784cb86000000000000000000000000000000000000000000000000000",
+    "filename": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "storagePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763838038160-631930014-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "mimeType": "text/csv",
+    "size": 516,
+    "uploadDate": "2025-11-22T19:00:38.163Z",
+    "status": "Cargado",
+    "evento": "Carga de Datos Inicial",
+    "simulacion": {
+      "estado": "PENDIENTE",
+      "resumen": "Simulación de auditoría aún no realizada."
+    },
+    "lote": {
+      "codigoLote": "LOTE-6949",
+      "fechaProduccion": "2025-11-03",
+      "cantidadUnidades": 5465,
+      "proveedor": "Agro Los Andes",
+      "certificaciones": "Rainforest Alliance",
+      "humedad": "11.54%",
+      "ph": "6.00",
+      "temperatura": "18.66°C"
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.626Z"
+  },
+  {
+    "id": 1763838025151,
+    "txHash": "0xd2a352261fae6000000000000000000000000000000000000000000000000000",
+    "filename": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "storagePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763838025143-745868005-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "mimeType": "text/csv",
+    "size": 516,
+    "uploadDate": "2025-11-22T19:00:25.151Z",
+    "status": "Cargado",
+    "evento": "Carga de Datos Inicial",
+    "simulacion": {
+      "estado": "PENDIENTE",
+      "resumen": "Simulación de auditoría aún no realizada."
+    },
+    "lote": {
+      "codigoLote": "LOTE-4803",
+      "fechaProduccion": "2025-11-07",
+      "cantidadUnidades": 8524,
+      "proveedor": "Finca La Palma",
+      "certificaciones": "Rainforest Alliance",
+      "humedad": "13.21%",
+      "ph": "6.45",
+      "temperatura": "21.31°C"
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.642Z"
+  },
+  {
+    "id": "1763796427676-rit6v780q",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763796427668-104962144-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T07:27:07.676Z",
+    "status": "Completada",
+    "transactionId": "0x10e8795990568f000000000000",
+    "processedBy": "user-1763796421633-d44x4xnyd",
+    "filePath": "c:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763796427668-104962144-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.877Z"
+  },
+  {
+    "id": "1763797139691-jjrc4g38d",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763797139685-61726303-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T07:38:59.691Z",
+    "status": "Completada",
+    "transactionId": "0x2d6a9eb665a27c0000000000000",
+    "processedBy": "user-1763797060735-c9ueuxwzm",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763797139685-61726303-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.860Z"
+  },
+  {
+    "id": "1763797955763-sk7q9jil1",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763797955758-698288591-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T07:52:35.763Z",
+    "status": "Completada",
+    "transactionId": "0x4fa3d227da9ab800000000000",
+    "processedBy": "user-1763797928097-jsfrag9i5",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763797955758-698288591-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-22T19:01:58.844Z"
+  },
+  {
+    "id": "1763826287854-nwfyw13lq",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763826287848-505557388-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T15:44:47.854Z",
+    "status": "Completada",
+    "transactionId": "0x4997f2ae6b6aa40000000000000",
+    "processedBy": "user-1763826241741-48ij8zezn",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763826287848-505557388-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.826Z"
+  },
+  {
+    "id": "1763828437056-qyo4chfat",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763828437046-862514201-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T16:20:37.056Z",
+    "status": "Completada",
+    "transactionId": "0x728260343f950c000000000000",
+    "processedBy": "user-1763828190430-48byx3ik5",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763828437046-862514201-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.818Z"
+  },
+  {
+    "id": "1763828485586-uad4p2sw5",
+    "fileName": "MODELO DE DATOS - COSTA GAS.xlsx",
+    "savedFileName": "1763828485581-580369620-MODELO DE DATOS - COSTA GAS.xlsx",
+    "size": 117843,
+    "date": "2025-11-22T16:21:25.586Z",
+    "status": "Completada",
+    "transactionId": "0xbc5dc8579ee448000000000000",
+    "processedBy": "user-1763828481641-0tsu6mjwk",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763828485581-580369620-MODELO DE DATOS - COSTA GAS.xlsx",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.809Z"
+  },
+  {
+    "id": "1763828531931-su4vth6hj",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763828531929-169788224-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T16:22:11.931Z",
+    "status": "Completada",
+    "transactionId": "0x1caf94ff5f9b590000000000000",
+    "processedBy": "user-1763828481641-0tsu6mjwk",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763828531929-169788224-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.795Z"
+  },
+  {
+    "id": "1763830978047-r939v5lu8",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763830978039-671114415-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T17:02:58.047Z",
+    "status": "Completada",
+    "transactionId": "0x2a0da485e2322c0000000000000",
+    "processedBy": "user-1763830973478-n8relmcfl",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763830978039-671114415-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.773Z"
+  },
+  {
+    "id": "1763831520208-vmkemr2wx",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763831520205-950367180-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T17:12:00.208Z",
+    "status": "Completada",
+    "transactionId": "0x43c7bff83a61700000000000000",
+    "processedBy": "user-1763831516502-vxlr2r2ot",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763831520205-950367180-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-22T19:01:58.735Z"
+  },
+  {
+    "id": "1763836146533-z8bnbxcmk",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763836146524-414280208-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T18:29:06.534Z",
+    "status": "Completada",
+    "transactionId": "0x274badd17799420000000000000",
+    "processedBy": "user-1763836003671-h7w22cokj",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763836146524-414280208-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-22T19:01:58.720Z"
+  },
+  {
+    "id": "1763836835718-iz65r7qrw",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763836835715-236703482-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T18:40:35.718Z",
+    "status": "Completada",
+    "transactionId": "0x2505491b590c7400000000000",
+    "processedBy": "user-1763836831594-wy66dqmis",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763836835715-236703482-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.705Z"
+  },
+  {
+    "id": "1763836867951-r5iyo6yi3",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763836867947-336378075-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T18:41:07.951Z",
+    "status": "Completada",
+    "transactionId": "0x1dc5f10f174cc60000000000000",
+    "processedBy": "user-1763836860268-s51pluoih",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763836867947-336378075-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-22T19:01:58.681Z"
+  },
+  {
+    "id": "1763837385150-pctkk7qdf",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763837385148-718800080-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T18:49:45.150Z",
+    "status": "Completada",
+    "transactionId": "0x1d393496ec12be0000000000000",
+    "processedBy": "user-1763837381900-fjfp9pipc",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763837385148-718800080-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.672Z"
+  },
+  {
+    "id": "1763837405732-9atrx8g59",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC (1).csv",
+    "savedFileName": "1763837405729-339605896-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC (1).csv",
+    "size": 516,
+    "date": "2025-11-22T18:50:05.732Z",
+    "status": "Completada",
+    "transactionId": "0x204f725b74d5140000000000000",
+    "processedBy": "user-1763837381900-fjfp9pipc",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763837405729-339605896-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC (1).csv",
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:01:58.660Z"
+  },
+  {
+    "id": "1763837664275-av4r1p3el",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763837664271-485660355-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T18:54:24.275Z",
+    "status": "Completada",
+    "transactionId": "0x335046ac7c18f40000000000000",
+    "processedBy": "user-1763837381900-fjfp9pipc",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763837664271-485660355-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-22T19:01:58.654Z"
+  },
+  {
+    "id": "1763838096100-va4evd9o1",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763838096091-383710600-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T19:01:36.100Z",
+    "status": "Completada",
+    "transactionId": "0x46242064da10640000000000000",
+    "processedBy": "user-1763837999396-ji9n1ndxu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763838096091-383710600-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 435,
+      "conformes": 401,
+      "hallazgosMenores": 3,
+      "noAdmitidas": 31,
+      "porcentajeNoAdmitida": 7.25,
+      "porcentajeConformes": 92.18,
+      "porcentajeHallazgos": 0.69,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 17,
+          "severidad": "No Admitida",
+          "porcentaje": 3.91
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 2,
+          "severidad": "No Admitida",
+          "porcentaje": 0.46
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 12,
+          "severidad": "No Admitida",
+          "porcentaje": 2.76
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 3,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.69
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:28:13.967Z"
+  },
+  {
+    "id": "1763838409383-61bo3avf5",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763838409373-293506024-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T19:06:49.383Z",
+    "status": "Completada",
+    "transactionId": "0x1526628e284ca60000000000000",
+    "processedBy": "user-1763837999396-ji9n1ndxu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763838409373-293506024-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 255,
+      "conformes": 218,
+      "hallazgosMenores": 33,
+      "noAdmitidas": 4,
+      "porcentajeNoAdmitida": 1.71,
+      "porcentajeConformes": 85.49,
+      "porcentajeHallazgos": 12.94,
+      "defectos": [
+        {
+          "nombre": "Moho",
+          "cantidad": 1,
+          "severidad": "No Admitida",
+          "porcentaje": 0.39
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 3,
+          "severidad": "No Admitida",
+          "porcentaje": 1.18
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 26,
+          "severidad": "Hallazgo",
+          "porcentaje": 10.2
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.78
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.78
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 3,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.18
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:28:13.953Z"
+  },
+  {
+    "id": "1763838873462-16a92zo11",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763838873461-7838881-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T19:14:33.462Z",
+    "status": "Completada",
+    "transactionId": "0xce0fc2b762c1f0000000000000",
+    "processedBy": "user-1763837999396-ji9n1ndxu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763838873461-7838881-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 199,
+      "conformes": 130,
+      "hallazgosMenores": 26,
+      "noAdmitidas": 43,
+      "porcentajeNoAdmitida": 21.82,
+      "porcentajeConformes": 65.33,
+      "porcentajeHallazgos": 13.07,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 41,
+          "severidad": "No Admitida",
+          "porcentaje": 20.6
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 2,
+          "severidad": "No Admitida",
+          "porcentaje": 1.01
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 5,
+          "severidad": "Hallazgo",
+          "porcentaje": 2.51
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 10,
+          "severidad": "Hallazgo",
+          "porcentaje": 5.03
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.01
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 9,
+          "severidad": "Hallazgo",
+          "porcentaje": 4.52
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:28:13.938Z"
+  },
+  {
+    "id": "1763839077116-ffqnnrci9",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763839077112-738511635-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T19:17:57.116Z",
+    "status": "Completada",
+    "transactionId": "0xa202bb33c9b6c8000000000000",
+    "processedBy": "user-1763837999396-ji9n1ndxu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763839077112-738511635-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 338,
+      "conformes": 244,
+      "hallazgosMenores": 42,
+      "noAdmitidas": 52,
+      "porcentajeNoAdmitida": 15.57,
+      "porcentajeConformes": 72.19,
+      "porcentajeHallazgos": 12.43,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 6,
+          "severidad": "No Admitida",
+          "porcentaje": 1.78
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 4,
+          "severidad": "No Admitida",
+          "porcentaje": 1.18
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 29,
+          "severidad": "No Admitida",
+          "porcentaje": 8.58
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 13,
+          "severidad": "No Admitida",
+          "porcentaje": 3.85
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 15,
+          "severidad": "Hallazgo",
+          "porcentaje": 4.44
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 13,
+          "severidad": "Hallazgo",
+          "porcentaje": 3.85
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 7,
+          "severidad": "Hallazgo",
+          "porcentaje": 2.07
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 7,
+          "severidad": "Hallazgo",
+          "porcentaje": 2.07
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-22T19:28:13.927Z"
+  },
+  {
+    "id": "1763839682231-ae18b6bjl",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763839682229-143401956-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-22T19:28:02.231Z",
+    "status": "Completada",
+    "transactionId": "0x2818d04eb42d260000000000000",
+    "processedBy": "user-1763837999396-ji9n1ndxu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763839682229-143401956-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 584,
+      "conformes": 414,
+      "hallazgosMenores": 48,
+      "noAdmitidas": 122,
+      "porcentajeNoAdmitida": 21.03,
+      "porcentajeConformes": 70.89,
+      "porcentajeHallazgos": 8.22,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 3,
+          "severidad": "No Admitida",
+          "porcentaje": 0.51
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 22,
+          "severidad": "No Admitida",
+          "porcentaje": 3.77
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 6,
+          "severidad": "No Admitida",
+          "porcentaje": 1.03
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 91,
+          "severidad": "No Admitida",
+          "porcentaje": 15.58
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 37,
+          "severidad": "Hallazgo",
+          "porcentaje": 6.34
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 7,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.2
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 4,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.68
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-22T19:28:13.909Z"
+  },
+  {
+    "id": "1763876136674-nzux2neom",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763876136668-844023412-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T05:35:36.674Z",
+    "status": "Completada",
+    "transactionId": "0x3b81246504f79e0000000000000",
+    "processedBy": "user-1763876088751-5wq4hktbp",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763876136668-844023412-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 359,
+      "conformes": 315,
+      "hallazgosMenores": 30,
+      "noAdmitidas": 14,
+      "porcentajeNoAdmitida": 3.95,
+      "porcentajeConformes": 87.74,
+      "porcentajeHallazgos": 8.36,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 2,
+          "severidad": "No Admitida",
+          "porcentaje": 0.56
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 7,
+          "severidad": "No Admitida",
+          "porcentaje": 1.95
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 1,
+          "severidad": "No Admitida",
+          "porcentaje": 0.28
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 4,
+          "severidad": "No Admitida",
+          "porcentaje": 1.11
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 17,
+          "severidad": "Hallazgo",
+          "porcentaje": 4.74
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 7,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.95
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 4,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.11
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.56
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763876357509-8168ufsud",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763876357505-215340383-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T05:39:17.509Z",
+    "status": "Completada",
+    "transactionId": "0x135fc63803e7540000000000000",
+    "processedBy": "user-1763876347614-3k8ks2vf2",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763876357505-215340383-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 442,
+      "conformes": 347,
+      "hallazgosMenores": 65,
+      "noAdmitidas": 30,
+      "porcentajeNoAdmitida": 6.93,
+      "porcentajeConformes": 78.51,
+      "porcentajeHallazgos": 14.71,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 11,
+          "severidad": "No Admitida",
+          "porcentaje": 2.49
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 18,
+          "severidad": "No Admitida",
+          "porcentaje": 4.07
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 1,
+          "severidad": "No Admitida",
+          "porcentaje": 0.23
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 5,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.13
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 33,
+          "severidad": "Hallazgo",
+          "porcentaje": 7.47
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 12,
+          "severidad": "Hallazgo",
+          "porcentaje": 2.71
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 15,
+          "severidad": "Hallazgo",
+          "porcentaje": 3.39
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-23T07:09:00.371Z"
+  },
+  {
+    "id": "1763879145658-11lqm19wr",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763879145655-404435057-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T06:25:45.658Z",
+    "status": "Completada",
+    "transactionId": "0x3b7e984e59637e0000000000000",
+    "processedBy": "user-1763876347614-3k8ks2vf2",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763879145655-404435057-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 341,
+      "conformes": 277,
+      "hallazgosMenores": 24,
+      "noAdmitidas": 40,
+      "porcentajeNoAdmitida": 11.8,
+      "porcentajeConformes": 81.23,
+      "porcentajeHallazgos": 7.04,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 18,
+          "severidad": "No Admitida",
+          "porcentaje": 5.28
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 14,
+          "severidad": "No Admitida",
+          "porcentaje": 4.11
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 2,
+          "severidad": "No Admitida",
+          "porcentaje": 0.59
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 6,
+          "severidad": "No Admitida",
+          "porcentaje": 1.76
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 15,
+          "severidad": "Hallazgo",
+          "porcentaje": 4.4
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 3,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.88
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.59
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 4,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.17
+        }
+      ]
+    },
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-23T07:09:00.366Z"
+  },
+  {
+    "id": "1763880171610-z7l9o357h",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763880171608-752271013-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T06:42:51.610Z",
+    "status": "Completada",
+    "transactionId": "0x3a06f9282fd3660000000000000",
+    "processedBy": "user-1763876347614-3k8ks2vf2",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763880171608-752271013-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 290,
+      "conformes": 241,
+      "hallazgosMenores": 14,
+      "noAdmitidas": 35,
+      "porcentajeNoAdmitida": 12.17,
+      "porcentajeConformes": 83.1,
+      "porcentajeHallazgos": 4.83,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 9,
+          "severidad": "No Admitida",
+          "porcentaje": 3.1
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 14,
+          "severidad": "No Admitida",
+          "porcentaje": 4.83
+        },
+        {
+          "nombre": "Daño Mecánico Severo",
+          "cantidad": 6,
+          "severidad": "No Admitida",
+          "porcentaje": 2.07
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 6,
+          "severidad": "No Admitida",
+          "porcentaje": 2.07
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 6,
+          "severidad": "Hallazgo",
+          "porcentaje": 2.07
+        },
+        {
+          "nombre": "Cicatrices",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.69
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 0.69
+        },
+        {
+          "nombre": "Calibre Incorrecto",
+          "cantidad": 4,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.38
+        }
+      ]
+    },
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-23T07:09:00.358Z"
+  },
+  {
+    "id": "1763880428492-e3kpwk793",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763880428488-688849451-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T06:47:08.492Z",
+    "status": "Completada",
+    "transactionId": "0x441ab7d9fefcb80000000000000",
+    "processedBy": "user-1763876347614-3k8ks2vf2",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763880428488-688849451-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 103,
+      "conformes": 79,
+      "hallazgosMenores": 4,
+      "noAdmitidas": 20,
+      "porcentajeNoAdmitida": 19.59,
+      "porcentajeConformes": 76.7,
+      "porcentajeHallazgos": 3.88,
+      "defectos": [
+        {
+          "nombre": "Pudrición",
+          "cantidad": 11,
+          "severidad": "No Admitida",
+          "porcentaje": 10.68
+        },
+        {
+          "nombre": "Moho",
+          "cantidad": 8,
+          "severidad": "No Admitida",
+          "porcentaje": 7.77
+        },
+        {
+          "nombre": "Heridas Abiertas",
+          "cantidad": 1,
+          "severidad": "No Admitida",
+          "porcentaje": 0.97
+        },
+        {
+          "nombre": "Daño Mecánico Leve",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.94
+        },
+        {
+          "nombre": "Deshidratación Leve",
+          "cantidad": 2,
+          "severidad": "Hallazgo",
+          "porcentaje": 1.94
+        }
+      ]
+    },
+    "simResult": "Descarte",
+    "lastSimulation": "2025-11-23T07:09:00.352Z"
+  },
+  {
+    "id": "1763926590271-vik3jleyv",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763926590256-400928679-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T19:36:30.271Z",
+    "status": "Completada",
+    "transactionId": "0xaaa73c34db00f0000000000000",
+    "processedBy": "user-1763926568154-44gl7t2m8",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763926590256-400928679-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-23T20:23:43.410Z"
+  },
+  {
+    "id": "1763927135099-nkm837z0j",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763927135093-869541897-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T19:45:35.099Z",
+    "status": "Completada",
+    "transactionId": "0x17f7382d4332520000000000000",
+    "processedBy": "user-1763926568154-44gl7t2m8",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763927135093-869541897-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-23T20:23:43.398Z"
+  },
+  {
+    "id": "1763928818548-k35ex0ht0",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763928818540-583115160-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T20:13:38.548Z",
+    "status": "Completada",
+    "transactionId": "0x17ff516e21afd30000000000000",
+    "processedBy": "user-1763926568154-44gl7t2m8",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763928818540-583115160-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-23T20:23:43.382Z"
+  },
+  {
+    "id": "1763929401934-87eu50g81",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763929401931-345330311-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T20:23:21.934Z",
+    "status": "Completada",
+    "transactionId": "0x3b40cf50eecc100000000000000",
+    "processedBy": "user-1763926568154-44gl7t2m8",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763929401931-345330311-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-23T20:23:43.363Z"
+  },
+  {
+    "id": "1763929459092-km5fqif48",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763929459087-702421342-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T20:24:19.092Z",
+    "status": "Completada",
+    "transactionId": "0x36c06397a2f48a0000000000000",
+    "processedBy": "user-1763929447688-usu378p4c",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763929459087-702421342-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Conforme",
+    "lastSimulation": "2025-11-23T20:24:34.157Z"
+  },
+  {
+    "id": "1763930049409-419v5khia",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763930049406-126531126-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T20:34:09.409Z",
+    "status": "Completada",
+    "transactionId": "0x11769acdcff8d50000000000000",
+    "processedBy": "user-1763929447688-usu378p4c",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763930049406-126531126-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763930517488-39ut2gwyn",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763930517483-24634377-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T20:41:57.488Z",
+    "status": "Completada",
+    "transactionId": "0x4879de0641c4a80000000000000",
+    "processedBy": "user-1763930513402-75scs398m",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763930517483-24634377-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763931329826-zxejlu7cw",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763931329823-518168506-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T20:55:29.826Z",
+    "status": "Completada",
+    "transactionId": "0x25ae1aab426a780000000000000",
+    "processedBy": "user-1763931324849-kyyxmz35v",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763931329823-518168506-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763931667807-e7d5vrpqe",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763931667801-455153339-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:01:07.807Z",
+    "status": "Completada",
+    "transactionId": "0x747f8ca918824c000000000000",
+    "processedBy": "user-1763931663030-brvidki47",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763931667801-455153339-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763931701250-5ifqw8iny",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763931701244-879326889-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:01:41.250Z",
+    "status": "Completada",
+    "transactionId": "0x492ea419079e040000000000000",
+    "processedBy": "user-1763931696532-ipy9c7lxh",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763931701244-879326889-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763931742269-dayp5nnvz",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763931742256-879686885-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:02:22.269Z",
+    "status": "Completada",
+    "transactionId": "0x2aa9e3d8709e980000000000000",
+    "processedBy": "user-1763931696532-ipy9c7lxh",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763931742256-879686885-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763932502526-76gntqp6c",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763932502520-449100453-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:15:02.526Z",
+    "status": "Completada",
+    "transactionId": "0x1d7896a7c1c2a50000000000000",
+    "processedBy": "user-1763932495482-kmm1rzj6n",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763932502520-449100453-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763933024982-o21hzdzoa",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763933024978-586419103-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:23:44.982Z",
+    "status": "Completada",
+    "transactionId": "0x221aca8ef6f8ce0000000000000",
+    "processedBy": "user-1763933015062-m8e14tva7",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763933024978-586419103-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763933077942-m1v18m7m3",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763933077938-3881785-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:24:37.942Z",
+    "status": "Completada",
+    "transactionId": "0x38e1854fefbe120000000000000",
+    "processedBy": "user-1763933068536-slnwkxw19",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763933077938-3881785-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763933153566-8ni048fdt",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763933153562-69309379-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:25:53.566Z",
+    "status": "Completada",
+    "transactionId": "0x447bf4904df79c0000000000000",
+    "processedBy": "user-1763933148286-d0chao4s6",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763933153562-69309379-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763933691844-bby63jnr1",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763933691838-524338412-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:34:51.844Z",
+    "status": "Completada",
+    "transactionId": "0xbe681dd042d438000000000000",
+    "processedBy": "user-1763933683314-ca16d8teu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763933691838-524338412-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-23T21:44:02.298Z"
+  },
+  {
+    "id": "1763934220125-pz4p359y1",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763934220119-170249744-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T21:43:40.125Z",
+    "status": "Completada",
+    "transactionId": "0x23c72703bd7df40000000000000",
+    "processedBy": "user-1763933683314-ca16d8teu",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763934220119-170249744-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-23T21:44:02.071Z"
+  },
+  {
+    "id": "1763935718025-vzvzcb6sq",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763935718018-936451218-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T22:08:38.025Z",
+    "status": "Completada",
+    "transactionId": "0x4b4fa52bb6b4d40000000000000",
+    "processedBy": "user-1763935710877-dmixi5qes",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763935718018-936451218-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-23T22:08:41.244Z"
+  },
+  {
+    "id": "1763936725083-evqr9luin",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763936725078-677827149-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T22:25:25.083Z",
+    "status": "Completada",
+    "transactionId": "0x70a064257c55d4000000000000",
+    "processedBy": "user-1763936717729-ya8ioxsth",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763936725078-677827149-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-23T22:25:28.210Z"
+  },
+  {
+    "id": "1763937185334-bp3jdzpnm",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763937185327-397394967-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-23T22:33:05.334Z",
+    "status": "Completada",
+    "transactionId": "0x276ea019c9738a0000000000000",
+    "processedBy": "user-1763937165485-fccgn2tyf",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763937185327-397394967-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-23T22:33:08.254Z"
+  },
+  {
+    "id": "1763946247917-n71yfh9fa",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763946247908-393395185-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T01:04:07.918Z",
+    "status": "Completada",
+    "transactionId": "0x4bc6f245ddd7c80000000000000",
+    "processedBy": "user-1763946236632-ns2n43355",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763946247908-393395185-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T01:04:14.393Z"
+  },
+  {
+    "id": "1763946685024-2kqd9po4h",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763946685017-219309852-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T01:11:25.024Z",
+    "status": "Completada",
+    "transactionId": "0x375eed3b7463c00000000000000",
+    "processedBy": "user-1763946679009-5e5imge7q",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763946685017-219309852-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T01:11:27.019Z"
+  },
+  {
+    "id": "1763948586501-dgj8140qe",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763948586498-502531186-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T01:43:06.501Z",
+    "status": "Completada",
+    "transactionId": "0x6f92aab578e50000000000000",
+    "processedBy": "user-1763948575569-0f033ufni",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763948586498-502531186-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T01:43:09.364Z"
+  },
+  {
+    "id": "1763949062536-e8cemhdje",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763949062531-638249556-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T01:51:02.536Z",
+    "status": "Completada",
+    "transactionId": "0x194be42fe326b50000000000000",
+    "processedBy": "user-1763949058275-hkfwyswid",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763949062531-638249556-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T01:51:06.685Z"
+  },
+  {
+    "id": "1763950569935-d69ecg5rh",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763950569926-481766913-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:16:09.935Z",
+    "status": "Completada",
+    "transactionId": "0x318581ebfa904e0000000000000",
+    "processedBy": "user-1763949964978-jfrms8jzt",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763950569926-481766913-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:16:11.420Z"
+  },
+  {
+    "id": "1763950794618-vbkoc6o5m",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763950794614-67875972-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:19:54.618Z",
+    "status": "Completada",
+    "transactionId": "0x2014ab3510a60e0000000000000",
+    "processedBy": "user-1763949880177-m22hxyhs0",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763950794614-67875972-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:19:56.523Z"
+  },
+  {
+    "id": "1763950894918-yjdowus70",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763950894910-935348195-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:21:34.918Z",
+    "status": "Completada",
+    "transactionId": "0x135b286b5f37990000000000000",
+    "processedBy": "user-1763950889565-glhea9x8l",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763950894910-935348195-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:21:37.243Z"
+  },
+  {
+    "id": "1763951262866-jicuvuiql",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763951262858-70060091-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:27:42.866Z",
+    "status": "Completada",
+    "transactionId": "0x403d35c34383280000000000000",
+    "processedBy": "user-1763951245494-4po49n94y",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763951262858-70060091-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:30:57.837Z"
+  },
+  {
+    "id": "1763952031159-kq7n5c2z4",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952031154-302747651-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:40:31.159Z",
+    "status": "Completada",
+    "transactionId": "0xead369c1fff760000000000000",
+    "processedBy": "user-1763952007976-lg0t0ytpj",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952031154-302747651-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:40:33.715Z"
+  },
+  {
+    "id": "1763952080688-ufnfzp6qp",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952080684-667915474-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:41:20.688Z",
+    "status": "Completada",
+    "transactionId": "0x1846ec91222ff80000000000000",
+    "processedBy": "user-1763952066401-fpxdj1ftz",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952080684-667915474-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:41:26.986Z"
+  },
+  {
+    "id": "1763952176260-ggt0iv3sb",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952176255-73176803-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:42:56.260Z",
+    "status": "Completada",
+    "transactionId": "0x1f10fb847318b90000000000000",
+    "processedBy": "user-1763952167441-brxnxx7ag",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952176255-73176803-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:42:58.153Z"
+  },
+  {
+    "id": "1763952242418-tpt9otlzy",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952242415-917614935-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:44:02.418Z",
+    "status": "Completada",
+    "transactionId": "0x33efab8085fca80000000000000",
+    "processedBy": "user-1763952234028-l0ij3sgtx",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952242415-917614935-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763952265435-yq7c34bgl",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952265431-492485761-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:44:25.435Z",
+    "status": "Completada",
+    "transactionId": "0x35438434739ba60000000000000",
+    "processedBy": "user-1763952260730-alxko524b",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952265431-492485761-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:44:27.472Z"
+  },
+  {
+    "id": "1763952337022-vklp1807j",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952337018-586624338-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:45:37.022Z",
+    "status": "Completada",
+    "transactionId": "0x19b687b6d37d780000000000000",
+    "processedBy": "user-1763952331924-o5gb94ce6",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952337018-586624338-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:45:39.440Z"
+  },
+  {
+    "id": "1763952596546-byw8b4ode",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763952596543-948912050-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:49:56.546Z",
+    "status": "Completada",
+    "transactionId": "0x49909f2324c0c40000000000000",
+    "processedBy": "user-1763952559224-xh64h3agl",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763952596543-948912050-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763953159181-t1zuh90o2",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763953159178-9663388-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T02:59:19.181Z",
+    "status": "Completada",
+    "transactionId": "0x1be6ee54b60ebd0000000000000",
+    "processedBy": "user-1763953153398-5qkn1owjy",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763953159178-9663388-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T02:59:24.035Z"
+  },
+  {
+    "id": "1763953728174-0wa85o8yc",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763953728169-40175770-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T03:08:48.174Z",
+    "status": "Completada",
+    "transactionId": "0x432c032dfe57840000000000000",
+    "processedBy": "user-1763953722037-9s1momni1",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763953728169-40175770-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T03:08:51.253Z"
+  },
+  {
+    "id": "1763954097148-m0imjebhj",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763954097141-572036348-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T03:14:57.148Z",
+    "status": "Completada",
+    "transactionId": "0x2551afec07d4520000000000000",
+    "processedBy": "user-1763954088194-c8y433v3c",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763954097141-572036348-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T03:14:59.725Z"
+  },
+  {
+    "id": "1763956269515-b93puuyeq",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763956269506-79733325-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T03:51:09.515Z",
+    "status": "Completada",
+    "transactionId": "0x3c43c70a8674e60000000000000",
+    "processedBy": "user-1763956263114-e4umujwat",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763956269506-79733325-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T03:51:12.396Z"
+  },
+  {
+    "id": "1763957893644-wkakrlbw2",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763957893640-490607637-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:18:13.644Z",
+    "status": "Completada",
+    "transactionId": "0x222e485e751af60000000000000",
+    "processedBy": "user-1763957880255-j1nfi0we5",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763957893640-490607637-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:18:18.800Z"
+  },
+  {
+    "id": "1763959383699-hsiyr5edk",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763959383696-216603496-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:43:03.699Z",
+    "status": "Completada",
+    "transactionId": "0xd019258bd82428000000000000",
+    "processedBy": "user-1763959322690-dcegftktc",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763959383696-216603496-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:43:08.271Z"
+  },
+  {
+    "id": "1763959607525-k64pd62i7",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763959607522-236733127-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:46:47.525Z",
+    "status": "Completada",
+    "transactionId": "0x27395e4e2769780000000000000",
+    "processedBy": "user-1763959588699-1lb3uicbm",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763959607522-236733127-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:47:23.265Z"
+  },
+  {
+    "id": "1763959955677-njx4jnz4o",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763959955670-119366103-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:52:35.677Z",
+    "status": "Completada",
+    "transactionId": "0xec4d85d2099878000000000000",
+    "processedBy": "user-1763959946503-fgjmk2c1n",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763959955670-119366103-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:52:43.734Z"
+  },
+  {
+    "id": "1763960029777-ym1cj1ndj",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763960029771-330659373-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:53:49.777Z",
+    "status": "Completada",
+    "transactionId": "0x22467127447e300000000000000",
+    "processedBy": "user-1763959946503-fgjmk2c1n",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763960029771-330659373-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763960050703-okbpt4slw",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763960050699-479949580-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:54:10.703Z",
+    "status": "Completada",
+    "transactionId": "0x252f9f816e2290000000000000",
+    "processedBy": "user-1763960045983-z4mmbzakr",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763960050699-479949580-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:54:17.402Z"
+  },
+  {
+    "id": "1763960084304-w8w8zse7h",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763960084301-454896835-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:54:44.304Z",
+    "status": "Completada",
+    "transactionId": "0x4c2a619deab9180000000000000",
+    "processedBy": "user-1763960080111-4w1n0z9nt",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763960084301-454896835-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763960116861-1x7tx7kb2",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763960116857-866366722-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:55:16.861Z",
+    "status": "Completada",
+    "transactionId": "0x2088bff35821ea0000000000000",
+    "processedBy": "user-1763960113175-8i3l6y2xp",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763960116857-866366722-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:55:23.956Z"
+  },
+  {
+    "id": "1763960187914-9iiyly9aj",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763960187911-962487021-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:56:27.914Z",
+    "status": "Completada",
+    "transactionId": "0x53e478e87b99d8000000000000",
+    "processedBy": "user-1763960183382-7uic876jb",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763960187911-962487021-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763960276763-ep3lh71oj",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763960276760-92592568-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T04:57:56.763Z",
+    "status": "Completada",
+    "transactionId": "0x92c8fd10a57030000000000000",
+    "processedBy": "user-1763960249827-03jx2usl6",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763960276760-92592568-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T04:58:00.922Z"
+  },
+  {
+    "id": "1763965298613-ezowhhy7z",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763965298601-739687448-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T06:21:38.613Z",
+    "status": "Completada",
+    "transactionId": "0x412c73022560f80000000000000",
+    "processedBy": "user-1763965213508-mqa4ci4wg",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763965298601-739687448-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T06:21:40.893Z"
+  },
+  {
+    "id": "1763969574360-42hvqmxjp",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763969574349-819162634-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T07:32:54.360Z",
+    "status": "Completada",
+    "transactionId": "0x3f11be10aa5da00000000000000",
+    "processedBy": "user-1763969559911-zzwhsnz9t",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763969574349-819162634-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T07:32:57.037Z"
+  },
+  {
+    "id": "1763970692979-karkt4k6o",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763970692972-622577367-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T07:51:32.979Z",
+    "status": "Completada",
+    "transactionId": "0xdb32e425bc00d0000000000000",
+    "processedBy": "user-1763970688393-t3dvalyir",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763970692972-622577367-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "1763970754814-30771aco2",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1763970754809-234542310-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T07:52:34.814Z",
+    "status": "Completada",
+    "transactionId": "0x172ad42cf303970000000000000",
+    "processedBy": "user-1763970751255-at9h880kn",
+    "filePath": "C:\\Users\\ander\\OneDrive\\Escritorio\\TrazaNet\\uploads\\1763970754809-234542310-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T07:56:51.633Z"
+  },
+  {
+    "id": "1764013024955-gx634fgvm",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1764013024941-523320909-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T19:37:04.955Z",
+    "status": "Completada",
+    "transactionId": "0x2e8c6e76ea2e1a0000000000000",
+    "processedBy": "user-1764012861257-qhir1satr",
+    "filePath": "C:\\Users\\estan\\OneDrive\\Documents\\CICLO VI\\CUSTOMER DEVELOPMENT\\TrazaNet\\uploads\\1764013024941-523320909-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T19:55:05.469Z"
+  },
+  {
+    "id": "1764017814287-w0mnosydf",
+    "fileName": "LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "savedFileName": "1764017814273-796893224-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "size": 516,
+    "date": "2025-11-24T20:56:54.288Z",
+    "status": "Completada",
+    "transactionId": "0x1f56e1ba53aa2f0000000000000",
+    "processedBy": "user-1764017802948-gy9wravib",
+    "filePath": "C:\\Users\\estan\\OneDrive\\Documents\\CICLO VI\\CUSTOMER DEVELOPMENT\\TrazaNet\\uploads\\1764017814273-796893224-LOTE_ID,FECHA_COSECHA,VARIEDAD,FINC.csv",
+    "calidadFruta": {
+      "total": 5,
+      "conformes": 4,
+      "hallazgosMenores": 1,
+      "noAdmitidas": 0,
+      "porcentajeNoAdmitida": 0,
+      "porcentajeConformes": 80,
+      "porcentajeHallazgos": 20,
+      "defectos": [
+        {
+          "nombre": "Fruta con Alerta",
+          "cantidad": 1,
+          "severidad": "Hallazgo",
+          "porcentaje": 20
+        }
+      ]
+    },
+    "simResult": "Hallazgo",
+    "lastSimulation": "2025-11-24T20:57:26.196Z"
+  }
+]

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Incidentes - TrazaNet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .severity-high {
+            background-color: #fee2e2;
+        }
+
+        .severity-medium {
+            background-color: #fef3c7;
+        }
+
+        .severity-low {
+            background-color: #dbeafe;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-action {
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Sidebar -->
+    <aside
+        class="fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-emerald-800 to-emerald-900 text-white shadow-2xl z-50">
+        <div class="p-6 border-b border-emerald-700">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-leaf text-3xl text-emerald-300"></i>
+                <div>
+                    <h1 class="text-xl font-bold">TrazaNet</h1>
+                    <p class="text-xs text-emerald-300">Blockchain Traceability</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="mt-6">
+            <a href="trazabilidad.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-route mr-3"></i>
+                <span>Trazabilidad</span>
+            </a>
+            <a href="blockchain.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-cubes mr-3"></i>
+                <span>Blockchain Explorer</span>
+            </a>
+            <a href="carga.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-upload mr-3"></i>
+                <span>Carga de Datos</span>
+            </a>
+            <a href="gestor_alertas_blockchain.html"
+                class="flex items-center px-6 py-3 bg-emerald-700 border-l-4 border-white transition-colors">
+                <i class="fas fa-exclamation-triangle mr-3"></i>
+                <span>Gestión de Incidentes</span>
+            </a>
+            <a href="registro_transporte.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-truck mr-3"></i>
+                <span>Registro Transporte</span>
+            </a>
+            <a href="seguimiento_transporte.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-map-marked-alt mr-3"></i>
+                <span>Seguimiento GPS</span>
+            </a>
+            <a href="registro_procesamiento.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-industry mr-3"></i>
+                <span>Registro Procesamiento</span>
+            </a>
+            <a href="registro_empaque.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-box mr-3"></i>
+                <span>Registro Empaque</span>
+            </a>
+            <a href="transaccion_lote.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-exchange-alt mr-3"></i>
+                <span>Transacción de Lote</span>
+            </a>
+            <a href="administracion_smart_contracts.html"
+                class="flex items-center px-6 py-3 text-emerald-100 hover:bg-emerald-700 transition-colors">
+                <i class="fas fa-cog mr-3"></i>
+                <span>Admin Smart Contracts</span>
+            </a>
+        </nav>
+
+        <div class="absolute bottom-0 w-full p-6 border-t border-emerald-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center">
+                    <i class="fas fa-user text-white"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Admin User</p>
+                    <p class="text-xs text-emerald-300">Operador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 p-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>
+                Gestión de Incidentes Blockchain
+            </h2>
+            <p class="text-gray-600">Monitoreo y gestión de alertas generadas por Smart Contracts</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Total Active Alerts -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium mb-1">Alertas Activas</p>
+                        <h3 class="text-3xl font-bold text-gray-800" id="kpi-total-active">0</h3>
+                        <p class="text-xs text-gray-400 mt-1">Nuevo + En Revisión</p>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-bell text-white text-2xl pulse-animation"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- High Severity Alerts -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in" style="animation-delay: 0.1s">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium mb-1">Severidad Alta</p>
+                        <h3 class="text-3xl font-bold text-red-600" id="kpi-high-severity">0</h3>
+                        <p class="text-xs text-gray-400 mt-1">Requieren atención inmediata</p>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-circle text-white text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resolved Today -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover fade-in" style="animation-delay: 0.2s">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm font-medium mb-1">Resueltas Hoy</p>
+                        <h3 class="text-3xl font-bold text-green-600" id="kpi-resolved-today">0</h3>
+                        <p class="text-xs text-gray-400 mt-1">Últimas 24 horas</p>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check-circle text-white text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 fade-in" style="animation-delay: 0.3s">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-filter mr-2"></i>Estado
+                    </label>
+                    <select id="filter-estado"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="">Todos</option>
+                        <option value="Nuevo">Nuevo</option>
+                        <option value="En Revisión">En Revisión</option>
+                        <option value="Resuelto">Resuelto</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-thermometer-half mr-2"></i>Severidad
+                    </label>
+                    <select id="filter-severidad"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="">Todas</option>
+                        <option value="ALTO">Alta</option>
+                        <option value="MEDIO">Media</option>
+                        <option value="BAJO">Baja</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-map-marker-alt mr-2"></i>Finca
+                    </label>
+                    <select id="filter-finca"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button onclick="applyFilters()"
+                        class="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-2 rounded-lg hover:from-emerald-700 hover:to-emerald-800 transition-all btn-action">
+                        <i class="fas fa-search mr-2"></i>Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Table -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden fade-in" style="animation-delay: 0.4s">
+            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                <h3 class="text-xl font-bold text-gray-800">
+                    <i class="fas fa-list mr-2"></i>Alertas Activas
+                </h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Lote ID</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Motivo de Falla</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Fecha/Hora</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Finca</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Severidad</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Estado</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                TX Hash</th>
+                            <th
+                                class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="alerts-table-body" class="divide-y divide-gray-200">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simulated active alerts data
+        const activeAlerts = [
+            {
+                loteId: "LOTE-A34-008",
+                motivoFalla: "Materia Seca insuficiente (18.5% < 20.0%)",
+                fechaHora: "2025-11-23 14:30:00",
+                severidad: "ALTO",
+                estado: "Nuevo",
+                txHash: "0x34a5b67c...f1e9",
+                finca: "Los Altos"
+            },
+            {
+                loteId: "LOTE-B12-045",
+                motivoFalla: "Temperatura de transporte excedida (12°C > 10°C)",
+                fechaHora: "2025-11-23 13:15:00",
+                severidad: "ALTO",
+                estado: "En Revisión",
+                txHash: "0x7f3d8a2b...c4d7",
+                finca: "El Paraíso"
+            },
+            {
+                loteId: "LOTE-C89-021",
+                motivoFalla: "Calibre fuera de rango (22mm < 25mm)",
+                fechaHora: "2025-11-23 12:45:00",
+                severidad: "MEDIO",
+                estado: "Nuevo",
+                txHash: "0x9e2f1c5a...b8e3",
+                finca: "Santa Rosa"
+            },
+            {
+                loteId: "LOTE-D56-033",
+                motivoFalla: "Peso neto inconsistente (variación 5.2%)",
+                fechaHora: "2025-11-23 11:20:00",
+                severidad: "MEDIO",
+                estado: "Nuevo",
+                txHash: "0x4b8c7d1e...a9f2",
+                finca: "Los Altos"
+            },
+            {
+                loteId: "LOTE-E77-019",
+                motivoFalla: "Sello de seguridad violado",
+                fechaHora: "2025-11-23 10:05:00",
+                severidad: "ALTO",
+                estado: "En Revisión",
+                txHash: "0x6d9a3f2c...e5b1",
+                finca: "Valle Verde"
+            },
+            {
+                loteId: "LOTE-F23-067",
+                motivoFalla: "Tiempo de tránsito excedido (26h > 24h)",
+                fechaHora: "2025-11-23 09:30:00",
+                severidad: "MEDIO",
+                estado: "Nuevo",
+                txHash: "0x1c5e8b4a...d7f3",
+                finca: "El Paraíso"
+            },
+            {
+                loteId: "LOTE-G91-012",
+                motivoFalla: "Humedad relativa fuera de rango (92% > 90%)",
+                fechaHora: "2025-11-23 08:15:00",
+                severidad: "BAJO",
+                estado: "Nuevo",
+                txHash: "0x8f2d6c3b...a1e4",
+                finca: "Santa Rosa"
+            },
+            {
+                loteId: "LOTE-H44-055",
+                motivoFalla: "Documentación incompleta (falta certificado fitosanitario)",
+                fechaHora: "2025-11-23 07:50:00",
+                severidad: "ALTO",
+                estado: "Nuevo",
+                txHash: "0x3a7e9d1f...c6b8",
+                finca: "Los Altos"
+            },
+            {
+                loteId: "LOTE-I68-028",
+                motivoFalla: "Calibre inconsistente entre cajas (±3mm)",
+                fechaHora: "2025-11-23 06:25:00",
+                severidad: "BAJO",
+                estado: "Resuelto",
+                txHash: "0x5c1f4a8e...b2d9",
+                finca: "Valle Verde"
+            }
+        ];
+
+        // Fetch active alerts (simulated async function)
+        async function fetchActiveAlerts() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(activeAlerts);
+                }, 300);
+            });
+        }
+
+        // Calculate and update KPIs
+        function updateKPIs(alerts) {
+            // Total Active (Nuevo + En Revisión)
+            const totalActive = alerts.filter(a => a.estado === "Nuevo" || a.estado === "En Revisión").length;
+            document.getElementById('kpi-total-active').textContent = totalActive;
+
+            // High Severity
+            const highSeverity = alerts.filter(a => a.severidad === "ALTO").length;
+            document.getElementById('kpi-high-severity').textContent = highSeverity;
+
+            // Resolved Today (for simulation, count all "Resuelto")
+            const resolvedToday = alerts.filter(a => a.estado === "Resuelto").length;
+            document.getElementById('kpi-resolved-today').textContent = resolvedToday;
+        }
+
+        // Render alerts table
+        function renderAlertsTable(alerts) {
+            const tableBody = document.getElementById('alerts-table-body');
+            tableBody.innerHTML = '';
+
+            if (alerts.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-6 py-8 text-center text-gray-500">
+                            <i class="fas fa-inbox text-4xl mb-3 block"></i>
+                            No se encontraron alertas con los filtros aplicados
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            alerts.forEach((alert, index) => {
+                const row = document.createElement('tr');
+
+                // Apply background color based on severity
+                let severityClass = '';
+                if (alert.severidad === 'ALTO') {
+                    severityClass = 'severity-high';
+                } else if (alert.severidad === 'MEDIO') {
+                    severityClass = 'severity-medium';
+                } else if (alert.severidad === 'BAJO') {
+                    severityClass = 'severity-low';
+                }
+
+                row.className = `${severityClass} hover:bg-opacity-80 transition-colors`;
+                row.style.animationDelay = `${index * 0.05}s`;
+                row.classList.add('fade-in');
+
+                // Severity badge color
+                let severityBadgeColor = '';
+                let severityIcon = '';
+                if (alert.severidad === 'ALTO') {
+                    severityBadgeColor = 'bg-red-100 text-red-800 border-red-300';
+                    severityIcon = 'fa-exclamation-circle';
+                } else if (alert.severidad === 'MEDIO') {
+                    severityBadgeColor = 'bg-yellow-100 text-yellow-800 border-yellow-300';
+                    severityIcon = 'fa-exclamation-triangle';
+                } else {
+                    severityBadgeColor = 'bg-blue-100 text-blue-800 border-blue-300';
+                    severityIcon = 'fa-info-circle';
+                }
+
+                // Estado badge color
+                let estadoBadgeColor = '';
+                let estadoIcon = '';
+                if (alert.estado === 'Nuevo') {
+                    estadoBadgeColor = 'bg-purple-100 text-purple-800 border-purple-300';
+                    estadoIcon = 'fa-star';
+                } else if (alert.estado === 'En Revisión') {
+                    estadoBadgeColor = 'bg-orange-100 text-orange-800 border-orange-300';
+                    estadoIcon = 'fa-eye';
+                } else {
+                    estadoBadgeColor = 'bg-green-100 text-green-800 border-green-300';
+                    estadoIcon = 'fa-check';
+                }
+
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <a href="analisis_falla.html?loteId=${alert.loteId}" class="text-emerald-600 hover:text-emerald-800 font-semibold hover:underline">
+                            <i class="fas fa-box mr-1"></i>${alert.loteId}
+                        </a>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700 max-w-xs">
+                        ${alert.motivoFalla}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600">
+                        <i class="far fa-clock mr-1"></i>${alert.fechaHora}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                        <i class="fas fa-map-marker-alt mr-1 text-emerald-600"></i>${alert.finca}
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${severityBadgeColor}">
+                            <i class="fas ${severityIcon} mr-1"></i>${alert.severidad}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${estadoBadgeColor}">
+                            <i class="fas ${estadoIcon} mr-1"></i>${alert.estado}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm font-mono text-gray-600">
+                        <span class="bg-gray-100 px-2 py-1 rounded">${alert.txHash}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex space-x-2">
+                            ${alert.estado !== 'Resuelto' ? `
+                                <button onclick="handleAlertAction('${alert.loteId}', 'Resolver')" 
+                                        class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg text-xs font-semibold btn-action"
+                                        title="Marcar como resuelto">
+                                    <i class="fas fa-check mr-1"></i>Resolver
+                                </button>
+                            ` : ''}
+                            ${alert.estado === 'Nuevo' ? `
+                                <button onclick="handleAlertAction('${alert.loteId}', 'Escalar')" 
+                                        class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-lg text-xs font-semibold btn-action"
+                                        title="Escalar para revisión">
+                                    <i class="fas fa-arrow-up mr-1"></i>Escalar
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Handle alert actions (Resolver/Escalar)
+        function handleAlertAction(loteId, actionType) {
+            // Find the alert in the array
+            const alert = activeAlerts.find(a => a.loteId === loteId);
+
+            if (!alert) {
+                console.error(`Alert with loteId ${loteId} not found`);
+                return;
+            }
+
+            // Update alert state based on action type
+            if (actionType === 'Resolver') {
+                alert.estado = 'Resuelto';
+                showNotification(`Alerta ${loteId} marcada como resuelta`, 'success');
+            } else if (actionType === 'Escalar') {
+                alert.estado = 'En Revisión';
+                showNotification(`Alerta ${loteId} escalada para revisión`, 'info');
+            }
+
+            // Re-render table and update KPIs
+            const filteredAlerts = getFilteredAlerts();
+            renderAlertsTable(filteredAlerts);
+            updateKPIs(activeAlerts);
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in`;
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Get filtered alerts based on current filter selections
+        function getFilteredAlerts() {
+            const estadoFilter = document.getElementById('filter-estado').value;
+            const severidadFilter = document.getElementById('filter-severidad').value;
+            const fincaFilter = document.getElementById('filter-finca').value;
+
+            return activeAlerts.filter(alert => {
+                const matchEstado = !estadoFilter || alert.estado === estadoFilter;
+                const matchSeveridad = !severidadFilter || alert.severidad === severidadFilter;
+                const matchFinca = !fincaFilter || alert.finca === fincaFilter;
+
+                return matchEstado && matchSeveridad && matchFinca;
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const filteredAlerts = getFilteredAlerts();
+            renderAlertsTable(filteredAlerts);
+            showNotification(`Filtros aplicados: ${filteredAlerts.length} alertas encontradas`, 'info');
+        }
+
+        // Populate finca filter dropdown
+        function populateFincaFilter() {
+            const fincas = [...new Set(activeAlerts.map(a => a.finca))].sort();
+            const fincaSelect = document.getElementById('filter-finca');
+
+            fincas.forEach(finca => {
+                const option = document.createElement('option');
+                option.value = finca;
+                option.textContent = finca;
+                fincaSelect.appendChild(option);
+            });
+        }
+
+        // Initialize the page
+        async function initializePage() {
+            try {
+                const alerts = await fetchActiveAlerts();
+                updateKPIs(alerts);
+                renderAlertsTable(alerts);
+                populateFincaFilter();
+            } catch (error) {
+                console.error('Error initializing page:', error);
+                showNotification('Error al cargar las alertas', 'error');
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+
+</html>
