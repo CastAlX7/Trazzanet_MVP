@@ -1,3 +1,11 @@
+// ::Sirve los archivos estáticos. Express incluye un middleware llamado express.static para publicar imágenes, CSS y archivos HTML
+const path = require('path');
+
+// ::Servir todos los archivos estáticos desde la raíz del proyecto
+// Según la documentación, express.static sirve todos los archivos dentro de la carpeta indicada como si estuvieran en la raíz de la URL
+app.use(express.static(__dirname));
+
+
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -6,7 +14,10 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+
+// ::Usa el puerto dinámico de Render. En server.js, reemplaza la línea donde defines
+// Render inyecta una variable de entorno PORT para cada servicio, por lo que tu aplicación debe respetarla.
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
