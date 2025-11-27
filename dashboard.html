@@ -184,13 +184,6 @@
                 </div>
                 <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Auditoría Smart</span>
             </a>
-
-            <a href="certificaciones.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
-                <div class="w-8 flex justify-center flex-shrink-0">
-                    <i class="fas fa-certificate text-lg"></i>
-                </div>
-                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Certificados NFT</span>
-            </a>
             
             <div class="my-4 border-t border-white/5 mx-2"></div>
             
@@ -213,7 +206,7 @@
                     <p class="text-sm font-semibold text-white truncate">Admin Node</p>
                     <p class="text-xs text-emerald-500/60 truncate" id="user-id-display">Conectando...</p>
                 </div>
-                <button class="ml-auto text-gray-500 hover:text-red-400 transition-colors sidebar-text">
+                <button id="logout-btn" class="ml-auto text-gray-500 hover:text-red-400 transition-colors sidebar-text">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
@@ -409,9 +402,26 @@
 
     <script>
         // ===========================================
-        // CONFIGURACIÓN INICIAL (SIN DATOS)
+        // CONFIGURACIÓN DE SESIÓN
         // ===========================================
+        const SESSION_KEY = 'trazzaSession';
         let userId = null;
+
+        function getSession() {
+            const local = localStorage.getItem(SESSION_KEY);
+            const session = sessionStorage.getItem(SESSION_KEY);
+            const raw = local || session;
+
+            if (!raw) return null;
+
+            try {
+                return JSON.parse(raw);
+            } catch (e) {
+                localStorage.removeItem(SESSION_KEY);
+                sessionStorage.removeItem(SESSION_KEY);
+                return null;
+            }
+        }
 
         // Estructura lista para recibir datos, pero vacía por defecto
         const MOCK_API = {
@@ -426,15 +436,17 @@
 
         // --- Utilidades ---
         function timeAgo(date) {
-            // ... (Lógica igual, pero solo se usará si hay datos)
-            const seconds = Math.floor((new Date() - date) / 1000);
+            // Placeholder simple hasta conectar datos reales
             return "Hace un momento";
         }
 
         function showNotification(msg, type = 'success') {
             const div = document.createElement('div');
-            const color = type === 'success' ? 'bg-emerald-500' : 'bg-blue-500';
-            div.className = `fixed top-4 right-4 ${color} text-white px-6 py-3 rounded-xl shadow-2xl z-50 transform transition-all duration-300 translate-y-[-100px] flex items-center gap-3 border border-white/20 backdrop-blur-md`;
+            let colorClass = 'bg-emerald-500';
+            if (type === 'error') colorClass = 'bg-red-500';
+            if (type === 'info') colorClass = 'bg-blue-500';
+
+            div.className = `fixed top-4 right-4 ${colorClass} text-white px-6 py-3 rounded-xl shadow-2xl z-50 transform transition-all duration-300 translate-y-[-100px] flex items-center gap-3 border border-white/20 backdrop-blur-md`;
             div.innerHTML = `<i class="fas fa-check-circle"></i> <span>${msg}</span>`;
             document.body.appendChild(div);
             
@@ -445,28 +457,41 @@
             }, 3000);
         }
 
-        // --- Core Logic ---
+        // ===========================================
+        // CORE DASHBOARD
+        // ===========================================
         function initDashboard() {
-            // Recuperar sesión
-            const session = JSON.parse(localStorage.getItem('trazzaSession'));
-            userId = session ? session.user : 'Invitado';
-            document.getElementById('user-id-display').textContent = `ID: ${userId.substring(0,8)}...`;
+            // 1) Verificar que haya sesión. Si no, volver al login.
+            const session = getSession();
+            if (!session || !session.isLoggedIn) {
+                window.location.href = 'index.html';
+                return;
+            }
 
-            // Cargar Stats (0 por defecto)
+            // 2) Mostrar usuario abajo en el sidebar
+            userId = session.user || session.usuario || 'Admin';
+            const userDisplay = document.getElementById('user-id-display');
+            if (userDisplay) {
+                const shortId = String(userId).substring(0, 8);
+                userDisplay.textContent = `ID: ${shortId}...`;
+            }
+
+            // 3) Cargar Stats (por ahora MOCK_API con 0)
             animateValue("lotes-activos", 0, MOCK_API.stats.lotesActivos, 1000);
             animateValue("transacciones-confirmadas", 0, MOCK_API.stats.transacciones, 1000);
             document.getElementById('alertas-criticas').textContent = MOCK_API.stats.alertas;
 
-            // Cargar Métricas (0 por defecto)
+            // 4) Cargar Métricas
             updateMetrics(MOCK_API.stats.metricas);
 
-            // Cargar Feed (Vacío por defecto)
+            // 5) Cargar Feed de actividad
             renderFeed(MOCK_API.history);
         }
 
         function animateValue(id, start, end, duration) {
             const obj = document.getElementById(id);
-            if(end === 0) { obj.innerHTML = "0"; return; }
+            if (!obj) return;
+            if (end === 0) { obj.innerHTML = "0"; return; }
             
             let startTimestamp = null;
             const step = (timestamp) => {
@@ -484,33 +509,44 @@
             const bars = document.querySelectorAll('.chart-bar');
             const texts = document.querySelectorAll('.metric-text');
             
-            // Si data es 0, las barras no se mueven
+            if (bars.length < 3 || texts.length < 3) return;
+
             setTimeout(() => {
-                bars[0].style.width = `${data.temperatura}%`;
-                if(data.temperatura > 0) texts[0].innerHTML = `${data.temperatura}% <span class="text-[10px] text-gray-500">OPTIMO</span>`;
-                
-                bars[1].style.width = `${data.humedad}%`;
-                if(data.humedad > 0) texts[1].innerHTML = `${data.humedad}% <span class="text-[10px] text-gray-500">NORMAL</span>`;
-                
-                bars[2].style.width = `${data.origenVerificado}%`;
-                if(data.origenVerificado > 0) texts[2].innerHTML = `${data.origenVerificado}% <span class="text-[10px] text-gray-500">VERIFICADO</span>`;
+                // Temperatura
+                bars[0].style.width = `${data.temperatura || 0}%`;
+                if (data.temperatura > 0) {
+                    texts[0].innerHTML = `${data.temperatura}% <span class="text-[10px] text-gray-500">OPTIMO</span>`;
+                }
+
+                // Humedad
+                bars[1].style.width = `${data.humedad || 0}%`;
+                if (data.humedad > 0) {
+                    texts[1].innerHTML = `${data.humedad}% <span class="text-[10px] text-gray-500">NORMAL</span>`;
+                }
+
+                // Origen verificado
+                const origen = data.origenVerificado ?? data.origen ?? 0;
+                bars[2].style.width = `${origen}%`;
+                if (origen > 0) {
+                    texts[2].innerHTML = `${origen}% <span class="text-[10px] text-gray-500">VERIFICADO</span>`;
+                }
             }, 500);
         }
 
         function renderFeed(items) {
             const list = document.getElementById('activity-feed');
-            
-            // Si no hay items, no hacemos nada (el HTML ya tiene el placeholder "No hay actividad")
+            if (!list) return;
+
+            // Si no hay items, dejamos el placeholder por defecto
             if (!items || items.length === 0) return;
 
-            // Si llegaran datos, limpiamos el placeholder y renderizamos
             list.innerHTML = '';
             
             items.forEach((item, index) => {
                 const li = document.createElement('li');
                 li.className = 'group flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-200 cursor-pointer border border-transparent hover:border-white/5';
                 li.style.animation = `slideIn 0.5s ease-out forwards ${index * 0.1}s`;
-                li.style.opacity = '0'; // Inicial para animación
+                li.style.opacity = '0';
                 
                 let iconData = { class: 'fa-cube', bg: 'bg-gray-500/20', color: 'text-gray-400' };
                 if (item.status === 'Conforme') iconData = { class: 'fa-check-double', bg: 'bg-emerald-500/20', color: 'text-emerald-400' };
@@ -540,17 +576,34 @@
         window.verAlerta = () => window.location.href = 'auditoria.html';
         
         window.copiarDireccion = () => {
-            // Sin dirección real no copiamos nada o mostramos mensaje
-            showNotification('Dirección no disponible (Sin conexión Wallet)', 'info');
+            showNotification('Dirección no disponible (sin conexión a Wallet)', 'info');
         };
 
         window.showDetails = (item) => {
             alert(`🔍 EXPLORADOR DE BLOQUES\n\nHash Transacción: ${item.hash}\nEstado: ${item.status}\nTimestamp: ${item.date}\n\nLos datos están inmutados en la blockchain.`);
+        };
+
+        function handleLogout() {
+            localStorage.removeItem(SESSION_KEY);
+            sessionStorage.removeItem(SESSION_KEY);
+            showNotification('Sesión cerrada correctamente', 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 800);
         }
 
         // Init
-        document.addEventListener('DOMContentLoaded', initDashboard);
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
 
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', handleLogout);
+            }
+        });
     </script>
+</body>
+</html>
+    
 </body>
 </html>

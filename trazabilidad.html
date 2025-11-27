@@ -216,25 +216,40 @@
             <div class="mb-4 lg:mb-0">
                 <h2 class="text-2xl font-bold text-white mb-1">Explorador de Cadena</h2>
                 <p class="text-gray-400 text-sm">Rastreo de extremo a extremo.</p>
+
+                <!-- Buscador de Lotes (ÚNICO BUSCADOR) -->
+                <div class="mt-4 w-full lg:w-80">
+                    <input 
+                        id="searchTrace"
+                        type="text"
+                        placeholder="Buscar lote, archivo o estado..."
+                        class="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg 
+                            text-sm text-white placeholder-gray-400 
+                            focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                    />
+                </div>
             </div>
             
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                <div class="relative w-full lg:w-80">
-                    <input type="text" placeholder="Buscar ID Lote / Hash..." 
-                        class="w-full bg-black/20 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-white text-sm focus:border-emerald-500 focus:outline-none transition-colors">
-                    <i class="fas fa-search absolute left-3.5 top-3 text-gray-500"></i>
-                </div>
-                
-                <div class="flex gap-2">
-                    <button class="px-4 py-2.5 bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 rounded-xl hover:bg-emerald-600 hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-                        <i class="far fa-calendar-alt"></i> Fecha
-                    </button>
-                    <button class="px-4 py-2.5 bg-blue-600/20 border border-blue-500/30 text-blue-400 rounded-xl hover:bg-blue-600 hover:text-white transition-all text-sm font-medium flex items-center gap-2">
-                        <i class="fas fa-map-marker-alt"></i> Ubicación
-                    </button>
-                </div>
+
+                <!-- Botón de filtro FECHA -->
+                <button id="filterDateBtn"
+                    class="px-4 py-2.5 bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 
+                        rounded-xl hover:bg-emerald-600 hover:text-white transition-all text-sm 
+                        font-medium flex items-center gap-2">
+                    <i class="far fa-calendar-alt"></i> Fecha
+                </button>
+
+                <!-- Botón de filtro UBICACIÓN -->
+                <button id="filterLocationBtn"
+                    class="px-4 py-2.5 bg-blue-600/20 border border-blue-500/30 text-blue-400 
+                        rounded-xl hover:bg-blue-600 hover:text-white transition-all text-sm 
+                        font-medium flex items-center gap-2">
+                    <i class="fas fa-map-marker-alt"></i> Ubicación
+                </button>
             </div>
         </header>
+
 
         <!-- GRID DE ESTADÍSTICAS (Las 4 Cards Solicitadas) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-entry" style="animation-delay: 0.1s;">
@@ -243,7 +258,7 @@
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
                         <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Lotes Activos</p>
-                        <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+                        <h3 id="metricLotes" class="text-3xl font-bold text-white mt-1">0</h3>
                     </div>
                     <div class="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">
                         <i class="fas fa-boxes text-xl"></i>
@@ -258,7 +273,7 @@
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
                         <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Productos</p>
-                        <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+                        <h3 id="metricProductos" class="text-3xl font-bold text-white mt-1">0</h3>
                     </div>
                     <div class="p-3 bg-blue-500/10 rounded-lg text-blue-400">
                         <i class="fas fa-leaf text-xl"></i>
@@ -272,7 +287,7 @@
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
                         <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Transacciones</p>
-                        <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+                        <h3 id="metricTransacciones" class="text-3xl font-bold text-white mt-1">0</h3>
                     </div>
                     <div class="p-3 bg-cyan-500/10 rounded-lg text-cyan-400">
                         <i class="fas fa-link text-xl"></i>
@@ -286,7 +301,7 @@
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
                         <p class="text-gray-400 text-xs font-bold uppercase tracking-wider">Alertas</p>
-                        <h3 class="text-3xl font-bold text-white mt-2">0</h3>
+                        <h3 id="metricAlertas" class="text-3xl font-bold text-white mt-1">0</h3>
                     </div>
                     <div class="p-3 bg-red-500/10 rounded-lg text-red-400">
                         <i class="fas fa-exclamation-triangle text-xl"></i>
@@ -314,7 +329,7 @@
                     </div>
                     <div class="text-center">
                         <p class="text-emerald-400 text-xs font-bold uppercase">Origen</p>
-                        <p class="text-gray-500 text-[10px]">Sin datos</p>
+                        <p class="text-xs text-gray-400" id="stepOrigen">Sin datos</p>
                     </div>
                 </div>
 
@@ -325,7 +340,7 @@
                     </div>
                     <div class="text-center">
                         <p class="text-gray-400 text-xs font-bold uppercase">Proceso</p>
-                        <p class="text-gray-600 text-[10px]">--</p>
+                        <p class="text-xs text-gray-400" id="stepProceso">--</p>
                     </div>
                 </div>
 
@@ -336,7 +351,7 @@
                     </div>
                     <div class="text-center">
                         <p class="text-gray-400 text-xs font-bold uppercase">Logística</p>
-                        <p class="text-gray-600 text-[10px]">--</p>
+                        <p class="text-xs text-gray-400" id="stepLogistica">--</p>
                     </div>
                 </div>
 
@@ -347,7 +362,7 @@
                     </div>
                     <div class="text-center">
                         <p class="text-gray-400 text-xs font-bold uppercase">Destino</p>
-                        <p class="text-gray-600 text-[10px]">--</p>
+                        <p class="text-xs text-gray-400" id="stepDestino">--</p>
                     </div>
                 </div>
             </div>
@@ -360,10 +375,6 @@
                     <i class="fas fa-list-ul text-emerald-500"></i>
                     Registro de Eventos
                 </h3>
-                <div class="flex gap-2 text-xs">
-                    <button class="px-3 py-1 rounded hover:bg-white/5 text-gray-400 transition-colors"><i class="fas fa-download mr-1"></i> Exportar CSV</button>
-                    <button class="px-3 py-1 rounded hover:bg-white/5 text-gray-400 transition-colors"><i class="fas fa-print mr-1"></i> Imprimir</button>
-                </div>
             </div>
 
             <div class="overflow-x-auto">
@@ -376,26 +387,29 @@
                             <th>Ubicación</th>
                             <th>Estado TX</th>
                             <th>Hash Blockchain</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="trace-table-body">
-                        <!-- ESTADO VACÍO POR DEFECTO -->
-                        <tr>
-                            <td colspan="7" class="text-center py-12">
-                                <div class="flex flex-col items-center justify-center text-gray-500">
-                                    <i class="fas fa-search text-3xl mb-3 opacity-30"></i>
-                                    <p class="text-sm">Realiza una búsqueda para ver los registros de trazabilidad.</p>
-                                </div>
-                            </td>
-                        </tr>
+                    <tbody id="eventsTableBody">
+
+                        <div id="emptyState" class="hidden text-center py-8 text-gray-500">
+                            <i class="far fa-folder-open text-2xl mb-2"></i>
+                            <p class="text-sm">No hay registros de eventos de trazabilidad.</p>
+                        </div>
+
+                        <!-- Se llena dinámicamente -->
                     </tbody>
+
+
                 </table>
+                    <div id="emptyState" class="hidden text-center py-10 text-gray-500">
+                        <i class="far fa-folder-open text-3xl mb-3 text-gray-600"></i>
+                        <p class="text-sm">No hay lotes registrados para trazar.</p>
+                    </div>
+
             </div>
             
             <!-- Paginación (Visual) -->
             <div class="flex justify-between items-center mt-6 pt-4 border-t border-white/5 text-xs text-gray-500">
-                <p>Mostrando 0 de 0 registros</p>
                 <div class="flex gap-2">
                     <button class="px-3 py-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-50" disabled>Anterior</button>
                     <button class="px-3 py-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-50" disabled>Siguiente</button>
@@ -408,21 +422,236 @@
     <!-- Script Placeholder -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Aquí iría la lógica para conectar con el backend y llenar las tablas.
-            // Por ahora, solo maneja la interfaz de usuario.
-            
-            const searchInput = document.querySelector('input[type="text"]');
-            
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const term = e.target.value;
-                    if(term) {
-                        alert(`Iniciando rastreo en la red Blockchain para: ${term}`);
-                        // Aquí llamarías a fetchTraceData(term)
-                    }
+            const HISTORY_KEY = 'trazzaLotesHistory';
+
+            const searchInput       = document.getElementById('searchTrace');
+            const filterDateBtn     = document.getElementById('filterDateBtn');
+            const filterLocationBtn = document.getElementById('filterLocationBtn');
+
+            const tableBody   = document.getElementById('eventsTableBody');
+            const emptyState  = document.getElementById('emptyState');
+
+            const metricLotes = document.getElementById('metricLotes');
+            const metricProd  = document.getElementById('metricProductos');
+            const metricTx    = document.getElementById('metricTransacciones');
+            const metricAlert = document.getElementById('metricAlertas');
+
+            const stepOrigen    = document.getElementById('stepOrigen');
+            const stepProceso   = document.getElementById('stepProceso');
+            const stepLogistica = document.getElementById('stepLogistica');
+            const stepDestino   = document.getElementById('stepDestino');
+
+            let eventos = [];
+            let filterMode = 'all'; // 'all' | 'date' | 'location'
+
+            // ================== CARGAR DATOS ==================
+            function loadHistory() {
+                const raw = localStorage.getItem(HISTORY_KEY);
+                let lotes = [];
+                if (raw) {
+                    try { lotes = JSON.parse(raw) || []; }
+                    catch { lotes = []; }
                 }
-            });
+
+                const eventos = history.map((lote, index) => {
+                const fullHash  = lote.fullHash || '';
+                const shortHash = fullHash
+                    ? fullHash.substring(0, 10) + '...'
+                    : (lote.id || '').substring(0, 10) + '...';
+
+                return {
+                    id: index + 1,
+                    fecha: lote.time || '--',
+                    loteId: lote.file || 'Sin nombre',
+                    evento: 'Carga inicial de lote',
+                    ubicacion: 'No definido',
+                    estado: lote.status || 'Confirmado',
+                    txHash: shortHash,         // 👈 IMPORTANTE: usar este nombre
+                    hashFull: fullHash || null
+                    };
+                });
+
+
+
+                actualizarUI();
+            }
+
+            function actualizarUI() {
+                renderTable(eventos);
+                actualizarMetricas(eventos);
+                actualizarMapa(eventos);
+            }
+
+            function actualizarMetricas(data) {
+                const totalLotes  = data.length;
+                const totalTx     = data.length;
+                const totalAlert  = data.filter(e => e.status !== 'Confirmado' || e.risk !== 'Bajo').length;
+
+                if (metricLotes) metricLotes.textContent = totalLotes;
+                if (metricProd)  metricProd.textContent  = totalLotes; // placeholder
+                if (metricTx)    metricTx.textContent    = totalTx;
+                if (metricAlert) metricAlert.textContent = totalAlert;
+            }
+
+            function actualizarMapa(data) {
+                if (!data.length) {
+                    if (stepOrigen)    stepOrigen.textContent    = 'Sin datos';
+                    if (stepProceso)   stepProceso.textContent   = '--';
+                    if (stepLogistica) stepLogistica.textContent = '--';
+                    if (stepDestino)   stepDestino.textContent   = '--';
+                    return;
+                }
+
+                const first = data[0];
+                if (stepOrigen)    stepOrigen.textContent    = `Lote: ${first.loteId}`;
+                if (stepProceso)   stepProceso.textContent   = 'Pendiente de procesamiento';
+                if (stepLogistica) stepLogistica.textContent = 'Pendiente de logística';
+                if (stepDestino)   stepDestino.textContent   = 'Pendiente de entrega';
+            }
+
+            // ================== TABLA ==================
+            function renderTable(data) {
+                if (!tableBody) return;
+
+                if (!data.length) {
+                    tableBody.innerHTML = '';
+                    if (emptyState) emptyState.classList.remove('hidden');
+                    return;
+                }
+                if (emptyState) emptyState.classList.add('hidden');
+
+                tableBody.innerHTML = data.map((item, index) => `
+                    <tr class="hover:bg-white/5 transition-all cursor-pointer"
+                        onclick="showTraceDetails(${index})">
+                        <td class="px-4 py-3 text-sm text-gray-300">${item.time}</td>
+                        <td class="px-4 py-3 text-sm text-white">${item.loteId}</td>
+                        <td class="px-4 py-3 text-sm text-gray-300">${item.event}</td>
+                        <td class="px-4 py-3 text-sm text-gray-400">${item.location}</td>
+                        <td class="px-4 py-3">
+                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
+                                ${item.status === 'Confirmado' && item.risk === 'Bajo'
+                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                    : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'}">
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-xs font-mono text-emerald-400">
+                            ${item.txHash || '--'}
+                        </td>
+
+                    </tr>
+                `).join('');
+            }
+
+            // ================== BÚSQUEDA ==================
+            function aplicarFiltro(term) {
+                const t = term.trim().toLowerCase();
+                if (!t) {
+                    renderTable(eventos);
+                    return;
+                }
+
+                const filtrados = eventos.filter(ev => {
+                    if (filterMode === 'date') {
+                        return (ev.time || '').toLowerCase().includes(t);
+                    }
+                    if (filterMode === 'location') {
+                        return (ev.location || '').toLowerCase().includes(t);
+                    }
+                    // all
+                    return (
+                        (ev.loteId   || '').toLowerCase().includes(t) ||
+                        (ev.file     || '').toLowerCase().includes(t) ||
+                        (ev.txHash   || '').toLowerCase().includes(t) ||
+                        (ev.status   || '').toLowerCase().includes(t) ||
+                        (ev.time     || '').toLowerCase().includes(t) ||
+                        (ev.location || '').toLowerCase().includes(t)
+                    );
+                });
+
+                if (!filtrados.length) {
+                    alert('⚠ No se encontró ningún lote que coincida con el término ingresado.');
+                    renderTable(eventos);
+                } else {
+                    renderTable(filtrados);
+                }
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        aplicarFiltro(searchInput.value);
+                    }
+                });
+            }
+
+            // ================== BOTONES FECHA / UBICACIÓN ==================
+            function setFilterMode(mode) {
+                filterMode = mode;
+
+                // Reset estilos básicos
+                if (filterDateBtn) {
+                    filterDateBtn.classList.remove('ring-2','ring-emerald-400');
+                }
+                if (filterLocationBtn) {
+                    filterLocationBtn.classList.remove('ring-2','ring-blue-400');
+                }
+
+                if (mode === 'date' && filterDateBtn) {
+                    filterDateBtn.classList.add('ring-2','ring-emerald-400');
+                    if (searchInput) searchInput.placeholder = 'Filtrar por fecha/hora...';
+                } else if (mode === 'location' && filterLocationBtn) {
+                    filterLocationBtn.classList.add('ring-2','ring-blue-400');
+                    if (searchInput) searchInput.placeholder = 'Filtrar por ubicación...';
+                } else {
+                    if (searchInput) searchInput.placeholder = 'Buscar ID Lote / Hash...';
+                }
+            }
+
+            if (filterDateBtn) {
+                filterDateBtn.addEventListener('click', () => {
+                    setFilterMode(filterMode === 'date' ? 'all' : 'date');
+                });
+            }
+
+            if (filterLocationBtn) {
+                filterLocationBtn.addEventListener('click', () => {
+                    setFilterMode(filterMode === 'location' ? 'all' : 'location');
+                });
+            }
+
+            // ================== DETALLE (alert) ==================
+            window.showTraceDetails = (index) => {
+                const item = eventos[index];
+                if (!item) return;
+
+                const fakeBlock  = Math.floor(Math.random() * 900000) + 100000;
+                const fakeNode   = Math.floor(Math.random() * 5) + 1;
+                const fakeOrigin = ['Huerto Norte','Huerto Sur','Parcela A','Parcela B'][Math.floor(Math.random()*4)];
+
+                alert(
+        `🔍 TRAZABILIDAD DEL LOTE
+        -----------------------------------------
+        Lote / Archivo: ${item.loteId}
+        Tx Hash: ${item.txHash}
+        Estado TX: ${item.status}
+
+        📌 Blockchain:
+        • Bloque: #${fakeBlock}
+        • Timestamp: ${item.time}
+        • Nodo validador: Node-${fakeNode}
+
+        🌱 Origen:
+        • Parcela verificada: ${fakeOrigin}
+
+        ✔ Registro encontrado en la cadena (simulación).`);
+            };
+
+            // init
+            loadHistory();
         });
     </script>
+
+
 </body>
 </html>

@@ -441,62 +441,37 @@
 
     </main>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-        import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, onSnapshot, orderBy } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+    <script>
+        // =========================
+        //  CONFIGURACIÓN BÁSICA
+        // =========================
+        const HISTORY_KEY = 'trazzaLotesHistory';
 
-        // Variables Globales
-        let db, auth, user;
-        let lotesCargados = [];
-        let lotesFiltrados = [];
-        
+        let lotesCargados   = [];
+        let lotesFiltrados  = [];
+
         const certificaciones = {
-            'GLOBALG.A.P.': { hallazgo: 3, descarte: 15 },
-            'ISO 22000': { hallazgo: 5, descarte: 20 },
-            'BRCGS': { hallazgo: 2, descarte: 10 },
-            'Orgánico': { hallazgo: 1, descarte: 5 }
+            'GLOBALG.A.P.': { hallazgo: 3,  descarte: 15 },
+            'ISO 22000':    { hallazgo: 5,  descarte: 20 },
+            'BRCGS':        { hallazgo: 2,  descarte: 10 },
+            'Orgánico':     { hallazgo: 1,  descarte: 5  }
         };
 
         window.certificacionSeleccionada = 'ISO 22000';
 
-        // --- INICIALIZACIÓN FIREBASE ---
-        async function initFirebase() {
-            try {
-                const firebaseConfig = JSON.parse(__firebase_config);
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                
-                await signInAnonymously(auth);
-                
-                onAuthStateChanged(auth, (currentUser) => {
-                    if (currentUser) {
-                        user = currentUser;
-                        document.getElementById('user-id-display').textContent = user.uid.substring(0, 8) + '...';
-                        console.log('✅ Autenticado como:', user.uid);
-                        setupRealtimeListener();
-                    }
-                });
-
-            } catch (error) {
-                console.error("Error inicializando Firebase:", error);
-                showStatusMessage("Error de conexión con base de datos", "error");
-            }
-        }
-
-        // --- SISTEMA DE NOTIFICACIONES ---
-        window.showStatusMessage = function(message, type = 'info') {
+        // =========================
+        //  UTILIDADES UI
+        // =========================
+        function showStatusMessage(message, type = 'info') {
             const container = document.getElementById('status-message-container');
             if (!container) return;
 
             const modal = document.createElement('div');
-            
+
             let bgClass = 'bg-[#011c16] border-emerald-500/50';
             let iconColor = 'text-emerald-400';
             let iconClass = 'fa-info';
-            
+
             if (type === 'error') {
                 bgClass = 'bg-[#011c16] border-red-500/50';
                 iconColor = 'text-red-400';
@@ -520,83 +495,95 @@
             `;
 
             container.appendChild(modal);
-            // Trigger animation
+
             requestAnimationFrame(() => {
                 modal.classList.remove('opacity-0', 'translate-x-full');
             });
-            
+
             setTimeout(() => {
                 modal.classList.add('opacity-0', 'translate-x-full');
                 modal.addEventListener('transitionend', () => modal.remove());
             }, 5000);
         }
 
-        // --- SELECCION DE CERTIFICACION ---
+        // =========================
+        //  SELECCIÓN DE CERTIFICACIÓN
+        // =========================
         window.selectCertification = function(certType) {
             window.certificacionSeleccionada = certType;
 
-            // Visual Update
             document.querySelectorAll('.cert-option').forEach(el => el.classList.remove('selected'));
             const selectedId = 'cert-' + certType.replace(/\s+/g, '_').replace(/\./g, '');
             const selectedEl = document.getElementById(selectedId);
             if (selectedEl) selectedEl.classList.add('selected');
 
-            // Text Update
             const config = certificaciones[certType];
-            document.getElementById('certification-info').innerHTML = `
-                <i class="fas fa-info-circle mr-2 text-emerald-500"></i>
-                Norma activa: <span class="text-white font-semibold">${certType}</span> 
-                <span class="text-xs ml-2 opacity-70">(Hallazgo >${config.hallazgo}%, Descarte >${config.descarte}%)</span>
-            `;
-            
+            const info = document.getElementById('certification-info');
+            if (info && config) {
+                info.innerHTML = `
+                    <i class="fas fa-info-circle mr-2 text-emerald-500"></i>
+                    Norma activa: <span class="text-white font-semibold">${certType}</span> 
+                    <span class="text-xs ml-2 opacity-70">(Hallazgo >${config.hallazgo}%, Descarte >${config.descarte}%)</span>
+                `;
+            }
+
             showStatusMessage(`Norma cambiada a: ${certType}`, 'info');
-        }
+        };
 
-        // --- CARGA DE DATOS REALES (FIRESTORE) ---
-        function setupRealtimeListener() {
-            if (!user || !db) return;
-            
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
-            // Usamos una colección pública para simplificar la demo, o privada por usuario
-            // Siguiendo la regla estricta: /artifacts/{appId}/users/{userId}/lotes
-            const q = query(
-                collection(db, 'artifacts', appId, 'users', user.uid, 'lotes'),
-                orderBy('date', 'desc')
-            );
-
-            onSnapshot(q, (snapshot) => {
-                lotesCargados = [];
-                snapshot.forEach((doc) => {
-                    lotesCargados.push({ id: doc.id, ...doc.data() });
-                });
-                
-                lotesFiltrados = [...lotesCargados];
-                renderLotesTable(lotesFiltrados);
-                updateSummaryCards();
-                document.getElementById('lotes-count').textContent = `(${lotesCargados.length})`;
-            }, (error) => {
-                console.error("Error escuchando lotes:", error);
-                // Si falla el índice o algo, mostramos tabla vacía pero funcional
+        // =========================
+        //  CARGAR LOTES DESDE localStorage
+        // =========================
+        function loadHistoryFromLocalStorage() {
+            const raw = localStorage.getItem(HISTORY_KEY);
+            if (!raw) {
+                lotesCargados  = [];
+                lotesFiltrados = [];
                 renderLotesTable([]);
-                if (error.code === 'failed-precondition') {
-                    console.warn("Falta índice en Firestore. Ordenamiento desactivado.");
-                }
-            });
+                updateSummaryCards();
+                updateLotesCount();
+                return;
+            }
+
+            try {
+                const history = JSON.parse(raw) || [];
+                // Estructura esperada desde carga.html:
+                // { id: shortHash, file: nombre, time: timestamp, status, fullHash }
+                lotesCargados = history.map((item, index) => ({
+                    id: index,
+                    loteId: item.id || `Lote-${index + 1}`,
+                    fileName: item.file || 'Desconocido',
+                    date: item.time || '',
+                    simResult: 'Pendiente', // hasta que se ejecute simulación
+                    fullHash: item.fullHash || null
+                }));
+            } catch (e) {
+                console.error('Error leyendo trazzaLotesHistory:', e);
+                lotesCargados = [];
+            }
+
+            lotesFiltrados = [...lotesCargados];
+            renderLotesTable(lotesFiltrados);
+            updateSummaryCards();
+            updateLotesCount();
         }
 
-        // --- RENDERIZADO DE TABLA ---
+        // =========================
+        //  TABLA PRINCIPAL
+        // =========================
         function renderLotesTable(lotes) {
             const tbody = document.getElementById('lotes-table-body');
+            if (!tbody) return;
+
             tbody.innerHTML = '';
 
-            if (lotes.length === 0) {
+            if (!lotes.length) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="6" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center justify-center opacity-50">
                                 <i class="fas fa-inbox text-4xl mb-3 text-emerald-500/50"></i>
                                 <p>No hay lotes registrados</p>
-                                <span class="text-xs text-gray-500">Los datos cargados aparecerán aquí automáticamente</span>
+                                <span class="text-xs text-gray-500">Carga un lote en el módulo de Carga para verlo aquí.</span>
                             </div>
                         </td>
                     </tr>`;
@@ -606,6 +593,15 @@
             lotes.forEach(lote => {
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-white/5 transition-colors group border-b border-white/5 last:border-0';
+
+                // Separar fecha y hora a partir del string guardado
+                let fecha = lote.date;
+                let hora  = '';
+                if (lote.date && lote.date.includes(' ')) {
+                    const parts = lote.date.split(' ');
+                    fecha = parts[0] || lote.date;
+                    hora  = parts[1] || '';
+                }
 
                 const simResult = lote.simResult || 'Pendiente';
                 let badgeClass = 'bg-gray-500/10 text-gray-400 border-gray-500/20';
@@ -624,25 +620,23 @@
                     icon = 'fa-ban';
                 }
 
-                const dateObj = lote.date ? new Date(lote.date) : new Date();
-                const dateStr = dateObj.toLocaleDateString('es-ES');
-                const timeStr = dateObj.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-
                 row.innerHTML = `
-                    <td class="px-6 py-4 font-mono text-xs text-white">${(lote.loteId || lote.id).substring(0, 16)}...</td>
+                    <td class="px-6 py-4 font-mono text-xs text-white">${(lote.loteId || '').substring(0, 16)}...</td>
                     <td class="px-6 py-4 flex items-center gap-2 text-gray-300">
                         <i class="fas fa-file-csv text-emerald-500/50"></i>
-                        ${lote.fileName || 'Desconocido'}
+                        ${lote.fileName}
                     </td>
-                    <td class="px-6 py-4 text-xs text-gray-400">${dateStr}</td>
-                    <td class="px-6 py-4 text-xs text-gray-400">${timeStr}</td>
+                    <td class="px-6 py-4 text-xs text-gray-400">${fecha || '--'}</td>
+                    <td class="px-6 py-4 text-xs text-gray-400">${hora || '--'}</td>
                     <td class="px-6 py-4">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${badgeClass}">
                             <i class="fas ${icon}"></i> ${displayText}
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <button class="text-gray-400 hover:text-white transition-colors" title="Ver Detalles">
+                        <button class="text-gray-400 hover:text-white transition-colors" 
+                                title="Ver Detalles"
+                                onclick="verDetalleLote(${lotesCargados.indexOf(lote)})">
                             <i class="fas fa-eye"></i>
                         </button>
                     </td>
@@ -651,143 +645,142 @@
             });
         }
 
-        // --- FILTROS ---
+        window.verDetalleLote = function(index) {
+            const lote = lotesCargados[index];
+            if (!lote) return;
+
+            alert(
+        `🔍 DETALLE DE LOTE
+        -----------------------------
+        ID Lote: ${lote.loteId}
+        Archivo: ${lote.fileName}
+        Fecha/Hora: ${lote.date}
+        Hash: ${lote.fullHash || 'N/A'}
+        Estado Simulación: ${lote.simResult}`
+            );
+        };
+
+        // =========================
+        //  FILTROS (BUSCADOR + ESTADO)
+        // =========================
         window.filterLotes = function() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            const status = document.getElementById('filter-status').value;
+            const termInput = document.getElementById('search-input');
+            const statusSel = document.getElementById('filter-status');
+
+            const term   = termInput ? termInput.value.toLowerCase() : '';
+            const status = statusSel ? statusSel.value : 'all';
 
             lotesFiltrados = lotesCargados.filter(l => {
-                const idVal = l.loteId || l.id || '';
+                const idVal   = l.loteId || '';
                 const nameVal = l.fileName || '';
-                const matchTerm = !term || idVal.toLowerCase().includes(term) || nameVal.toLowerCase().includes(term);
-                const matchStatus = status === 'all' || (l.simResult || 'Pendiente') === status;
+                const matchTerm = !term || 
+                    idVal.toLowerCase().includes(term) || 
+                    nameVal.toLowerCase().includes(term);
+
+                const simVal = l.simResult || 'Pendiente';
+                const matchStatus = status === 'all' || simVal === status;
+
                 return matchTerm && matchStatus;
             });
 
             renderLotesTable(lotesFiltrados);
-            document.getElementById('lotes-count').textContent = `(${lotesFiltrados.length})`;
+            updateLotesCount();
+        };
+
+        function updateLotesCount() {
+            const el = document.getElementById('lotes-count');
+            if (el) el.textContent = `(${lotesFiltrados.length})`;
         }
 
+        // =========================
+        //  TARJETAS RESUMEN
+        // =========================
         function updateSummaryCards() {
-            const total = lotesCargados.length;
-            const procesados = lotesCargados.filter(l => l.simResult && l.simResult !== 'Pendiente');
-            const hallazgos = lotesCargados.filter(l => l.simResult === 'Hallazgo').length;
-            const descartes = lotesCargados.filter(l => l.simResult === 'Descarte').length;
-            const conformes = lotesCargados.filter(l => l.simResult === 'Conforme').length;
+            const total      = lotesCargados.length;
+            const hallazgos  = lotesCargados.filter(l => l.simResult === 'Hallazgo').length;
+            const descartes  = lotesCargados.filter(l => l.simResult === 'Descarte').length;
+            const conformes  = lotesCargados.filter(l => l.simResult === 'Conforme').length;
+            const procesados = lotesCargados.filter(l => l.simResult && l.simResult !== 'Pendiente').length;
 
-            const totalProcesadosCount = procesados.length;
-            const pct = totalProcesadosCount > 0 
-                ? (((conformes + hallazgos) / totalProcesadosCount) * 100).toFixed(1) 
+            const pct = procesados > 0 
+                ? (((conformes + hallazgos) / procesados) * 100).toFixed(1)
                 : 0;
 
-            document.getElementById('sim-total-lotes').textContent = total;
-            document.getElementById('sim-hallazgos').textContent = hallazgos;
-            document.getElementById('sim-descarte').textContent = descartes;
-            document.getElementById('sim-conformidad').textContent = pct > 0 ? `${pct}%` : '--';
+            const elTotal  = document.getElementById('sim-total-lotes');
+            const elHall   = document.getElementById('sim-hallazgos');
+            const elDesc   = document.getElementById('sim-descarte');
+            const elConf   = document.getElementById('sim-conformidad');
+
+            if (elTotal) elTotal.textContent = total;
+            if (elHall)  elHall.textContent  = hallazgos;
+            if (elDesc)  elDesc.textContent  = descartes;
+            if (elConf)  elConf.textContent  = pct > 0 ? `${pct}%` : '--';
         }
 
-        // --- LOGICA DE SIMULACION REAL (CSV PARSING) ---
-        window.iniciarSimulacion = async function() {
-            if (lotesCargados.length === 0) {
-                // Generar un dato de prueba si no hay nada, para que el usuario vea que funciona
-                if(confirm("No hay datos cargados. ¿Desea generar un lote de prueba para auditar?")) {
-                    await crearLotePrueba();
-                    return; 
-                }
+        // =========================
+        //  SIMULACIÓN (SIN FIREBASE)
+        // =========================
+        window.iniciarSimulacion = function() {
+            if (!lotesCargados.length) {
+                showStatusMessage('No hay lotes para auditar. Carga algunos en el módulo de Carga.', 'warning');
                 return;
             }
 
             const btn = document.getElementById('start-simulation-btn');
+            if (!btn) return;
+
             const originalHtml = btn.innerHTML;
-            
+
             btn.disabled = true;
             btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Analizando Bloques...`;
             btn.classList.add('opacity-75', 'cursor-not-allowed');
 
             showStatusMessage(`Auditando bajo norma ${window.certificacionSeleccionada}...`, 'info');
 
-            try {
-                const config = certificaciones[window.certificacionSeleccionada];
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
+            const config = certificaciones[window.certificacionSeleccionada];
 
-                // Procesar Lotes
-                let processCount = 0;
-                for (const lote of lotesCargados) {
-                    let simResult = 'Conforme';
-                    
-                    // Si el lote tiene contenido CSV guardado (csvContent), lo analizamos realmente
-                    if (lote.csvContent) {
-                         const lines = lote.csvContent.split('\n').filter(line => line.trim());
-                         // Lógica simplificada de análisis de texto real
-                         // Buscamos palabras clave en el contenido si no hay estructura fija
-                         const textoCompleto = lote.csvContent.toUpperCase();
-                         
-                         // Contar incidencias reales en el texto
-                         const countDescarte = (textoCompleto.match(/DESCARTE|RECHAZADO/g) || []).length;
-                         const countHallazgo = (textoCompleto.match(/HALLAZGO|ALERTA|DEFECTO/g) || []).length;
-                         const totalLineas = lines.length - 1 || 1; // Descontar header
+            // Simulación sencilla: aleatorio en función de la norma
+            lotesCargados = lotesCargados.map(lote => {
+                let simResult = 'Conforme';
+                const rnd = Math.random() * 100;
 
-                         const pctDescarte = (countDescarte / totalLineas) * 100;
-                         const pctHallazgo = (countHallazgo / totalLineas) * 100;
+                if (rnd > config.descarte) simResult = 'Descarte';
+                else if (rnd > config.hallazgo) simResult = 'Hallazgo';
 
-                         if (pctDescarte > config.descarte) simResult = 'Descarte';
-                         else if (pctDescarte > config.hallazgo || pctHallazgo > config.hallazgo) simResult = 'Hallazgo';
-                         
-                    } else {
-                        // Si no tiene contenido real (ej: cargado externamente), simulamos basado en metadatos o dejamos conforme
-                        // Para esta demo, si no hay csvContent, asumimos Conforme para no romper flujo
-                        simResult = 'Conforme';
-                    }
+                return { ...lote, simResult };
+            });
 
-                    // Actualizar en Firestore
-                    const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'lotes', lote.id);
-                    await updateDoc(docRef, { 
-                        simResult: simResult,
-                        lastAudit: new Date().toISOString(),
-                        auditStandard: window.certificacionSeleccionada
-                    });
-                    processCount++;
-                }
+            lotesFiltrados = [...lotesCargados];
+            renderLotesTable(lotesFiltrados);
+            updateSummaryCards();
+            updateLotesCount();
 
-                // Generar informe final
-                const descartes = lotesCargados.filter(l => l.simResult === 'Descarte').length; // Nota: esto usará el estado local actualizado por el listener en breve
-                
-                let resumen = `Auditoría completada. <strong>${processCount} lotes</strong> procesados. `;
-                resumen += `Datos verificados en Blockchain.`;
-                
-                document.getElementById('sim-report-summary').innerHTML = resumen;
-                showStatusMessage('Auditoría finalizada correctamente.', 'success');
-
-            } catch (error) {
-                console.error('Error simulación:', error);
-                showStatusMessage('Error procesando auditoría.', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHtml;
-                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            const resumenEl = document.getElementById('sim-report-summary');
+            if (resumenEl) {
+                const descartes = lotesCargados.filter(l => l.simResult === 'Descarte').length;
+                const hallazgos = lotesCargados.filter(l => l.simResult === 'Hallazgo').length;
+                resumenEl.innerHTML = `
+                    Auditoría completada sobre <strong>${lotesCargados.length} lotes</strong>.<br>
+                    Hallazgos: <strong>${hallazgos}</strong> &nbsp;•&nbsp; Descartes: <strong>${descartes}</strong>.
+                `;
             }
-        }
 
-        // Función auxiliar para demo
-        async function crearLotePrueba() {
-            if (!user) return;
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'lotes'), {
-                    loteId: `DEMO-${Math.floor(Math.random()*1000)}`,
-                    fileName: 'lote_ejemplo.csv',
-                    date: new Date().toISOString(),
-                    csvContent: "ID,FRUTA,CALIDAD_STATUS\n1,MANGO,OK\n2,MANGO,DESCARTE\n3,MANGO,OK\n4,MANGO,HALLAZGO", // Datos reales para probar el parser
-                    simResult: 'Pendiente'
-                });
-                showStatusMessage("Lote de prueba generado.", "success");
-            } catch (e) {
-                console.error("Error creando prueba:", e);
-            }
-        }
+            showStatusMessage('Auditoría finalizada correctamente.', 'success');
 
-        // Iniciar
-        initFirebase();
-    </script>
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+            btn.classList.remove('opacity-75', 'cursor-not-allowed');
+        };
+
+        // =========================
+        //  INIT
+        // =========================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHistoryFromLocalStorage();
+            // Norma por defecto
+            selectCertification('ISO 22000');
+        });
+        </script>
+
 </body>
 </html>

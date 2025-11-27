@@ -6,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carga de Lotes - TrazzaNet Blockchain</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Configuración Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -164,20 +161,16 @@
 
 <body class="flex h-screen overflow-hidden text-sm md:text-base">
 
-    <!-- SIDEBAR INTELIGENTE (Copiado del Dashboard para consistencia) -->
     <aside class="w-20 hover:w-72 glass-sidebar flex flex-col justify-between group absolute md:relative h-full shadow-2xl hover:shadow-emerald-900/50 flex-shrink-0">
         
-        <!-- Logo Area -->
         <div class="h-24 flex items-center px-6 border-b border-white/5 flex-shrink-0">
             <div class="flex items-center gap-4">
-                <!-- Símbolo -->
                 <div class="relative w-8 h-8 flex-shrink-0">
                     <svg class="w-8 h-8 text-emerald-500 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-180" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
                         <circle cx="50" cy="50" r="12" fill="currentColor"/>
                     </svg>
                 </div>
-                <!-- Texto -->
                 <div class="sidebar-text flex flex-col justify-center">
                     <h1 class="text-xl font-bold text-white tracking-wide leading-none">Trazza<span class="text-emerald-400">Net</span></h1>
                     <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] mt-1">Blockchain System</p>
@@ -185,7 +178,6 @@
             </div>
         </div>
 
-        <!-- Navigation -->
         <nav class="flex-1 py-8 space-y-2 px-3 overflow-y-auto overflow-x-hidden">
             <a href="dashboard.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
                 <div class="w-8 flex justify-center flex-shrink-0"><i class="fas fa-chart-pie text-lg"></i></div>
@@ -209,7 +201,6 @@
             </a>
         </nav>
 
-        <!-- User Info -->
         <div class="p-4 border-t border-white/5 bg-gradient-to-t from-emerald-900/20 to-transparent flex-shrink-0">
             <div class="flex items-center gap-3 overflow-hidden">
                 <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 flex-shrink-0">
@@ -223,10 +214,8 @@
         </div>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto relative p-4 md:p-8 ml-20 transition-all duration-400">
         
-        <!-- Header -->
         <header class="flex justify-between items-center mb-8 animate-entry">
             <div>
                 <h2 class="text-2xl font-bold text-white mb-1">Registro de Nuevos Lotes</h2>
@@ -240,7 +229,6 @@
 
         <div class="max-w-5xl mx-auto space-y-8">
             
-            <!-- TARJETA DE CARGA (Glassmorphism) -->
             <div class="glass-panel p-8 rounded-3xl animate-entry" style="animation-delay: 0.1s;">
                 <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-900/50">
@@ -252,11 +240,9 @@
                     </div>
                 </div>
 
-                <!-- Drag & Drop Zone -->
                 <div id="dragArea" class="drag-area p-12 rounded-2xl text-center cursor-pointer group relative overflow-hidden">
                     <input type="file" id="fileInput" class="hidden" accept=".csv, .xlsx, .json">
                     
-                    <!-- Fondo decorativo sutil -->
                     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMTYsIDE4NSwgMTI5LCAwLjEpIi8+PC9zdmc+')] opacity-30"></div>
 
                     <div class="relative z-10">
@@ -272,56 +258,50 @@
                     </div>
                 </div>
 
-                <!-- Estados de Carga (Ocultos por defecto) -->
-                
-                <!-- 1. Procesando -->
                 <div id="processingArea" class="hidden mt-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 processing flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <i class="fas fa-cog fa-spin text-blue-400 text-2xl"></i>
                         <div>
-                            <p class="text-blue-200 font-semibold text-sm">Validando estructura y Hasheando...</p>
-                            <p class="text-blue-400/60 text-xs font-mono" id="fileNameDisplay">datos_lote_2025.csv</p>
+                            <p class="text-blue-200 font-semibold text-sm">Procesando envío al servidor...</p>
+                            <p class="text-blue-400/60 text-xs font-mono" id="fileNameDisplay">datos.csv</p>
                         </div>
                     </div>
                     <span class="text-blue-300 font-bold font-mono" id="progressText">0%</span>
                 </div>
 
-                <!-- 2. Éxito -->
                 <div id="successArea" class="hidden mt-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between animate-entry">
                     <div class="flex items-center gap-4">
                         <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
                             <i class="fas fa-check text-white text-sm"></i>
                         </div>
                         <div>
-                            <p class="text-emerald-200 font-semibold text-sm">¡Bloque Minado con Éxito!</p>
-                            <p class="text-emerald-400/60 text-xs">Los datos son ahora inmutables.</p>
+                            <p class="text-emerald-200 font-semibold text-sm">¡Subida Exitosa!</p>
+                            <p class="text-emerald-400/60 text-xs">El servidor ha recibido los datos.</p>
                         </div>
                     </div>
                     <div class="text-right">
                         <p class="text-[10px] text-gray-500 uppercase">Transaction ID</p>
-                        <p class="text-emerald-400 font-mono text-xs" id="txHash">0x8f2...b1a</p>
+                        <p class="text-emerald-400 font-mono text-xs" id="txHash">Esperando...</p>
                     </div>
                 </div>
 
-                <!-- 3. Error -->
                 <div id="errorArea" class="hidden mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-4">
                     <i class="fas fa-exclamation-circle text-red-400 text-xl"></i>
                     <div>
-                        <p class="text-red-200 font-semibold text-sm">Error en la validación</p>
-                        <p class="text-red-400/60 text-xs" id="errorMessage">El formato del archivo no coincide con el Smart Contract.</p>
+                        <p class="text-red-200 font-semibold text-sm">Error en la carga</p>
+                        <p class="text-red-400/60 text-xs" id="errorMessage">No se pudo conectar al servidor.</p>
                     </div>
                 </div>
 
             </div>
 
-            <!-- HISTORIAL DE CARGAS -->
             <div class="glass-panel p-8 rounded-3xl animate-entry" style="animation-delay: 0.2s;">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-white flex items-center gap-2">
                         <i class="fas fa-history text-emerald-500"></i> Historial de Transacciones
                     </h3>
-                    <button class="text-xs text-emerald-400 hover:text-white transition-colors flex items-center gap-1">
-                        Ver Explorer <i class="fas fa-external-link-alt"></i>
+                    <button onclick="loadHistory()" class="text-xs text-emerald-400 hover:text-emerald-300 transition">
+                        <i class="fas fa-sync-alt"></i> Actualizar
                     </button>
                 </div>
 
@@ -333,21 +313,24 @@
                                 <th>Archivo Fuente</th>
                                 <th>Timestamp</th>
                                 <th>Estado Blockchain</th>
-                                <th>Acciones</th>
+                                <th class="py-2 px-3 text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="historyTable">
-                            <!-- JS Populará esto -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Script Lógica -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURACIÓN DEL BACKEND ---
+            // Cambia esto si tu servidor está en otra IP o puerto
+            const API_BASE_URL = 'http://localhost:3000/api'; 
+            
+            // Elementos del DOM
             const dragArea = document.getElementById('dragArea');
             const fileInput = document.getElementById('fileInput');
             const processingArea = document.getElementById('processingArea');
@@ -357,47 +340,26 @@
             const progressText = document.getElementById('progressText');
             const historyTable = document.getElementById('historyTable');
 
-            // --- Datos vacíos por defecto ---
-            const mockHistory = [];
-
-            function renderHistory() {
-                if (mockHistory.length === 0) {
-                    historyTable.innerHTML = `
-                        <tr>
-                            <td colspan="5" class="text-center py-8 text-gray-500">
-                                <i class="far fa-folder-open mr-2"></i> No hay registros de carga aún.
-                            </td>
-                        </tr>
-                    `;
-                    return;
+            // --- GESTIÓN DE USUARIO (Sesión simple) ---
+            function getOrCreateUserId() {
+                let userId = sessionStorage.getItem('userId');
+                if (!userId) {
+                    userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                    sessionStorage.setItem('userId', userId);
                 }
-
-                historyTable.innerHTML = mockHistory.map(item => `
-                    <tr class="transition-colors duration-200">
-                        <td class="font-mono text-xs text-emerald-500/80">${item.id}</td>
-                        <td class="flex items-center gap-2">
-                            <i class="far fa-file-alt text-gray-500"></i> ${item.file}
-                        </td>
-                        <td class="text-xs text-gray-400">${item.time}</td>
-                        <td>
-                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider 
-                                ${item.status === 'Confirmado' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'}">
-                                ${item.status}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="text-gray-400 hover:text-white transition-colors"><i class="fas fa-ellipsis-h"></i></button>
-                        </td>
-                    </tr>
-                `).join('');
+                return userId;
             }
+            const userId = getOrCreateUserId();
 
-            // Renderizar inicial
-            renderHistory();
+            // --- INICIALIZACIÓN ---
+            loadHistory(); // Cargar historial al iniciar
+            
+            // Polling: Actualizar historial automáticamente cada 10 segundos
+            setInterval(loadHistory, 10000);
 
-            // --- Drag & Drop Logic ---
+            // --- LISTENERS DE INTERFAZ ---
             dragArea.addEventListener('click', () => fileInput.click());
-
+            
             dragArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 dragArea.classList.add('drag-over', 'border-emerald-400', 'bg-emerald-500/10');
@@ -411,57 +373,169 @@
                 e.preventDefault();
                 dragArea.classList.remove('drag-over', 'border-emerald-400', 'bg-emerald-500/10');
                 const file = e.dataTransfer.files[0];
-                if (file) processFile(file);
+                if (file) handleFileUpload(file);
             });
 
             fileInput.addEventListener('change', (e) => {
-                if (e.target.files[0]) processFile(e.target.files[0]);
+                if (e.target.files[0]) handleFileUpload(e.target.files[0]);
             });
 
-            function processFile(file) {
-                // UI Reset
-                errorArea.classList.add('hidden');
-                successArea.classList.add('hidden');
+            // --- LÓGICA DE CARGA (UPLOAD) ---
+            async function handleFileUpload(file) {
+                // 1. Resetear UI
+                hideAllAlerts();
                 processingArea.classList.remove('hidden');
-                
                 fileNameDisplay.textContent = file.name;
-                
-                // Simulación de carga
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += Math.floor(Math.random() * 15);
-                    if (progress > 100) progress = 100;
-                    progressText.textContent = progress + '%';
+                progressText.textContent = '0%';
 
-                    if (progress === 100) {
-                        clearInterval(interval);
-                        setTimeout(completeUpload, 500);
+                // 2. Validaciones Frontend
+                if (file.size > 10 * 1024 * 1024) { // 10MB
+                    showError('El archivo excede el límite de 10MB.');
+                    return;
+                }
+
+                const validExtensions = ['.csv', '.xlsx', '.json'];
+                const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+                if (!validExtensions.includes(fileExtension)) {
+                    showError('Formato no soportado. Use CSV, XLSX o JSON.');
+                    return;
+                }
+
+                // 3. Preparar Envío
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('userId', userId); // Identificar quién sube
+
+                // Simulación visual de progreso (ya que fetch no tiene progress nativo simple)
+                let fakeProgress = 0;
+                const progressInterval = setInterval(() => {
+                    fakeProgress = Math.min(fakeProgress + 5, 90);
+                    progressText.textContent = fakeProgress + '%';
+                }, 200);
+
+                try {
+                    // 4. Petición al Backend
+                    const response = await fetch(`${API_BASE_URL}/upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    clearInterval(progressInterval);
+                    progressText.textContent = '100%';
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Error en el servidor');
                     }
-                }, 300);
+
+                    const result = await response.json();
+
+                    // 5. Éxito
+                    processingArea.classList.add('hidden');
+                    successArea.classList.remove('hidden');
+                    document.getElementById('txHash').textContent = result.transactionId || 'Pendiente...';
+                    
+                    // Recargar historial para ver el nuevo ítem
+                    loadHistory();
+
+                } catch (error) {
+                    clearInterval(progressInterval);
+                    console.error('Upload error:', error);
+                    showError(error.message || 'Error de conexión con el servidor (Verifica que el backend esté corriendo en puerto 3000).');
+                }
             }
 
-            function completeUpload() {
-                processingArea.classList.add('hidden');
-                
-                // Random Success/Error simulation (90% success rate)
-                const isSuccess = Math.random() > 0.1;
-
-                if (isSuccess) {
-                    successArea.classList.remove('hidden');
-                    document.getElementById('txHash').textContent = '0x' + Math.random().toString(16).substr(2, 40);
+            // --- GESTIÓN DEL HISTORIAL ---
+            async function loadHistory() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/history?userId=${userId}`);
+                    if (!response.ok) throw new Error('Error cargando historial');
                     
-                    // Agregar registro al historial
-                    mockHistory.unshift({ 
-                        id: '0x' + Math.random().toString(16).substr(2, 8) + '...', 
-                        file: fileNameDisplay.textContent, 
-                        time: 'Ahora mismo', 
-                        status: 'Confirmado' 
-                    });
-                    renderHistory();
+                    const data = await response.json();
+                    renderHistoryTable(data);
+                } catch (error) {
+                    console.warn('No se pudo cargar el historial:', error);
+                    // Opcional: Mostrar estado offline en la tabla
+                }
+            }
 
-                } else {
-                    errorArea.classList.remove('hidden');
-                    document.getElementById('errorMessage').textContent = "Error de integridad: El hash del archivo no coincide.";
+            function renderHistoryTable(items) {
+                if (!items || items.length === 0) {
+                    historyTable.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center py-8 text-gray-500">
+                                <i class="far fa-folder-open mr-2"></i> No hay registros en el servidor.
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                historyTable.innerHTML = items.map(item => `
+                    <tr class="transition-colors duration-200 group">
+                        <td class="font-mono text-xs text-emerald-500/80" title="${item.transactionId}">
+                            ${item.transactionId ? item.transactionId.substring(0, 10) + '...' : 'Pendiente'}
+                        </td>
+                        <td class="flex items-center gap-2">
+                            <i class="far fa-file-alt text-gray-400"></i> ${item.fileName}
+                        </td>
+                        <td class="text-xs text-gray-400">${new Date(item.timestamp).toLocaleString()}</td>
+                        <td>
+                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
+                                ${getStatusClasses(item.status)}">
+                                ${item.status || 'Procesando'}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <button onclick="deleteItem('${item.id}')" 
+                                class="text-red-400/50 hover:text-red-400 transition transform hover:scale-110">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            function getStatusClasses(status) {
+                switch(status?.toLowerCase()) {
+                    case 'confirmado':
+                    case 'success':
+                        return 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                    case 'error':
+                    case 'fallido':
+                        return 'bg-red-500/20 text-red-400 border border-red-500/30';
+                    default: // Procesando / Pendiente
+                        return 'bg-blue-500/20 text-blue-400 border border-blue-500/30 animate-pulse';
+                }
+            }
+
+            // --- UTILIDADES ---
+            function hideAllAlerts() {
+                processingArea.classList.add('hidden');
+                successArea.classList.add('hidden');
+                errorArea.classList.add('hidden');
+            }
+
+            function showError(msg) {
+                processingArea.classList.add('hidden');
+                successArea.classList.add('hidden');
+                errorArea.classList.remove('hidden');
+                document.getElementById('errorMessage').textContent = msg;
+            }
+
+            // Exponer función de borrado al scope global para el onclick del HTML
+            window.deleteItem = async function(id) {
+                if (!confirm("¿Seguro que deseas eliminar este registro del servidor?")) return;
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/history/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        loadHistory(); // Recargar tabla
+                    } else {
+                        alert("No se pudo eliminar el registro");
+                    }
+                } catch (e) {
+                    console.error(e);
+                    alert("Error de conexión");
                 }
             }
         });
