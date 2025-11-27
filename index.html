@@ -249,10 +249,10 @@
                     <!-- Acciones Extra -->
                     <div class="flex justify-between items-center text-xs text-gray-400 pt-2">
                         <label class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
-                            <input type="checkbox" class="accent-emerald-500 rounded bg-gray-800 border-gray-700">
+                            <input id="rememberMe" type="checkbox" class="accent-emerald-500 rounded bg-gray-800 border-gray-700">
                             Recordarme
                         </label>
-                        <a href="#" class="hover:text-emerald-400 transition-colors underline decoration-dotted">¿Recuperar acceso?</a>
+
                     </div>
 
                     <!-- Botón Principal -->
@@ -275,116 +275,140 @@
     </main>
 
     <!-- Script de Funcionalidad -->
-
     <script>
-    const SESSION_KEY = 'trazanet_session';
+        const SESSION_KEY = 'trazzaSession';
 
-    // Al cargar la página: si ya hay sesión, manda directo al dashboard
-    window.addEventListener('DOMContentLoaded', () => {
-        const existingSession =
-            localStorage.getItem(SESSION_KEY) ||
-            sessionStorage.getItem(SESSION_KEY);
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1) Si ya hay sesión, saltarse el login y enviar al dashboard
+            const storedLocal = localStorage.getItem(SESSION_KEY);
+            const storedSession = sessionStorage.getItem(SESSION_KEY);
+            const existing = storedLocal || storedSession;
 
-        if (existingSession) {
-            try {
-                const session = JSON.parse(existingSession);
-                // Si quieres, puedes validar algo del session (ej. username)
-                if (session && session.username) {
-                    window.location.href = 'dashboard.html';
+            if (existing) {
+                try {
+                    const session = JSON.parse(existing);
+                    if (session && session.isLoggedIn) {
+                        window.location.href = 'dashboard.html';
+                        return;
+                    }
+                } catch (e) {
+                    localStorage.removeItem(SESSION_KEY);
+                    sessionStorage.removeItem(SESSION_KEY);
+                }
+            }
+
+            // 2) Inicializar formulario de login
+            initLoginForm();
+        });
+
+        function initLoginForm() {
+            const loginForm = document.getElementById('login-form');
+            if (!loginForm) return;
+
+            const statusMsg = document.getElementById('status-msg');
+            const msgText = document.getElementById('msg-text');
+            const submitBtn = loginForm.querySelector('button');
+            const rememberCheckbox = document.getElementById('rememberMe');
+
+            // Credenciales demo (mismas que el index anterior)
+            const DEMO = {
+                ruc: "20601234567",
+                user: "admin",
+                pass: "avocado123"
+            };
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const ruc = document.getElementById('ruc').value.trim();
+                const user = document.getElementById('user').value.trim();
+                const pass = document.getElementById('pass').value.trim();
+
+                if (!ruc || !user || !pass) {
+                    showStatus(
+                        statusMsg,
+                        msgText,
+                        "Completa todos los campos para continuar.",
+                        "error"
+                    );
+                    shakeInputs();
                     return;
                 }
-            } catch (e) {
-                // Si algo falla al parsear, limpiamos
-                localStorage.removeItem(SESSION_KEY);
-                sessionStorage.removeItem(SESSION_KEY);
+
+                const originalBtnContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verificando hash...';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    if (ruc === DEMO.ruc && user === DEMO.user && pass === DEMO.pass) {
+                        // Éxito
+                        showStatus(
+                            statusMsg,
+                            msgText,
+                            "Credenciales validadas. Redirigiendo al Dashboard...",
+                            "ok"
+                        );
+
+                        const sessionData = {
+                            isLoggedIn: true,
+                            ruc,
+                            user,
+                            loginTime: new Date().toISOString()
+                        };
+
+                        const remember = rememberCheckbox ? rememberCheckbox.checked : true;
+                        const storage = remember ? localStorage : sessionStorage;
+                        storage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+
+                    } else {
+                        // Error de credenciales
+                        showStatus(
+                            statusMsg,
+                            msgText,
+                            "Credenciales inválidas. (Prueba: 20601234567 / admin / avocado123)",
+                            "error"
+                        );
+                        shakeInputs();
+                        submitBtn.innerHTML = originalBtnContent;
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                    }
+                }, 1200);
+            });
+        }
+
+        function showStatus(statusMsg, msgText, message, type) {
+            if (!statusMsg) return;
+
+            statusMsg.classList.remove('hidden');
+
+            if (type === 'ok') {
+                statusMsg.className =
+                    "mt-6 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-xs flex items-center gap-3";
+                statusMsg.innerHTML =
+                    '<i class="fa-solid fa-shield-check"></i> <span>' + message + '</span>';
+            } else {
+                statusMsg.className =
+                    "mt-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-xs flex items-center gap-3";
+                statusMsg.innerHTML =
+                    '<i class="fa-solid fa-circle-xmark"></i> <span id=\"msg-text\">' + message + '</span>';
             }
         }
 
-        // Si no hay sesión, dejamos el formulario listo
-        initLoginForm();
-    });
-
-    function initLoginForm() {
-        const form = document.getElementById('loginForm');
-        const errorBox = document.getElementById('login-error');
-        const errorText = document.getElementById('login-error-text');
-
-        if (!form) return;
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const ruc = document.getElementById('ruc').value.trim();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const role = document.getElementById('role').value;
-            const remember = document.getElementById('rememberMe').checked;
-
-            if (!ruc || !username || !password) {
-                errorBox.classList.remove('d-none');
-                errorText.textContent = 'Completa todos los campos para continuar.';
-                return;
-            }
-
-            // 🔐 OPCIÓN A: solo demo (no valida en backend)
-            // Deja esto en true mientras no tengas API de login real
-            const demoMode = true;
-
-            if (demoMode) {
-                saveSession({ ruc, username, role });
-                return;
-            }
-
-            // 🔐 OPCIÓN B: login REAL contra backend (cuando tengas endpoint)
-            try {
-                const resp = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ruc, username, password })
-                });
-
-                if (!resp.ok) {
-                    throw new Error('Credenciales inválidas');
-                }
-
-                const data = await resp.json();
-                // Ajusta estos campos según lo que devuelva tu backend
-                saveSession({
-                    ruc,
-                    username,
-                    role,
-                    token: data.token
-                }, remember);
-
-            } catch (err) {
-                console.error(err);
-                errorBox.classList.remove('d-none');
-                errorText.textContent = 'Credenciales inválidas o error de conexión.';
-            }
-        });
-    }
-
-    function saveSession(payload, remember = true) {
-        const errorBox = document.getElementById('login-error');
-        if (errorBox) errorBox.classList.add('d-none');
-
-        const sessionData = {
-            ...payload,
-            loginTime: new Date().toISOString()
-        };
-
-        const json = JSON.stringify(sessionData);
-
-        if (remember) {
-            localStorage.setItem(SESSION_KEY, json);
-        } else {
-            sessionStorage.setItem(SESSION_KEY, json);
+        function shakeInputs() {
+            document.querySelectorAll('.tech-input').forEach(input => {
+                input.classList.add('border-red-500');
+                setTimeout(() => input.classList.remove('border-red-500'), 500);
+            });
         }
+    </script>
+</body>
+</html>
 
-        // Redirigir al dashboard
-        window.location.href = 'dashboard.html';
-    }
-    </script>        
-    
 </body>
 </html>
