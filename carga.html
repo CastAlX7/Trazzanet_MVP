@@ -330,7 +330,7 @@
             const progressText = document.getElementById('progressText');
             const historyTable = document.getElementById('historyTable');
 
-            // --- LÓGICA DE ALMACENAMIENTO LOCAL (Base de datos en navegador) ---
+            // --- LÓGICA DE ALMACENAMIENTO LOCAL ---
             const HISTORY_KEY = 'trazzaNet_history_v2';
             let mockHistory = [];
 
@@ -370,7 +370,12 @@
             });
 
             fileInput.addEventListener('change', (e) => {
-                if (e.target.files[0]) startProcess(e.target.files[0]);
+                if (e.target.files[0]) {
+                    startProcess(e.target.files[0]);
+                    
+                    // 👇👇 FIX IMPORTANTE: Resetear el input para permitir subir el mismo archivo de nuevo
+                    fileInput.value = ''; 
+                }
             });
 
             // --- LÓGICA DE SIMULACIÓN DE CARGA ---
@@ -383,10 +388,9 @@
                 fileNameDisplay.textContent = file.name;
                 progressText.textContent = '0%';
 
-                // 2. Simular tiempo de carga (Barra de progreso)
+                // 2. Simular tiempo de carga
                 let progress = 0;
                 const interval = setInterval(() => {
-                    // Incremento aleatorio para parecer real
                     progress += Math.floor(Math.random() * 15) + 5; 
                     
                     if (progress >= 100) {
@@ -394,7 +398,6 @@
                         progressText.textContent = '100%';
                         clearInterval(interval);
                         
-                        // Pequeña pausa antes de mostrar resultado
                         setTimeout(() => finishProcess(file), 500);
                     } else {
                         progressText.textContent = progress + '%';
@@ -405,18 +408,15 @@
             function finishProcess(file) {
                 processingArea.classList.add('hidden');
 
-                // Simular validación: Fallar el 10% de las veces para realismo
                 const isSuccess = Math.random() > 0.1; 
 
                 if (isSuccess) {
-                    // Generar Hash Falso
                     const tx = '0x' + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join('');
                     const shortHash = tx.substring(0, 10) + '...';
                     
                     document.getElementById('txHash').textContent = shortHash;
                     successArea.classList.remove('hidden');
 
-                    // Agregar al historial
                     const newItem = {
                         id: tx,
                         shortId: shortHash,
@@ -425,7 +425,7 @@
                         status: 'Confirmado'
                     };
 
-                    mockHistory.unshift(newItem); // Agregar al inicio
+                    mockHistory.unshift(newItem); 
                     saveHistory();
                     renderHistory();
 
@@ -469,12 +469,15 @@
                 `).join('');
             }
 
-            // --- UTILIDADES GLOBALES (para los onclick) ---
+            // --- UTILIDADES GLOBALES ---
             window.deleteItem = function(index) {
                 if(confirm('¿Eliminar este registro del historial local?')) {
                     mockHistory.splice(index, 1);
                     saveHistory();
                     renderHistory();
+                    
+                    // Opcional: Ocultar el mensaje de éxito si borras el último subido
+                    successArea.classList.add('hidden');
                 }
             };
 
@@ -483,10 +486,10 @@
                     mockHistory = [];
                     saveHistory();
                     renderHistory();
+                    successArea.classList.add('hidden');
                 }
             };
 
-            // Iniciar
             loadHistory();
         });
     </script>
