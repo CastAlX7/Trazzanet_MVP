@@ -6,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Certificaciones - TrazzaNet</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Configuración Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -157,10 +154,8 @@
 
     <div class="grid-bg"></div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar h-screen fixed left-0 top-0 flex flex-col justify-between shadow-2xl">
         <div>
-            <!-- Header Logo -->
             <div class="h-20 flex items-center px-5 relative border-b border-white/5">
                 <div class="w-10 h-10 min-w-[2.5rem] flex items-center justify-center bg-emerald-900/30 rounded-lg border border-emerald-500/30 text-emerald-400">
                     <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -170,9 +165,7 @@
                 </div>
                 <div class="sidebar-text ml-3">
                     <h1 class="text-lg font-bold text-white tracking-wide">Trazza<span class="text-emerald-400">Net</span></h1>
-                    <p class="text-[0.6rem] text-gray-400 uppercase tracking-widest">Blockchain System
-
-</p>
+                    <p class="text-[0.6rem] text-gray-400 uppercase tracking-widest">Blockchain System</p>
                 </div>
             </div>
 
@@ -194,7 +187,6 @@
                     <span class="sidebar-text ml-4 font-medium text-sm">Auditoría</span>
                 </a>
                 
-                <!-- Active Link -->
                 <a href="gestor_certificaciones.html" class="nav-link active">
                     <i class="fas fa-certificate text-emerald-400"></i>
                     <span class="sidebar-text ml-4 font-medium text-sm text-white">Certificaciones</span>
@@ -224,10 +216,8 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 ml-20 p-8 lg:p-12 transition-all duration-300">
         
-        <!-- Header -->
         <div class="flex justify-between items-end mb-10 animate-[fadeIn_0.5s_ease-out]">
             <div>
                 <h1 class="text-3xl font-bold text-white mb-2 flex items-center gap-3">
@@ -237,15 +227,13 @@
                 <p class="text-gray-400 text-sm max-w-2xl">Administre los estándares de calidad y normativas aplicables a los lotes en Blockchain.</p>
             </div>
             
-            <button onclick="showCreateModal()" class="px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 transition-all flex items-center gap-2 active:scale-95">
+            <button onclick="openModal('create')" class="px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 transition-all flex items-center gap-2 active:scale-95">
                 <i class="fas fa-plus-circle"></i> Nueva Certificación
             </button>
         </div>
 
-        <!-- Main Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-[fadeIn_0.6s_ease-out]">
 
-            <!-- Left Col: Certifications List (2/3) -->
             <div class="lg:col-span-2 space-y-6">
                 <div class="glass-panel rounded-2xl overflow-hidden">
                     <div class="p-6 border-b border-white/5 bg-white/5">
@@ -254,112 +242,17 @@
                         </h3>
                     </div>
                     
-                    <div class="p-6 space-y-4">
-                        
-                        <!-- Card 1: GlobalG.A.P. -->
-                        <div class="cert-card glass-panel p-5 rounded-xl border border-white/5 hover:bg-white/5 transition-all group">
-                            <div class="flex justify-between items-start">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xl">
-                                        <i class="fas fa-globe"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Auditoría GlobalG.A.P.</h4>
-                                        <p class="text-sm text-gray-400 mt-1">Buenas prácticas agrícolas para productos frescos.</p>
-                                        <div class="flex gap-3 mt-3">
-                                            <span class="text-xs text-gray-500 bg-black/20 px-2 py-1 rounded"><i class="fas fa-ruler-combined mr-1"></i> 12 Reglas</span>
-                                            <span class="text-xs text-emerald-500/80 bg-emerald-500/10 px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i> Activa</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                                    <button onclick="openExternalLink('globalgap')" class="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white" title="Ver Estándar"><i class="fas fa-external-link-alt"></i></button>
-                                    <button onclick="editCert('globalgap')" class="p-2 hover:bg-blue-500/20 rounded-lg text-gray-400 hover:text-blue-400" title="Editar"><i class="fas fa-edit"></i></button>
-                                    <button onclick="deleteCert('globalgap')" class="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>
+                    <div id="certs-container" class="p-6 space-y-4">
+                        <div class="text-center py-10 text-gray-500">
+                            <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                            <p>Cargando normativas...</p>
                         </div>
-
-                        <!-- Card 2: ISO 22000 -->
-                        <div class="cert-card glass-panel p-5 rounded-xl border border-white/5 hover:bg-white/5 transition-all group">
-                            <div class="flex justify-between items-start">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl">
-                                        <i class="fas fa-shield-alt"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">ISO 22000: Seguridad</h4>
-                                        <p class="text-sm text-gray-400 mt-1">Gestión de inocuidad alimentaria en cadena de suministro.</p>
-                                        <div class="flex gap-3 mt-3">
-                                            <span class="text-xs text-gray-500 bg-black/20 px-2 py-1 rounded"><i class="fas fa-ruler-combined mr-1"></i> 15 Reglas</span>
-                                            <span class="text-xs text-emerald-500/80 bg-emerald-500/10 px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i> Activa</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                                    <button onclick="openExternalLink('iso22000')" class="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></button>
-                                    <button onclick="editCert('iso22000')" class="p-2 hover:bg-blue-500/20 rounded-lg text-gray-400 hover:text-blue-400"><i class="fas fa-edit"></i></button>
-                                    <button onclick="deleteCert('iso22000')" class="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3: BRCGS -->
-                        <div class="cert-card glass-panel p-5 rounded-xl border border-white/5 hover:bg-white/5 transition-all group">
-                            <div class="flex justify-between items-start">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 text-xl">
-                                        <i class="fas fa-shopping-basket"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">BRCGS Food Safety</h4>
-                                        <p class="text-sm text-gray-400 mt-1">Estándar global para seguridad y calidad operativa.</p>
-                                        <div class="flex gap-3 mt-3">
-                                            <span class="text-xs text-gray-500 bg-black/20 px-2 py-1 rounded"><i class="fas fa-ruler-combined mr-1"></i> 10 Reglas</span>
-                                            <span class="text-xs text-emerald-500/80 bg-emerald-500/10 px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i> Activa</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                                    <button onclick="openExternalLink('brcgs')" class="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></button>
-                                    <button onclick="editCert('brcgs')" class="p-2 hover:bg-blue-500/20 rounded-lg text-gray-400 hover:text-blue-400"><i class="fas fa-edit"></i></button>
-                                    <button onclick="deleteCert('brcgs')" class="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4: Cliente X -->
-                        <div class="cert-card glass-panel p-5 rounded-xl border border-white/5 hover:bg-white/5 transition-all group">
-                            <div class="flex justify-between items-start">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xl">
-                                        <i class="fas fa-user-tie"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Requisitos Cliente X</h4>
-                                        <p class="text-sm text-gray-400 mt-1">Especificaciones privadas para exportación mayorista.</p>
-                                        <div class="flex gap-3 mt-3">
-                                            <span class="text-xs text-gray-500 bg-black/20 px-2 py-1 rounded"><i class="fas fa-ruler-combined mr-1"></i> 8 Reglas</span>
-                                            <span class="text-xs text-emerald-500/80 bg-emerald-500/10 px-2 py-1 rounded"><i class="fas fa-check-circle mr-1"></i> Activa</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                                    <button onclick="openExternalLink('clientex')" class="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></button>
-                                    <button onclick="editCert('clientex')" class="p-2 hover:bg-blue-500/20 rounded-lg text-gray-400 hover:text-blue-400"><i class="fas fa-edit"></i></button>
-                                    <button onclick="deleteCert('clientex')" class="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400"><i class="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
 
-            <!-- Right Col: Info & Quick Create (1/3) -->
             <div class="lg:col-span-1 space-y-6">
                 
-                <!-- Stats -->
                 <div class="glass-panel p-6 rounded-2xl">
                     <h3 class="font-bold text-white mb-4 flex items-center gap-2">
                         <i class="fas fa-chart-pie text-blue-400"></i> Resumen
@@ -367,40 +260,38 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-400">Total Activas</span>
-                            <span class="text-lg font-bold text-white">4</span>
+                            <span class="text-lg font-bold text-white" id="stat-total">0</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-400">Reglas Totales</span>
-                            <span class="text-lg font-bold text-white">45</span>
+                            <span class="text-sm text-gray-400">Estándar más estricto</span>
+                            <span class="text-sm font-bold text-emerald-400" id="stat-strictest">--</span>
                         </div>
                         <div class="w-full bg-gray-700 h-1.5 rounded-full overflow-hidden">
                             <div class="bg-emerald-500 h-full" style="width: 80%"></div>
                         </div>
-                        <p class="text-xs text-emerald-400 text-center mt-2">Cobertura de Auditoría: 80%</p>
+                        <p class="text-xs text-emerald-400 text-center mt-2">Cobertura de Auditoría: 100%</p>
                     </div>
                 </div>
 
-                <!-- Quick Info -->
                 <div class="glass-panel p-6 rounded-2xl border border-emerald-500/20">
                     <div class="flex items-start gap-3">
                         <i class="fas fa-lightbulb text-yellow-400 mt-1"></i>
                         <div>
-                            <h4 class="font-bold text-white text-sm">¿Cómo funciona?</h4>
+                            <h4 class="font-bold text-white text-sm">Configuración Inteligente</h4>
                             <p class="text-xs text-gray-400 mt-2 leading-relaxed">
-                                Las certificaciones definen los umbrales (temp, peso, calidad) que los Smart Contracts utilizan para validar automáticamente los lotes.
+                                Los cambios en los umbrales de "Hallazgo" y "Descarte" se aplicarán automáticamente a las próximas simulaciones de auditoría.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Actions -->
                 <div class="glass-panel p-6 rounded-2xl text-center">
                     <div class="w-16 h-16 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
                         <i class="fas fa-plus text-2xl text-emerald-400"></i>
                     </div>
                     <h3 class="font-bold text-white mb-2">Personalizar Estándar</h3>
                     <p class="text-xs text-gray-400 mb-6">Crea una normativa interna adaptada a tus necesidades.</p>
-                    <button onclick="showCreateModal()" class="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-bold text-white transition-colors">
+                    <button onclick="openModal('create')" class="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm font-bold text-white transition-colors">
                         Iniciar Asistente
                     </button>
                 </div>
@@ -411,82 +302,282 @@
 
     </main>
 
-    <!-- Create Modal (Simulado) -->
-    <div id="create-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div id="cert-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-lg rounded-2xl overflow-hidden transform transition-all scale-100">
             <div class="p-6 border-b border-white/10 bg-emerald-900/20">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-certificate text-emerald-400"></i> Nueva Certificación
+                <h3 class="text-xl font-bold text-white flex items-center gap-2" id="modal-title">
+                    <i class="fas fa-certificate text-emerald-400"></i> Configurar Certificación
                 </h3>
             </div>
+            
             <div class="p-6 space-y-4">
+                <input type="hidden" id="cert-id">
+                
                 <div>
-                    <label class="block text-sm text-gray-400 mb-1">Nombre del Estándar</label>
-                    <input type="text" class="tech-input w-full rounded-lg p-3" placeholder="Ej: Normativa Interna 2025">
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">Descripción</label>
-                    <textarea rows="3" class="tech-input w-full rounded-lg p-3" placeholder="Detalles de la normativa..."></textarea>
+                    <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Nombre del Estándar</label>
+                    <input type="text" id="cert-name" class="tech-input w-full rounded-lg p-3 text-sm" placeholder="Ej: Normativa Interna 2025">
                 </div>
                 
-                <div class="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg flex gap-2 items-start">
-                    <i class="fas fa-info-circle text-blue-400 mt-0.5 text-xs"></i>
-                    <p class="text-xs text-blue-200">Podrás definir las reglas específicas (temperatura, peso, etc.) en el siguiente paso.</p>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Descripción</label>
+                    <textarea id="cert-desc" rows="2" class="tech-input w-full rounded-lg p-3 text-sm" placeholder="Detalles de la normativa..."></textarea>
                 </div>
 
-                <div class="flex justify-end gap-3 pt-4">
-                    <button onclick="hideCreateModal()" class="px-4 py-2 text-gray-400 hover:text-white text-sm font-bold">Cancelar</button>
-                    <button onclick="alert('Redirigiendo al editor de reglas...'); hideCreateModal();" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-lg">
-                        Siguiente
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-yellow-400 mb-1 uppercase tracking-wider">Max. Hallazgo (%)</label>
+                        <input type="number" id="cert-hallazgo" class="tech-input w-full rounded-lg p-3 text-sm border-yellow-500/30 focus:border-yellow-500" placeholder="Ej: 5">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-red-400 mb-1 uppercase tracking-wider">Max. Descarte (%)</label>
+                        <input type="number" id="cert-descarte" class="tech-input w-full rounded-lg p-3 text-sm border-red-500/30 focus:border-red-500" placeholder="Ej: 15">
+                    </div>
+                </div>
+                
+                <div class="bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg flex gap-2 items-start mt-2">
+                    <i class="fas fa-info-circle text-blue-400 mt-0.5 text-xs"></i>
+                    <p class="text-xs text-blue-200">Estos valores definirán automáticamente si un lote es <b>Aprobado</b>, tiene <b>Hallazgos</b> o es <b>Rechazado</b>.</p>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-white/10 mt-4">
+                    <button onclick="closeModal()" class="px-4 py-2 text-gray-400 hover:text-white text-sm font-bold transition-colors">Cancelar</button>
+                    <button onclick="saveCert()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-bold shadow-lg transition-all">
+                        Guardar Cambios
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- User ID Script -->
     <script>
-        function getOrCreateUserId() {
-            let storedUserId = sessionStorage.getItem('trazanet_user_id');
-            if (!storedUserId) {
-                storedUserId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-                sessionStorage.setItem('trazanet_user_id', storedUserId);
-            }
-            return storedUserId;
-        }
+        const CONFIG_KEY = 'trazza_certs_config'; // Clave de almacenamiento
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const userId = getOrCreateUserId();
-            document.getElementById('user-id-display').textContent = `ID Usuario: ${userId}`;
+        // Datos por defecto si no hay nada guardado
+        const DEFAULT_CERTS = [
+            { 
+                id: 'globalgap', 
+                name: 'GLOBALG.A.P.', 
+                desc: 'Buenas prácticas agrícolas para productos frescos.', 
+                hallazgo: 3, 
+                descarte: 15,
+                icon: 'fa-globe',
+                colorClass: 'text-blue-400',
+                bgClass: 'bg-blue-500/10',
+                borderClass: 'border-blue-500/20',
+                url: 'https://www.globalgap.org/'
+            },
+            { 
+                id: 'iso22000', 
+                name: 'ISO 22000', 
+                desc: 'Gestión de inocuidad alimentaria en cadena de suministro.', 
+                hallazgo: 5, 
+                descarte: 20,
+                icon: 'fa-shield-alt',
+                colorClass: 'text-indigo-400',
+                bgClass: 'bg-indigo-500/10',
+                borderClass: 'border-indigo-500/20',
+                url: 'https://www.iso.org/'
+            },
+            { 
+                id: 'brcgs', 
+                name: 'BRCGS Food Safety', 
+                desc: 'Estándar global para seguridad y calidad operativa.', 
+                hallazgo: 2, 
+                descarte: 10,
+                icon: 'fa-shopping-basket',
+                colorClass: 'text-orange-400',
+                bgClass: 'bg-orange-500/10',
+                borderClass: 'border-orange-500/20',
+                url: 'https://www.brcgs.com/'
+            },
+            { 
+                id: 'clientex', 
+                name: 'Requisitos Cliente X', 
+                desc: 'Especificaciones privadas para exportación mayorista.', 
+                hallazgo: 1, 
+                descarte: 5,
+                icon: 'fa-user-tie',
+                colorClass: 'text-purple-400',
+                bgClass: 'bg-purple-500/10',
+                borderClass: 'border-purple-500/20',
+                url: '#'
+            }
+        ];
+
+        let currentCerts = [];
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCerts();
+            
+            // Usuario ficticio
+            const userId = 'user-' + Math.random().toString(36).substr(2, 5);
+            document.getElementById('user-id-display').textContent = `ID: ${userId}`;
         });
 
-        // Modal Functions
-        function showCreateModal() {
-            document.getElementById('create-modal').classList.remove('hidden');
-        }
-        function hideCreateModal() {
-            document.getElementById('create-modal').classList.add('hidden');
+        // --- CARGAR DATOS ---
+        function loadCerts() {
+            const raw = localStorage.getItem(CONFIG_KEY);
+            if (!raw) {
+                // Primera vez: guardar defaults
+                currentCerts = JSON.parse(JSON.stringify(DEFAULT_CERTS));
+                saveToStorage();
+            } else {
+                currentCerts = JSON.parse(raw);
+            }
+            renderCerts();
+            updateStats();
         }
 
-        // Actions
-        function editCert(id) {
-            alert(`Editando configuración para: ${id.toUpperCase()}\n(Funcionalidad de edición en desarrollo)`);
+        function saveToStorage() {
+            localStorage.setItem(CONFIG_KEY, JSON.stringify(currentCerts));
+            updateStats();
         }
-        function deleteCert(id) {
-            if(confirm('¿Estás seguro de eliminar este estándar? Esto afectará a futuras auditorías.')) {
-                alert('Estándar eliminado (simulado)');
+
+        // --- RENDER ---
+        function renderCerts() {
+            const container = document.getElementById('certs-container');
+            container.innerHTML = '';
+
+            if (currentCerts.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-500 py-4">No hay certificaciones activas.</p>`;
+                return;
+            }
+
+            currentCerts.forEach(cert => {
+                // Estilos por defecto para nuevas certs personalizadas si no tienen clases
+                const icon = cert.icon || 'fa-certificate';
+                const colorClass = cert.colorClass || 'text-emerald-400';
+                const bgClass = cert.bgClass || 'bg-emerald-500/10';
+                const borderClass = cert.borderClass || 'border-emerald-500/20';
+
+                const card = document.createElement('div');
+                card.className = "cert-card glass-panel p-5 rounded-xl border border-white/5 hover:bg-white/5 transition-all group";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg ${bgClass} ${borderClass} border flex items-center justify-center ${colorClass} text-xl flex-shrink-0">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">${cert.name}</h4>
+                                <p class="text-sm text-gray-400 mt-1 line-clamp-2">${cert.desc}</p>
+                                <div class="flex flex-wrap gap-3 mt-3">
+                                    <span class="text-xs text-yellow-200/80 bg-yellow-500/10 px-2 py-1 rounded border border-yellow-500/20" title="Umbral Hallazgo">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i> > ${cert.hallazgo}%
+                                    </span>
+                                    <span class="text-xs text-red-300/80 bg-red-500/10 px-2 py-1 rounded border border-red-500/20" title="Umbral Descarte">
+                                        <i class="fas fa-ban mr-1"></i> > ${cert.descarte}%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                            <button onclick="openLink('${cert.url}')" class="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white" title="Ver Documentación"><i class="fas fa-external-link-alt"></i></button>
+                            <button onclick="openModal('edit', '${cert.id}')" class="p-2 hover:bg-blue-500/20 rounded-lg text-gray-400 hover:text-blue-400" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteCert('${cert.id}')" class="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').textContent = currentCerts.length;
+            
+            if(currentCerts.length > 0) {
+                // Encontrar la más estricta (menor % de hallazgo)
+                const strictest = currentCerts.reduce((prev, curr) => (prev.hallazgo < curr.hallazgo) ? prev : curr);
+                document.getElementById('stat-strictest').textContent = strictest.name;
+            } else {
+                document.getElementById('stat-strictest').textContent = "--";
             }
         }
-        function openExternalLink(id) {
-            const urls = {
-                'globalgap': 'https://www.globalgap.org/',
-                'iso22000': 'https://www.iso.org/iso-22000-food-safety-management.html',
-                'brcgs': 'https://www.brcgs.com/',
-                'clientex': '#'
-            };
-            if(urls[id] && urls[id] !== '#') window.open(urls[id], '_blank');
-            else alert('Documentación interna privada.');
-        }
+
+        // --- ACTIONS ---
+        window.openModal = function(mode, id = null) {
+            const modal = document.getElementById('cert-modal');
+            const title = document.getElementById('modal-title');
+            
+            // Reset fields
+            document.getElementById('cert-id').value = '';
+            document.getElementById('cert-name').value = '';
+            document.getElementById('cert-desc').value = '';
+            document.getElementById('cert-hallazgo').value = '';
+            document.getElementById('cert-descarte').value = '';
+
+            if (mode === 'edit' && id) {
+                const cert = currentCerts.find(c => c.id === id);
+                if (cert) {
+                    title.innerHTML = `<i class="fas fa-edit text-blue-400"></i> Editar ${cert.name}`;
+                    document.getElementById('cert-id').value = cert.id;
+                    document.getElementById('cert-name').value = cert.name;
+                    document.getElementById('cert-desc').value = cert.desc;
+                    document.getElementById('cert-hallazgo').value = cert.hallazgo;
+                    document.getElementById('cert-descarte').value = cert.descarte;
+                }
+            } else {
+                title.innerHTML = `<i class="fas fa-plus-circle text-emerald-400"></i> Nueva Certificación`;
+            }
+
+            modal.classList.remove('hidden');
+        };
+
+        window.closeModal = function() {
+            document.getElementById('cert-modal').classList.add('hidden');
+        };
+
+        window.saveCert = function() {
+            const id = document.getElementById('cert-id').value;
+            const name = document.getElementById('cert-name').value;
+            const desc = document.getElementById('cert-desc').value;
+            const hallazgo = parseFloat(document.getElementById('cert-hallazgo').value);
+            const descarte = parseFloat(document.getElementById('cert-descarte').value);
+
+            if (!name || isNaN(hallazgo) || isNaN(descarte)) {
+                alert('Por favor complete todos los campos requeridos correctamente.');
+                return;
+            }
+
+            if (id) {
+                // Editar existente
+                const index = currentCerts.findIndex(c => c.id === id);
+                if (index !== -1) {
+                    currentCerts[index] = { ...currentCerts[index], name, desc, hallazgo, descarte };
+                }
+            } else {
+                // Crear nuevo
+                const newId = 'custom-' + Date.now();
+                currentCerts.push({
+                    id: newId,
+                    name,
+                    desc,
+                    hallazgo,
+                    descarte,
+                    icon: 'fa-certificate', // Default icon
+                    url: '#'
+                });
+            }
+
+            saveToStorage();
+            renderCerts();
+            closeModal();
+        };
+
+        window.deleteCert = function(id) {
+            if (confirm('¿Estás seguro de eliminar este estándar de calidad?')) {
+                currentCerts = currentCerts.filter(c => c.id !== id);
+                saveToStorage();
+                renderCerts();
+            }
+        };
+
+        window.openLink = function(url) {
+            if(url && url !== '#') window.open(url, '_blank');
+            else alert('Esta es una certificación interna sin documentación pública enlazada.');
+        };
+
     </script>
 </body>
 </html>

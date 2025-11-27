@@ -276,31 +276,54 @@
 
     <!-- Script de Funcionalidad -->
     <script>
-        const SESSION_KEY = 'trazzaSession';
+        // Usaremos dos claves distintas: una para la sesión activa y otra para los datos de "Recordarme"
+        const SESSION_KEY = 'trazzaSession';       // Determina si puede entrar al dashboard
+        const CREDENTIALS_KEY = 'trazzaSavedCreds'; // Solo guarda texto para rellenar inputs
 
         document.addEventListener('DOMContentLoaded', () => {
-            // 1) Si ya hay sesión, saltarse el login y enviar al dashboard
-            const storedLocal = localStorage.getItem(SESSION_KEY);
-            const storedSession = sessionStorage.getItem(SESSION_KEY);
-            const existing = storedLocal || storedSession;
+            checkSessionAndAutoFill();
+            initLoginForm();
+        });
 
-            if (existing) {
+        // 1. Verificar Sesión y Rellenar Datos
+        function checkSessionAndAutoFill() {
+            // A) Verificar si hay sesión ACTIVA (Solo miramos sessionStorage para la sesión actual)
+            // Si quieres que la sesión persista al cerrar el navegador, cambia sessionStorage por localStorage aquí,
+            // pero asegúrate de que el botón de Logout del dashboard borre esa clave.
+            const activeSession = sessionStorage.getItem(SESSION_KEY); 
+
+            if (activeSession) {
                 try {
-                    const session = JSON.parse(existing);
+                    const session = JSON.parse(activeSession);
                     if (session && session.isLoggedIn) {
                         window.location.href = 'dashboard.html';
-                        return;
+                        return; // Detenemos la ejecución para que redirija
                     }
                 } catch (e) {
-                    localStorage.removeItem(SESSION_KEY);
                     sessionStorage.removeItem(SESSION_KEY);
                 }
             }
 
-            // 2) Inicializar formulario de login
-            initLoginForm();
-        });
+            // B) Si no hay sesión activa, miramos si hay credenciales guardadas para "Recordarme"
+            const savedCreds = localStorage.getItem(CREDENTIALS_KEY);
+            if (savedCreds) {
+                try {
+                    const creds = JSON.parse(savedCreds);
+                    // Pre-rellenar los campos
+                    const rucInput = document.getElementById('ruc');
+                    const userInput = document.getElementById('user');
+                    const checkbox = document.getElementById('rememberMe');
 
+                    if (rucInput) rucInput.value = creds.ruc || '';
+                    if (userInput) userInput.value = creds.user || '';
+                    if (checkbox) checkbox.checked = true;
+                } catch (e) {
+                    localStorage.removeItem(CREDENTIALS_KEY);
+                }
+            }
+        }
+
+        // 2. Lógica del Formulario
         function initLoginForm() {
             const loginForm = document.getElementById('login-form');
             if (!loginForm) return;
@@ -310,7 +333,7 @@
             const submitBtn = loginForm.querySelector('button');
             const rememberCheckbox = document.getElementById('rememberMe');
 
-            // Credenciales demo (mismas que el index anterior)
+            // Credenciales Demo
             const DEMO = {
                 ruc: "20601234567",
                 user: "admin",
@@ -325,16 +348,12 @@
                 const pass = document.getElementById('pass').value.trim();
 
                 if (!ruc || !user || !pass) {
-                    showStatus(
-                        statusMsg,
-                        msgText,
-                        "Completa todos los campos para continuar.",
-                        "error"
-                    );
+                    showStatus(statusMsg, msgText, "Completa todos los campos para continuar.", "error");
                     shakeInputs();
                     return;
                 }
 
+                // UI Loading
                 const originalBtnContent = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verificando hash...';
                 submitBtn.disabled = true;
@@ -342,37 +361,36 @@
 
                 setTimeout(() => {
                     if (ruc === DEMO.ruc && user === DEMO.user && pass === DEMO.pass) {
-                        // Éxito
-                        showStatus(
-                            statusMsg,
-                            msgText,
-                            "Credenciales validadas. Redirigiendo al Dashboard...",
-                            "ok"
-                        );
+                        // --- LOGIN EXITOSO ---
+                        
+                        showStatus(statusMsg, msgText, "Credenciales validadas. Redirigiendo...", "ok");
 
+                        // 1. Guardar Sesión Activa (Solo en sessionStorage para que expire al cerrar pestaña si no hay actividad)
                         const sessionData = {
                             isLoggedIn: true,
                             ruc,
                             user,
                             loginTime: new Date().toISOString()
                         };
+                        sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 
-                        const remember = rememberCheckbox ? rememberCheckbox.checked : true;
-                        const storage = remember ? localStorage : sessionStorage;
-                        storage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                        // 2. Manejar "Recordarme" (Solo guarda RUC y Usuario en LocalStorage)
+                        if (rememberCheckbox && rememberCheckbox.checked) {
+                            const credsData = { ruc, user };
+                            localStorage.setItem(CREDENTIALS_KEY, JSON.stringify(credsData));
+                        } else {
+                            // Si el usuario desmarca la casilla, borramos las credenciales guardadas
+                            localStorage.removeItem(CREDENTIALS_KEY);
+                        }
 
+                        // Redirección
                         setTimeout(() => {
                             window.location.href = 'dashboard.html';
                         }, 1000);
 
                     } else {
-                        // Error de credenciales
-                        showStatus(
-                            statusMsg,
-                            msgText,
-                            "Credenciales inválidas. (Prueba: 20601234567 / admin / avocado123)",
-                            "error"
-                        );
+                        // --- ERROR ---
+                        showStatus(statusMsg, msgText, "Credenciales inválidas. (Prueba: 20601234567 / admin / avocado123)", "error");
                         shakeInputs();
                         submitBtn.innerHTML = originalBtnContent;
                         submitBtn.disabled = false;
@@ -382,21 +400,16 @@
             });
         }
 
+        // Utilidades Visuales
         function showStatus(statusMsg, msgText, message, type) {
             if (!statusMsg) return;
-
             statusMsg.classList.remove('hidden');
-
             if (type === 'ok') {
-                statusMsg.className =
-                    "mt-6 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-xs flex items-center gap-3";
-                statusMsg.innerHTML =
-                    '<i class="fa-solid fa-shield-check"></i> <span>' + message + '</span>';
+                statusMsg.className = "mt-6 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-xs flex items-center gap-3";
+                statusMsg.innerHTML = '<i class="fa-solid fa-shield-check"></i> <span>' + message + '</span>';
             } else {
-                statusMsg.className =
-                    "mt-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-xs flex items-center gap-3";
-                statusMsg.innerHTML =
-                    '<i class="fa-solid fa-circle-xmark"></i> <span id=\"msg-text\">' + message + '</span>';
+                statusMsg.className = "mt-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-xs flex items-center gap-3";
+                statusMsg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> <span id=\"msg-text\">' + message + '</span>';
             }
         }
 
@@ -407,8 +420,6 @@
             });
         }
     </script>
-</body>
-</html>
 
 </body>
 </html>

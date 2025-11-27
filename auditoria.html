@@ -6,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Módulo de Auditoría - TrazzaNet</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Configuración Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -46,7 +43,6 @@
             overflow-x: hidden;
         }
 
-        /* --- Fondo de Malla --- */
         .grid-bg {
             position: fixed;
             inset: 0;
@@ -58,7 +54,7 @@
             pointer-events: none;
         }
 
-        /* --- Glassmorphism --- */
+        /* Glassmorphism */
         .glass-panel {
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
             backdrop-filter: blur(20px);
@@ -73,7 +69,7 @@
             box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.1);
         }
 
-        /* --- Sidebar Animation --- */
+        /* Sidebar */
         .sidebar {
             width: 5rem;
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,52 +80,21 @@
             white-space: nowrap;
             z-index: 50;
         }
-
-        .sidebar:hover {
-            width: 18rem;
-        }
-
-        .sidebar-text {
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none;
-        }
-
-        .sidebar:hover .sidebar-text {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: auto;
-            transition-delay: 0.1s;
-        }
+        .sidebar:hover { width: 18rem; }
+        .sidebar-text { opacity: 0; pointer-events: none; transition: 0.3s; }
+        .sidebar:hover .sidebar-text { opacity: 1; pointer-events: auto; transition-delay: 0.1s; }
 
         .nav-link {
-            position: relative;
-            display: flex;
-            align-items: center;
-            height: 3.5rem;
-            padding: 0 1.25rem;
-            color: #94a3b8;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
+            display: flex; align-items: center; height: 3.5rem; padding: 0 1.25rem;
+            color: #94a3b8; transition: all 0.3s; border-left: 3px solid transparent;
         }
-
         .nav-link:hover, .nav-link.active {
             background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
             color: #10B981;
         }
+        .nav-link.active { border-left-color: #10B981; }
 
-        .nav-link.active {
-            border-left-color: #10B981;
-        }
-
-        .nav-link i {
-            min-width: 1.5rem;
-            text-align: center;
-            font-size: 1.25rem;
-        }
-
-        /* --- UI Elements --- */
+        /* Tarjetas de Certificación Select */
         .cert-option {
             cursor: pointer;
             transition: all 0.3s;
@@ -145,36 +110,21 @@
             box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
         }
         
-        /* Input Búsqueda */
         .search-input {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            transition: all 0.3s;
         }
-        .search-input:focus {
-            border-color: #10B981;
-            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
-            outline: none;
-        }
-        
-        /* Loading Spinner */
-        .loading-spinner {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .search-input:focus { border-color: #10B981; outline: none; }
     </style>
 </head>
 
 <body class="flex">
 
-    <!-- Fondo -->
     <div class="grid-bg"></div>
 
-    <!-- SIDEBAR DINÁMICO -->
     <aside class="sidebar h-screen fixed left-0 top-0 flex flex-col justify-between shadow-2xl">
         <div>
-            <!-- Header: Logo -->
             <div class="h-20 flex items-center px-5 relative border-b border-white/5">
                 <div class="w-10 h-10 min-w-[2.5rem] flex items-center justify-center bg-emerald-900/30 rounded-lg border border-emerald-500/30 text-emerald-400">
                     <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -184,13 +134,10 @@
                 </div>
                 <div class="sidebar-text ml-3">
                     <h1 class="text-lg font-bold text-white tracking-wide">Trazza<span class="text-emerald-400">Net</span></h1>
-                    <p class="text-[0.6rem] text-gray-400 uppercase tracking-widest">Blockchain System
-
-</p>
+                    <p class="text-[0.6rem] text-gray-400 uppercase tracking-widest">Blockchain System</p>
                 </div>
             </div>
 
-            <!-- Navegación -->
             <nav class="mt-6 space-y-1">
                 <a href="dashboard.html" class="nav-link group">
                     <i class="fas fa-tachometer-alt group-hover:text-emerald-400 transition-colors"></i>
@@ -214,45 +161,35 @@
                     <i class="fas fa-certificate group-hover:text-emerald-400 transition-colors"></i>
                     <span class="sidebar-text ml-4 font-medium text-sm">Certificaciones</span>
                 </a>
-                <a href="blockchain.html" class="nav-link group">
-                    <i class="fas fa-link group-hover:text-emerald-400 transition-colors"></i>
-                    <span class="sidebar-text ml-4 font-medium text-sm">Blockchain</span>
-                </a>
             </nav>
         </div>
 
-        <!-- Footer User -->
         <div class="p-4 border-t border-white/5">
             <div class="flex items-center overflow-hidden">
                 <div class="w-10 h-10 min-w-[2.5rem] rounded-full bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center text-white font-bold text-xs shadow-lg border border-emerald-400/20">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-user-astronaut"></i>
                 </div>
                 <div class="sidebar-text ml-3">
-                    <p class="text-sm font-medium text-white truncate">Usuario Activo</p>
+                    <p class="text-sm font-medium text-white truncate">Auditor Calidad</p>
                     <p class="text-xs text-emerald-500 truncate" id="user-id-display">Conectando...</p>
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 ml-20 p-8 lg:p-12 transition-all duration-300">
         
-        <!-- Header Página -->
         <div class="flex justify-between items-end mb-10">
             <div>
                 <h2 class="text-3xl font-bold text-white mb-2 flex items-center gap-3">
                     Módulo de Auditoría
-                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-normal">v2.4 Live</span>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-normal">v2.4 Serverless</span>
                 </h2>
-                <p class="text-gray-400 text-sm max-w-2xl">Simulación y análisis de cumplimiento de lotes utilizando estándares internacionales de calidad y datos reales.</p>
+                <p class="text-gray-400 text-sm max-w-2xl">Simulación y análisis de cumplimiento de lotes utilizando estándares internacionales.</p>
             </div>
-            
-            <!-- Contenedor de Mensajes Flotantes -->
             <div id="status-message-container" class="fixed top-5 right-5 z-[60]"></div>
         </div>
 
-        <!-- Selector de Certificaciones -->
         <div class="glass-panel p-6 rounded-2xl mb-8">
             <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2">
                 <i class="fas fa-certificate text-emerald-500"></i>
@@ -260,7 +197,7 @@
             </h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- GLOBALG.A.P. -->
+                
                 <div class="cert-option rounded-xl p-5 bg-white/5 relative group" id="cert-GLOBALG.A.P." onclick="selectCertification('GLOBALG.A.P.')">
                     <div class="absolute top-4 right-4 opacity-0 group-[.selected]:opacity-100 transition-opacity">
                         <i class="fas fa-check-circle text-emerald-400 text-xl"></i>
@@ -275,7 +212,6 @@
                     </div>
                 </div>
 
-                <!-- ISO 22000 (Default) -->
                 <div class="cert-option selected rounded-xl p-5 bg-white/5 relative group" id="cert-ISO_22000" onclick="selectCertification('ISO 22000')">
                     <div class="absolute top-4 right-4 opacity-0 group-[.selected]:opacity-100 transition-opacity">
                         <i class="fas fa-check-circle text-emerald-400 text-xl"></i>
@@ -290,7 +226,6 @@
                     </div>
                 </div>
 
-                <!-- BRCGS -->
                 <div class="cert-option rounded-xl p-5 bg-white/5 relative group" id="cert-BRCGS" onclick="selectCertification('BRCGS')">
                     <div class="absolute top-4 right-4 opacity-0 group-[.selected]:opacity-100 transition-opacity">
                         <i class="fas fa-check-circle text-emerald-400 text-xl"></i>
@@ -305,7 +240,6 @@
                     </div>
                 </div>
 
-                <!-- Orgánico -->
                 <div class="cert-option rounded-xl p-5 bg-white/5 relative group" id="cert-Orgánico" onclick="selectCertification('Orgánico')">
                     <div class="absolute top-4 right-4 opacity-0 group-[.selected]:opacity-100 transition-opacity">
                         <i class="fas fa-check-circle text-emerald-400 text-xl"></i>
@@ -321,7 +255,6 @@
                 </div>
             </div>
 
-            <!-- Botón Acción Principal -->
             <div class="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/5">
                 <div class="text-sm text-gray-400" id="certification-info">
                     <i class="fas fa-info-circle mr-2 text-emerald-500"></i>
@@ -330,14 +263,12 @@
                 <button id="start-simulation-btn" onclick="iniciarSimulacion()" 
                     class="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 transition-all transform active:scale-95 flex items-center justify-center gap-2">
                     <i class="fas fa-microchip"></i>
-                    <span>Iniciar Simulación de Auditoría</span>
+                    <span>Ejecutar Auditoría</span>
                 </button>
             </div>
         </div>
 
-        <!-- KPIs Resultados -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Lotes -->
             <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
                 <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Lotes Totales</p>
@@ -347,7 +278,6 @@
                 </div>
             </div>
 
-            <!-- Con Hallazgos -->
             <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-24 h-24 bg-yellow-500/10 rounded-full blur-xl"></div>
                 <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Con Hallazgos</p>
@@ -357,7 +287,6 @@
                 </div>
             </div>
 
-            <!-- Descarte -->
             <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-24 h-24 bg-red-500/10 rounded-full blur-xl"></div>
                 <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Para Descarte</p>
@@ -367,7 +296,6 @@
                 </div>
             </div>
 
-            <!-- Conformidad -->
             <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
                 <div class="absolute -right-6 -top-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl"></div>
                 <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Nivel Conformidad</p>
@@ -378,9 +306,7 @@
             </div>
         </div>
 
-        <!-- Filtros y Tabla -->
         <div class="glass-panel p-6 rounded-2xl min-h-[400px]">
-            <!-- Toolbar -->
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <i class="fas fa-list-ul text-gray-400"></i> Registro de Lotes
@@ -388,68 +314,40 @@
                 </h3>
                 
                 <div class="flex gap-3 w-full sm:w-auto">
-                    <div class="relative flex-1 sm:w-64">
-                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-                        <input type="text" id="search-input" oninput="filterLotes()" placeholder="Buscar hash, ID o estado..." 
-                            class="search-input w-full rounded-lg py-2 pl-9 pr-4 text-xs">
-                    </div>
+                    <input type="text" id="search-input" oninput="filterLotes()" placeholder="Buscar hash, ID..." class="search-input w-full rounded-lg py-2 px-4 text-xs">
                     <select id="filter-status" onchange="filterLotes()" class="bg-[#011c16] border border-white/10 text-gray-300 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500">
                         <option value="all">Todos</option>
                         <option value="Conforme">Conforme</option>
                         <option value="Hallazgo">Hallazgo</option>
                         <option value="Descarte">Descarte</option>
-                        <option value="Pendiente">Pendiente</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Tabla -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-gray-400">
                     <thead class="text-xs uppercase bg-white/5 text-gray-300">
                         <tr>
                             <th class="px-6 py-3 rounded-tl-lg">ID Lote</th>
                             <th class="px-6 py-3">Archivo Origen</th>
-                            <th class="px-6 py-3">Fecha</th>
-                            <th class="px-6 py-3">Hora</th>
+                            <th class="px-6 py-3">Fecha Carga</th>
                             <th class="px-6 py-3">Estado Auditoría</th>
                             <th class="px-6 py-3 rounded-tr-lg text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="lotes-table-body" class="divide-y divide-white/5">
-                        <!-- Se llena dinámicamente con JS real -->
-                        <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
-                                <div class="flex flex-col items-center justify-center opacity-50">
-                                    <i class="fas fa-circle-notch fa-spin text-4xl mb-3 text-emerald-500/50"></i>
-                                    <p>Conectando con la Blockchain...</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
+                        </tbody>
                 </table>
-            </div>
-            
-            <!-- Resumen IA -->
-            <div class="mt-6 p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-xl">
-                <h4 class="text-sm font-bold text-emerald-400 mb-2"><i class="fas fa-robot mr-2"></i>Resumen de Inteligencia Artificial</h4>
-                <p id="sim-report-summary" class="text-xs text-gray-400 leading-relaxed">
-                    Sistema en espera. Seleccione una certificación y ejecute la simulación para obtener un análisis detallado de sus datos reales.
-                </p>
             </div>
         </div>
 
     </main>
 
     <script>
-        // =========================
-        //  CONFIGURACIÓN BÁSICA
-        // =========================
-        const HISTORY_KEY = 'trazzaLotesHistory';
+        // Configuración idéntica al archivo original
+        const HISTORY_KEY = 'trazzaNet_history_v2'; 
 
-        let lotesCargados   = [];
-        let lotesFiltrados  = [];
-
+        // ESTÁNDARES DE CALIFICACIÓN DEL ANTIGUO
         const certificaciones = {
             'GLOBALG.A.P.': { hallazgo: 3,  descarte: 15 },
             'ISO 22000':    { hallazgo: 5,  descarte: 20 },
@@ -457,330 +355,163 @@
             'Orgánico':     { hallazgo: 1,  descarte: 5  }
         };
 
+        let lotesCargados = [];
+        let lotesFiltrados = [];
         window.certificacionSeleccionada = 'ISO 22000';
 
-        // =========================
-        //  UTILIDADES UI
-        // =========================
+        // --- UI UTILS ---
         function showStatusMessage(message, type = 'info') {
             const container = document.getElementById('status-message-container');
-            if (!container) return;
-
-            const modal = document.createElement('div');
-
-            let bgClass = 'bg-[#011c16] border-emerald-500/50';
-            let iconColor = 'text-emerald-400';
-            let iconClass = 'fa-info';
-
-            if (type === 'error') {
-                bgClass = 'bg-[#011c16] border-red-500/50';
-                iconColor = 'text-red-400';
-                iconClass = 'fa-exclamation';
-            } else if (type === 'warning') {
-                bgClass = 'bg-[#011c16] border-yellow-500/50';
-                iconColor = 'text-yellow-400';
-                iconClass = 'fa-exclamation-triangle';
-            } else if (type === 'success') {
-                iconClass = 'fa-check';
-            }
-
-            modal.className = `${bgClass} border text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 relative overflow-hidden transform transition-all duration-300 translate-x-full opacity-0 mb-3`;
-            modal.innerHTML = `
-                <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center ${iconColor}">
-                    <i class="fas ${iconClass}"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-medium text-gray-200">${message}</p>
-                </div>
-            `;
-
-            container.appendChild(modal);
-
-            requestAnimationFrame(() => {
-                modal.classList.remove('opacity-0', 'translate-x-full');
-            });
-
-            setTimeout(() => {
-                modal.classList.add('opacity-0', 'translate-x-full');
-                modal.addEventListener('transitionend', () => modal.remove());
-            }, 5000);
+            const div = document.createElement('div');
+            let color = type === 'success' ? 'bg-emerald-500' : (type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500');
+            div.className = `${color} text-white px-6 py-3 rounded-xl shadow-2xl mb-2 flex items-center gap-3 animate-bounce`;
+            div.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+            container.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
         }
 
-        // =========================
-        //  SELECCIÓN DE CERTIFICACIÓN
-        // =========================
+        // --- SELECTOR LOGIC ---
         window.selectCertification = function(certType) {
             window.certificacionSeleccionada = certType;
-
             document.querySelectorAll('.cert-option').forEach(el => el.classList.remove('selected'));
-            const selectedId = 'cert-' + certType.replace(/\s+/g, '_').replace(/\./g, '');
-            const selectedEl = document.getElementById(selectedId);
-            if (selectedEl) selectedEl.classList.add('selected');
+            const id = 'cert-' + certType.replace(/\s+/g, '_').replace(/\./g, '');
+            const el = document.getElementById(id);
+            if(el) el.classList.add('selected');
 
             const config = certificaciones[certType];
-            const info = document.getElementById('certification-info');
-            if (info && config) {
-                info.innerHTML = `
-                    <i class="fas fa-info-circle mr-2 text-emerald-500"></i>
-                    Norma activa: <span class="text-white font-semibold">${certType}</span> 
-                    <span class="text-xs ml-2 opacity-70">(Hallazgo >${config.hallazgo}%, Descarte >${config.descarte}%)</span>
-                `;
-            }
-
+            document.getElementById('certification-info').innerHTML = `
+                <i class="fas fa-info-circle mr-2 text-emerald-500"></i>
+                Norma activa: <span class="text-white font-semibold">${certType}</span> 
+                <span class="text-xs ml-2 opacity-70">(Hallazgo >${config.hallazgo}%, Descarte >${config.descarte}%)</span>
+            `;
             showStatusMessage(`Norma cambiada a: ${certType}`, 'info');
-        };
-
-        // =========================
-        //  CARGAR LOTES DESDE localStorage
-        // =========================
-        function loadHistoryFromLocalStorage() {
-            const raw = localStorage.getItem(HISTORY_KEY);
-            if (!raw) {
-                lotesCargados  = [];
-                lotesFiltrados = [];
-                renderLotesTable([]);
-                updateSummaryCards();
-                updateLotesCount();
-                return;
-            }
-
-            try {
-                const history = JSON.parse(raw) || [];
-                // Estructura esperada desde carga.html:
-                // { id: shortHash, file: nombre, time: timestamp, status, fullHash }
-                lotesCargados = history.map((item, index) => ({
-                    id: index,
-                    loteId: item.id || `Lote-${index + 1}`,
-                    fileName: item.file || 'Desconocido',
-                    date: item.time || '',
-                    simResult: 'Pendiente', // hasta que se ejecute simulación
-                    fullHash: item.fullHash || null
-                }));
-            } catch (e) {
-                console.error('Error leyendo trazzaLotesHistory:', e);
-                lotesCargados = [];
-            }
-
-            lotesFiltrados = [...lotesCargados];
-            renderLotesTable(lotesFiltrados);
-            updateSummaryCards();
-            updateLotesCount();
         }
 
-        // =========================
-        //  TABLA PRINCIPAL
-        // =========================
-        function renderLotesTable(lotes) {
-            const tbody = document.getElementById('lotes-table-body');
-            if (!tbody) return;
+        // --- LOAD DATA ---
+        function loadHistoryFromLocalStorage() {
+            const raw = localStorage.getItem(HISTORY_KEY);
+            const rawData = raw ? JSON.parse(raw) : [];
 
+            lotesCargados = rawData.map((item, index) => ({
+                originalIndex: index,
+                loteId: item.id || `Lote-${index}`,
+                fileName: item.fileName || item.file || 'Desconocido',
+                date: item.time || item.timestamp || '--',
+                simResult: item.auditStatus || 'Pendiente',
+                fullHash: item.fullHash || item.id || null
+            }));
+
+            lotesFiltrados = [...lotesCargados];
+            renderTable();
+            updateSummary();
+        }
+
+        // --- RENDER TABLE ---
+        function renderTable() {
+            const tbody = document.getElementById('lotes-table-body');
             tbody.innerHTML = '';
 
-            if (!lotes.length) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="px-6 py-12 text-center">
-                            <div class="flex flex-col items-center justify-center opacity-50">
-                                <i class="fas fa-inbox text-4xl mb-3 text-emerald-500/50"></i>
-                                <p>No hay lotes registrados</p>
-                                <span class="text-xs text-gray-500">Carga un lote en el módulo de Carga para verlo aquí.</span>
-                            </div>
-                        </td>
-                    </tr>`;
+            if (lotesFiltrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-gray-500">No hay lotes disponibles.</td></tr>`;
                 return;
             }
 
-            lotes.forEach(lote => {
+            lotesFiltrados.forEach(lote => {
                 const row = document.createElement('tr');
-                row.className = 'hover:bg-white/5 transition-colors group border-b border-white/5 last:border-0';
-
-                // Separar fecha y hora a partir del string guardado
-                let fecha = lote.date;
-                let hora  = '';
-                if (lote.date && lote.date.includes(' ')) {
-                    const parts = lote.date.split(' ');
-                    fecha = parts[0] || lote.date;
-                    hora  = parts[1] || '';
-                }
-
-                const simResult = lote.simResult || 'Pendiente';
+                row.className = 'hover:bg-white/5 transition-colors border-b border-white/5';
+                
                 let badgeClass = 'bg-gray-500/10 text-gray-400 border-gray-500/20';
                 let icon = 'fa-clock';
-                let displayText = simResult;
+                
+                if (lote.simResult === 'Conforme') { badgeClass = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'; icon = 'fa-check-circle'; }
+                else if (lote.simResult === 'Hallazgo') { badgeClass = 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'; icon = 'fa-exclamation-triangle'; }
+                else if (lote.simResult === 'Descarte') { badgeClass = 'bg-red-500/10 text-red-400 border-red-500/20'; icon = 'fa-ban'; }
 
-                if (simResult === 'Conforme') {
-                    badgeClass = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-                    icon = 'fa-check-circle';
-                } else if (simResult === 'Hallazgo') {
-                    badgeClass = 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
-                    icon = 'fa-exclamation-triangle';
-                    displayText = 'Con Hallazgos';
-                } else if (simResult === 'Descarte') {
-                    badgeClass = 'bg-red-500/10 text-red-400 border-red-500/20';
-                    icon = 'fa-ban';
-                }
+                const shortId = (lote.loteId || '').substring(0,10) + '...';
 
                 row.innerHTML = `
-                    <td class="px-6 py-4 font-mono text-xs text-white">${(lote.loteId || '').substring(0, 16)}...</td>
-                    <td class="px-6 py-4 flex items-center gap-2 text-gray-300">
-                        <i class="fas fa-file-csv text-emerald-500/50"></i>
-                        ${lote.fileName}
-                    </td>
-                    <td class="px-6 py-4 text-xs text-gray-400">${fecha || '--'}</td>
-                    <td class="px-6 py-4 text-xs text-gray-400">${hora || '--'}</td>
+                    <td class="px-6 py-4 font-mono text-xs text-emerald-500/70">${shortId}</td>
+                    <td class="px-6 py-4 text-white font-medium"><i class="fas fa-file-csv mr-2 text-gray-500"></i>${lote.fileName}</td>
+                    <td class="px-6 py-4 text-xs text-gray-400">${lote.date}</td>
                     <td class="px-6 py-4">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${badgeClass}">
-                            <i class="fas ${icon}"></i> ${displayText}
+                            <i class="fas ${icon}"></i> ${lote.simResult}
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <button class="text-gray-400 hover:text-white transition-colors" 
-                                title="Ver Detalles"
-                                onclick="verDetalleLote(${lotesCargados.indexOf(lote)})">
-                            <i class="fas fa-eye"></i>
+                        <button class="text-gray-400 hover:text-white transition-colors group relative" 
+                                onclick="verDetalleLote('${lote.fullHash || lote.loteId}')">
+                            <i class="fas fa-eye group-hover:scale-110"></i>
+                            <span class="absolute bottom-full right-0 mb-2 w-24 bg-black text-xs text-white p-1 rounded opacity-0 group-hover:opacity-100 pointer-events-none">Ver Blockchain</span>
                         </button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
+            document.getElementById('lotes-count').textContent = `(${lotesFiltrados.length})`;
         }
 
-        window.verDetalleLote = function(index) {
-            const lote = lotesCargados[index];
-            if (!lote) return;
+        // --- SIMULATION ---
+        window.iniciarSimulacion = function() {
+            if (!lotesCargados.length) { showStatusMessage('No hay lotes.', 'warning'); return; }
+            
+            const btn = document.getElementById('start-simulation-btn');
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Auditando...`;
+            
+            setTimeout(() => {
+                const config = certificaciones[window.certificacionSeleccionada];
+                const rawHistory = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
 
-            alert(
-        `🔍 DETALLE DE LOTE
-        -----------------------------
-        ID Lote: ${lote.loteId}
-        Archivo: ${lote.fileName}
-        Fecha/Hora: ${lote.date}
-        Hash: ${lote.fullHash || 'N/A'}
-        Estado Simulación: ${lote.simResult}`
-            );
-        };
+                lotesCargados = lotesCargados.map(lote => {
+                    let nuevoEstado = 'Conforme';
+                    const rnd = Math.random() * 100;
+                    if (rnd < config.descarte) nuevoEstado = 'Descarte';
+                    else if (rnd < (config.descarte + config.hallazgo)) nuevoEstado = 'Hallazgo';
 
-        // =========================
-        //  FILTROS (BUSCADOR + ESTADO)
-        // =========================
+                    if(rawHistory[lote.originalIndex]) rawHistory[lote.originalIndex].auditStatus = nuevoEstado;
+                    return { ...lote, simResult: nuevoEstado };
+                });
+
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(rawHistory));
+                lotesFiltrados = [...lotesCargados];
+                renderTable();
+                updateSummary();
+                showStatusMessage('Auditoría completada.', 'success');
+                btn.innerHTML = `<i class="fas fa-microchip"></i> Ejecutar Auditoría`;
+            }, 1000);
+        }
+
+        function updateSummary() {
+            document.getElementById('sim-total-lotes').textContent = lotesCargados.length;
+            document.getElementById('sim-hallazgos').textContent = lotesCargados.filter(l => l.simResult === 'Hallazgo').length;
+            document.getElementById('sim-descarte').textContent = lotesCargados.filter(l => l.simResult === 'Descarte').length;
+            const validos = lotesCargados.filter(l => l.simResult === 'Conforme').length;
+            const pct = lotesCargados.length ? ((validos/lotesCargados.length)*100).toFixed(0) : 0;
+            document.getElementById('sim-conformidad').textContent = pct + '%';
+        }
+
         window.filterLotes = function() {
-            const termInput = document.getElementById('search-input');
-            const statusSel = document.getElementById('filter-status');
-
-            const term   = termInput ? termInput.value.toLowerCase() : '';
-            const status = statusSel ? statusSel.value : 'all';
-
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const status = document.getElementById('filter-status').value;
             lotesFiltrados = lotesCargados.filter(l => {
-                const idVal   = l.loteId || '';
-                const nameVal = l.fileName || '';
-                const matchTerm = !term || 
-                    idVal.toLowerCase().includes(term) || 
-                    nameVal.toLowerCase().includes(term);
-
-                const simVal = l.simResult || 'Pendiente';
-                const matchStatus = status === 'all' || simVal === status;
-
+                const matchTerm = l.fileName.toLowerCase().includes(term) || l.loteId.toLowerCase().includes(term);
+                const matchStatus = status === 'all' || l.simResult === status;
                 return matchTerm && matchStatus;
             });
-
-            renderLotesTable(lotesFiltrados);
-            updateLotesCount();
-        };
-
-        function updateLotesCount() {
-            const el = document.getElementById('lotes-count');
-            if (el) el.textContent = `(${lotesFiltrados.length})`;
+            renderTable();
         }
 
-        // =========================
-        //  TARJETAS RESUMEN
-        // =========================
-        function updateSummaryCards() {
-            const total      = lotesCargados.length;
-            const hallazgos  = lotesCargados.filter(l => l.simResult === 'Hallazgo').length;
-            const descartes  = lotesCargados.filter(l => l.simResult === 'Descarte').length;
-            const conformes  = lotesCargados.filter(l => l.simResult === 'Conforme').length;
-            const procesados = lotesCargados.filter(l => l.simResult && l.simResult !== 'Pendiente').length;
-
-            const pct = procesados > 0 
-                ? (((conformes + hallazgos) / procesados) * 100).toFixed(1)
-                : 0;
-
-            const elTotal  = document.getElementById('sim-total-lotes');
-            const elHall   = document.getElementById('sim-hallazgos');
-            const elDesc   = document.getElementById('sim-descarte');
-            const elConf   = document.getElementById('sim-conformidad');
-
-            if (elTotal) elTotal.textContent = total;
-            if (elHall)  elHall.textContent  = hallazgos;
-            if (elDesc)  elDesc.textContent  = descartes;
-            if (elConf)  elConf.textContent  = pct > 0 ? `${pct}%` : '--';
+        // --- REDIRECT BLOCKCHAIN ---
+        window.verDetalleLote = function(id) {
+            localStorage.setItem('selectedTxHash', id);
+            window.location.href = 'blockchain.html';
         }
 
-        // =========================
-        //  SIMULACIÓN (SIN FIREBASE)
-        // =========================
-        window.iniciarSimulacion = function() {
-            if (!lotesCargados.length) {
-                showStatusMessage('No hay lotes para auditar. Carga algunos en el módulo de Carga.', 'warning');
-                return;
-            }
-
-            const btn = document.getElementById('start-simulation-btn');
-            if (!btn) return;
-
-            const originalHtml = btn.innerHTML;
-
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Analizando Bloques...`;
-            btn.classList.add('opacity-75', 'cursor-not-allowed');
-
-            showStatusMessage(`Auditando bajo norma ${window.certificacionSeleccionada}...`, 'info');
-
-            const config = certificaciones[window.certificacionSeleccionada];
-
-            // Simulación sencilla: aleatorio en función de la norma
-            lotesCargados = lotesCargados.map(lote => {
-                let simResult = 'Conforme';
-                const rnd = Math.random() * 100;
-
-                if (rnd > config.descarte) simResult = 'Descarte';
-                else if (rnd > config.hallazgo) simResult = 'Hallazgo';
-
-                return { ...lote, simResult };
-            });
-
-            lotesFiltrados = [...lotesCargados];
-            renderLotesTable(lotesFiltrados);
-            updateSummaryCards();
-            updateLotesCount();
-
-            const resumenEl = document.getElementById('sim-report-summary');
-            if (resumenEl) {
-                const descartes = lotesCargados.filter(l => l.simResult === 'Descarte').length;
-                const hallazgos = lotesCargados.filter(l => l.simResult === 'Hallazgo').length;
-                resumenEl.innerHTML = `
-                    Auditoría completada sobre <strong>${lotesCargados.length} lotes</strong>.<br>
-                    Hallazgos: <strong>${hallazgos}</strong> &nbsp;•&nbsp; Descartes: <strong>${descartes}</strong>.
-                `;
-            }
-
-            showStatusMessage('Auditoría finalizada correctamente.', 'success');
-
-            btn.disabled = false;
-            btn.innerHTML = originalHtml;
-            btn.classList.remove('opacity-75', 'cursor-not-allowed');
-        };
-
-        // =========================
-        //  INIT
-        // =========================
         document.addEventListener('DOMContentLoaded', () => {
             loadHistoryFromLocalStorage();
-            // Norma por defecto
             selectCertification('ISO 22000');
+            document.getElementById('user-id-display').textContent = 'Conectado';
         });
-        </script>
-
+    </script>
 </body>
 </html>

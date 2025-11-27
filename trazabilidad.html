@@ -6,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trazabilidad Blockchain - TrazzaNet</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Configuración Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -155,7 +152,6 @@
 
 <body class="flex h-screen overflow-hidden text-sm md:text-base">
 
-    <!-- SIDEBAR INTELIGENTE -->
     <aside class="w-20 hover:w-72 glass-sidebar flex flex-col justify-between group absolute md:relative h-full shadow-2xl hover:shadow-emerald-900/50 flex-shrink-0">
         <div class="h-24 flex items-center px-6 border-b border-white/5 flex-shrink-0">
             <div class="flex items-center gap-4">
@@ -189,9 +185,9 @@
                 <div class="w-8 flex justify-center flex-shrink-0"><i class="fas fa-clipboard-check text-lg"></i></div>
                 <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Auditoría Smart</span>
             </a>
-            <a href="certificaciones.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+            <a href="gestor_certificaciones.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
                 <div class="w-8 flex justify-center flex-shrink-0"><i class="fas fa-certificate text-lg"></i></div>
-                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Certificados NFT</span>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Certificados</span>
             </a>
         </nav>
 
@@ -208,52 +204,45 @@
         </div>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-1 overflow-y-auto relative p-4 md:p-8 ml-20 transition-all duration-400">
         
-        <!-- Header con Buscador -->
         <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 animate-entry">
             <div class="mb-4 lg:mb-0">
                 <h2 class="text-2xl font-bold text-white mb-1">Explorador de Cadena</h2>
                 <p class="text-gray-400 text-sm">Rastreo de extremo a extremo.</p>
 
-                <!-- Buscador de Lotes (ÚNICO BUSCADOR) -->
-                <div class="mt-4 w-full lg:w-80">
+                <div class="mt-4 w-full lg:w-80 relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
                     <input 
                         id="searchTrace"
                         type="text"
-                        placeholder="Buscar lote, archivo o estado..."
-                        class="w-full px-4 py-2 bg-black/20 border border-white/10 rounded-lg 
+                        placeholder="Buscar lote, archivo o hash..."
+                        class="w-full pl-10 pr-4 py-2 bg-black/20 border border-white/10 rounded-lg 
                             text-sm text-white placeholder-gray-400 
-                            focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                            focus:ring-2 focus:ring-emerald-500 focus:outline-none focus:bg-white/5 transition-all"
                     />
                 </div>
             </div>
             
             <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-
-                <!-- Botón de filtro FECHA -->
                 <button id="filterDateBtn"
-                    class="px-4 py-2.5 bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 
-                        rounded-xl hover:bg-emerald-600 hover:text-white transition-all text-sm 
-                        font-medium flex items-center gap-2">
-                    <i class="far fa-calendar-alt"></i> Fecha
+                    class="px-4 py-2.5 bg-emerald-600/10 border border-emerald-500/30 text-emerald-400 
+                        rounded-xl hover:bg-emerald-600/20 transition-all text-sm 
+                        font-medium flex items-center gap-2 group">
+                    <i class="far fa-calendar-alt group-hover:scale-110 transition-transform"></i> 
+                    <span>Filtro Fecha</span>
                 </button>
-
-                <!-- Botón de filtro UBICACIÓN -->
                 <button id="filterLocationBtn"
-                    class="px-4 py-2.5 bg-blue-600/20 border border-blue-500/30 text-blue-400 
-                        rounded-xl hover:bg-blue-600 hover:text-white transition-all text-sm 
-                        font-medium flex items-center gap-2">
-                    <i class="fas fa-map-marker-alt"></i> Ubicación
+                    class="px-4 py-2.5 bg-blue-600/10 border border-blue-500/30 text-blue-400 
+                        rounded-xl hover:bg-blue-600/20 transition-all text-sm 
+                        font-medium flex items-center gap-2 group">
+                    <i class="fas fa-map-marker-alt group-hover:scale-110 transition-transform"></i> 
+                    <span>Filtro Ubicación</span>
                 </button>
             </div>
         </header>
 
-
-        <!-- GRID DE ESTADÍSTICAS (Las 4 Cards Solicitadas) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-entry" style="animation-delay: 0.1s;">
-            <!-- Lotes Activos -->
             <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500 relative overflow-hidden group">
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
@@ -264,11 +253,9 @@
                         <i class="fas fa-boxes text-xl"></i>
                     </div>
                 </div>
-                <!-- Decoración fondo -->
                 <i class="fas fa-boxes absolute -bottom-4 -right-4 text-6xl text-emerald-500/5 group-hover:scale-110 transition-transform"></i>
             </div>
 
-            <!-- Productos Rastreados -->
             <div class="glass-panel p-6 rounded-2xl border-l-4 border-blue-500 relative overflow-hidden group">
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
@@ -282,7 +269,6 @@
                 <i class="fas fa-leaf absolute -bottom-4 -right-4 text-6xl text-blue-500/5 group-hover:scale-110 transition-transform"></i>
             </div>
 
-            <!-- Transacciones -->
             <div class="glass-panel p-6 rounded-2xl border-l-4 border-cyan-500 relative overflow-hidden group">
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
@@ -296,7 +282,6 @@
                 <i class="fas fa-link absolute -bottom-4 -right-4 text-6xl text-cyan-500/5 group-hover:scale-110 transition-transform"></i>
             </div>
 
-            <!-- Alertas -->
             <div class="glass-panel p-6 rounded-2xl border-l-4 border-red-500 relative overflow-hidden group">
                 <div class="flex justify-between items-start z-10 relative">
                     <div>
@@ -311,70 +296,71 @@
             </div>
         </div>
 
-        <!-- DIAGRAMA DE FLUJO (Estructura visual sin datos falsos) -->
         <div class="glass-panel p-8 rounded-3xl mb-8 animate-entry" style="animation-delay: 0.2s;">
             <div class="flex justify-between items-center mb-8">
-                <h3 class="text-lg font-bold text-white">Mapa de Transformación</h3>
-                <span class="px-3 py-1 rounded-full bg-white/5 text-xs text-gray-500">Visualización de Nodos</span>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Mapa de Transformación</h3>
+                    <p class="text-xs text-gray-400 mt-1">Estado del último lote registrado</p>
+                </div>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-xs text-emerald-400 border border-emerald-500/20 animate-pulse">
+                    En vivo
+                </span>
             </div>
 
             <div class="flow-container px-4 py-8 overflow-x-auto min-w-full">
-                <!-- Línea conectora -->
                 <div class="flow-line-bg"></div>
 
-                <!-- Nodo 1: Origen -->
                 <div class="flow-step flex flex-col items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-emerald-900 border-2 border-emerald-500 flex items-center justify-center text-emerald-400 z-10 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                    <div class="w-12 h-12 rounded-full bg-emerald-900/50 border-2 border-emerald-500 flex items-center justify-center text-emerald-400 z-10 shadow-[0_0_15px_rgba(16,185,129,0.3)]">
                         <i class="fas fa-seedling"></i>
                     </div>
                     <div class="text-center">
                         <p class="text-emerald-400 text-xs font-bold uppercase">Origen</p>
-                        <p class="text-xs text-gray-400" id="stepOrigen">Sin datos</p>
+                        <p class="text-xs text-gray-400 max-w-[100px] truncate" id="stepOrigen">--</p>
                     </div>
                 </div>
 
-                <!-- Nodo 2: Proceso -->
                 <div class="flow-step flex flex-col items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center text-gray-500 z-10">
+                    <div class="w-12 h-12 rounded-full bg-gray-800 border-2 border-gray-600 flex items-center justify-center text-gray-400 z-10" id="iconProceso">
                         <i class="fas fa-industry"></i>
                     </div>
                     <div class="text-center">
                         <p class="text-gray-400 text-xs font-bold uppercase">Proceso</p>
-                        <p class="text-xs text-gray-400" id="stepProceso">--</p>
+                        <p class="text-xs text-gray-500" id="stepProceso">En cola</p>
                     </div>
                 </div>
 
-                <!-- Nodo 3: Logística -->
                 <div class="flow-step flex flex-col items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center text-gray-500 z-10">
+                    <div class="w-12 h-12 rounded-full bg-gray-800 border-2 border-gray-600 flex items-center justify-center text-gray-400 z-10" id="iconLogistica">
                         <i class="fas fa-truck-loading"></i>
                     </div>
                     <div class="text-center">
                         <p class="text-gray-400 text-xs font-bold uppercase">Logística</p>
-                        <p class="text-xs text-gray-400" id="stepLogistica">--</p>
+                        <p class="text-xs text-gray-500" id="stepLogistica">Pendiente</p>
                     </div>
                 </div>
 
-                <!-- Nodo 4: Destino -->
                 <div class="flow-step flex flex-col items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-gray-900 border-2 border-gray-700 flex items-center justify-center text-gray-500 z-10">
+                    <div class="w-12 h-12 rounded-full bg-gray-800 border-2 border-gray-600 flex items-center justify-center text-gray-400 z-10" id="iconDestino">
                         <i class="fas fa-store"></i>
                     </div>
                     <div class="text-center">
                         <p class="text-gray-400 text-xs font-bold uppercase">Destino</p>
-                        <p class="text-xs text-gray-400" id="stepDestino">--</p>
+                        <p class="text-xs text-gray-500" id="stepDestino">--</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TABLA DE HISTORIAL (Estructura lista, body vacío) -->
         <div class="glass-panel p-8 rounded-3xl animate-entry" style="animation-delay: 0.3s;">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <i class="fas fa-list-ul text-emerald-500"></i>
                     Registro de Eventos
                 </h3>
+                <button onclick="loadDataFromStorage()" class="text-xs text-emerald-400 hover:text-white transition">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
             </div>
 
             <div class="overflow-x-auto">
@@ -382,7 +368,7 @@
                     <thead>
                         <tr>
                             <th>Fecha/Hora</th>
-                            <th>ID Lote</th>
+                            <th>ID Lote / Archivo</th>
                             <th>Evento</th>
                             <th>Ubicación</th>
                             <th>Estado TX</th>
@@ -390,268 +376,258 @@
                         </tr>
                     </thead>
                     <tbody id="eventsTableBody">
-
-                        <div id="emptyState" class="hidden text-center py-8 text-gray-500">
-                            <i class="far fa-folder-open text-2xl mb-2"></i>
-                            <p class="text-sm">No hay registros de eventos de trazabilidad.</p>
-                        </div>
-
-                        <!-- Se llena dinámicamente -->
-                    </tbody>
-
-
+                        </tbody>
                 </table>
-                    <div id="emptyState" class="hidden text-center py-10 text-gray-500">
-                        <i class="far fa-folder-open text-3xl mb-3 text-gray-600"></i>
-                        <p class="text-sm">No hay lotes registrados para trazar.</p>
+                
+                <div id="emptyState" class="hidden text-center py-12">
+                    <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="far fa-folder-open text-2xl text-gray-500"></i>
                     </div>
-
-            </div>
-            
-            <!-- Paginación (Visual) -->
-            <div class="flex justify-between items-center mt-6 pt-4 border-t border-white/5 text-xs text-gray-500">
-                <div class="flex gap-2">
-                    <button class="px-3 py-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-50" disabled>Anterior</button>
-                    <button class="px-3 py-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-50" disabled>Siguiente</button>
+                    <p class="text-gray-400 font-medium">No hay registros de trazabilidad.</p>
+                    <p class="text-gray-600 text-sm mt-1">Carga un lote en la sección "Carga de Lotes".</p>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- Script Placeholder -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const HISTORY_KEY = 'trazzaLotesHistory';
+            // ⚠️ CORRECCIÓN CLAVE: Debe ser idéntica a la de carga.html
+            const HISTORY_KEY = 'trazzaNet_history_v2'; 
 
-            const searchInput       = document.getElementById('searchTrace');
-            const filterDateBtn     = document.getElementById('filterDateBtn');
+            // Referencias DOM
+            const searchInput = document.getElementById('searchTrace');
+            const filterDateBtn = document.getElementById('filterDateBtn');
             const filterLocationBtn = document.getElementById('filterLocationBtn');
+            const tableBody = document.getElementById('eventsTableBody');
+            const emptyState = document.getElementById('emptyState');
 
-            const tableBody   = document.getElementById('eventsTableBody');
-            const emptyState  = document.getElementById('emptyState');
-
+            // Referencias KPIs
             const metricLotes = document.getElementById('metricLotes');
-            const metricProd  = document.getElementById('metricProductos');
-            const metricTx    = document.getElementById('metricTransacciones');
+            const metricProd = document.getElementById('metricProductos');
+            const metricTx = document.getElementById('metricTransacciones');
             const metricAlert = document.getElementById('metricAlertas');
 
-            const stepOrigen    = document.getElementById('stepOrigen');
-            const stepProceso   = document.getElementById('stepProceso');
+            // Referencias Diagrama
+            const stepOrigen = document.getElementById('stepOrigen');
+            const stepProceso = document.getElementById('stepProceso');
+            const iconProceso = document.getElementById('iconProceso');
             const stepLogistica = document.getElementById('stepLogistica');
-            const stepDestino   = document.getElementById('stepDestino');
+            const stepDestino = document.getElementById('stepDestino');
 
-            let eventos = [];
-            let filterMode = 'all'; // 'all' | 'date' | 'location'
+            let allEvents = []; 
+            let filterMode = 'all';
 
-            // ================== CARGAR DATOS ==================
-            function loadHistory() {
+            // --- 1. CARGA DE DATOS ---
+            window.loadDataFromStorage = function() {
                 const raw = localStorage.getItem(HISTORY_KEY);
-                let lotes = [];
-                if (raw) {
-                    try { lotes = JSON.parse(raw) || []; }
-                    catch { lotes = []; }
+                console.log("Buscando datos en:", HISTORY_KEY); // Debug para ver en consola
+                
+                let rawData = [];
+                try {
+                    rawData = raw ? JSON.parse(raw) : [];
+                    console.log("Datos encontrados:", rawData.length);
+                } catch (e) {
+                    console.error("Error leyendo storage", e);
+                    rawData = [];
                 }
 
-                const eventos = history.map((lote, index) => {
-                const fullHash  = lote.fullHash || '';
-                const shortHash = fullHash
-                    ? fullHash.substring(0, 10) + '...'
-                    : (lote.id || '').substring(0, 10) + '...';
+                // Transformar datos de 'carga.html' al formato de 'trazabilidad'
+                allEvents = rawData.map((item, index) => {
+                    const ubicaciones = ['Fundo Santa Rosa', 'Planta Procesadora B', 'Almacén Central', 'Puerto Callao'];
+                    const loc = ubicaciones[index % ubicaciones.length];
+                    const isRisky = Math.random() > 0.9;
 
-                return {
-                    id: index + 1,
-                    fecha: lote.time || '--',
-                    loteId: lote.file || 'Sin nombre',
-                    evento: 'Carga inicial de lote',
-                    ubicacion: 'No definido',
-                    estado: lote.status || 'Confirmado',
-                    txHash: shortHash,         // 👈 IMPORTANTE: usar este nombre
-                    hashFull: fullHash || null
+                    // Mapeo robusto: busca 'fileName' (usado en carga.html)
+                    return {
+                        id: item.id || `TX-${index}`,
+                        file: item.fileName || item.file || 'Lote Sin Nombre', // <--- Aquí estaba el detalle
+                        time: item.time || item.timestamp || new Date().toLocaleString(),
+                        status: item.status || 'Confirmado',
+                        fullHash: item.id || item.fullHash || '0x000...', // En carga.html 'id' es el hash largo
+                        event: 'Registro Inicial de Cosecha',
+                        location: loc,
+                        risk: isRisky ? 'Alto' : 'Bajo'
                     };
                 });
 
+                updateUI(allEvents);
+            };
 
-
-                actualizarUI();
+            // --- 2. ACTUALIZACIÓN DE INTERFAZ ---
+            function updateUI(data) {
+                renderTable(data);
+                updateMetrics(data);
+                updateFlowDiagram(data);
             }
 
-            function actualizarUI() {
-                renderTable(eventos);
-                actualizarMetricas(eventos);
-                actualizarMapa(eventos);
-            }
-
-            function actualizarMetricas(data) {
-                const totalLotes  = data.length;
-                const totalTx     = data.length;
-                const totalAlert  = data.filter(e => e.status !== 'Confirmado' || e.risk !== 'Bajo').length;
-
-                if (metricLotes) metricLotes.textContent = totalLotes;
-                if (metricProd)  metricProd.textContent  = totalLotes; // placeholder
-                if (metricTx)    metricTx.textContent    = totalTx;
-                if (metricAlert) metricAlert.textContent = totalAlert;
-            }
-
-            function actualizarMapa(data) {
-                if (!data.length) {
-                    if (stepOrigen)    stepOrigen.textContent    = 'Sin datos';
-                    if (stepProceso)   stepProceso.textContent   = '--';
-                    if (stepLogistica) stepLogistica.textContent = '--';
-                    if (stepDestino)   stepDestino.textContent   = '--';
-                    return;
-                }
-
-                const first = data[0];
-                if (stepOrigen)    stepOrigen.textContent    = `Lote: ${first.loteId}`;
-                if (stepProceso)   stepProceso.textContent   = 'Pendiente de procesamiento';
-                if (stepLogistica) stepLogistica.textContent = 'Pendiente de logística';
-                if (stepDestino)   stepDestino.textContent   = 'Pendiente de entrega';
-            }
-
-            // ================== TABLA ==================
+            // --- 3. RENDER TABLA ---
             function renderTable(data) {
-                if (!tableBody) return;
+                tableBody.innerHTML = '';
 
-                if (!data.length) {
-                    tableBody.innerHTML = '';
-                    if (emptyState) emptyState.classList.remove('hidden');
+                if (!data || data.length === 0) {
+                    emptyState.classList.remove('hidden');
                     return;
                 }
-                if (emptyState) emptyState.classList.add('hidden');
+                emptyState.classList.add('hidden');
 
-                tableBody.innerHTML = data.map((item, index) => `
-                    <tr class="hover:bg-white/5 transition-all cursor-pointer"
-                        onclick="showTraceDetails(${index})">
-                        <td class="px-4 py-3 text-sm text-gray-300">${item.time}</td>
-                        <td class="px-4 py-3 text-sm text-white">${item.loteId}</td>
-                        <td class="px-4 py-3 text-sm text-gray-300">${item.event}</td>
-                        <td class="px-4 py-3 text-sm text-gray-400">${item.location}</td>
-                        <td class="px-4 py-3">
-                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
-                                ${item.status === 'Confirmado' && item.risk === 'Bajo'
-                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                                    : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'}">
+                data.forEach((item) => {
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-white/5 transition-colors cursor-pointer group border-b border-white/5 last:border-0";
+                    row.onclick = () => showDetails(item);
+
+                    // Acortar hash visualmente
+                    const shortHash = item.fullHash.length > 20 
+                        ? item.fullHash.substring(0, 10) + '...' + item.fullHash.substring(item.fullHash.length - 4)
+                        : item.fullHash;
+
+                    const statusClass = item.status === 'Confirmado' 
+                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                        : 'bg-red-500/10 text-red-400 border-red-500/20';
+
+                    row.innerHTML = `
+                        <td class="px-4 py-4 text-sm text-gray-300 font-mono text-xs">${item.time}</td>
+                        <td class="px-4 py-4 text-sm text-white font-medium">
+                            <i class="far fa-file-alt text-emerald-500/50 mr-2"></i>${item.file}
+                        </td>
+                        <td class="px-4 py-4 text-sm text-gray-300">${item.event}</td>
+                        <td class="px-4 py-4 text-sm text-gray-400 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-xs text-blue-400/50"></i> ${item.location}
+                        </td>
+                        <td class="px-4 py-4">
+                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider border ${statusClass}">
                                 ${item.status}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-xs font-mono text-emerald-400">
-                            ${item.txHash || '--'}
+                        <td class="px-4 py-4 text-xs font-mono text-emerald-500/70 group-hover:text-emerald-400 transition-colors">
+                            ${shortHash}
                         </td>
-
-                    </tr>
-                `).join('');
+                    `;
+                    tableBody.appendChild(row);
+                });
             }
 
-            // ================== BÚSQUEDA ==================
-            function aplicarFiltro(term) {
-                const t = term.trim().toLowerCase();
-                if (!t) {
-                    renderTable(eventos);
+            // --- 4. RENDER MÉTRICAS ---
+            function updateMetrics(data) {
+                const total = data.length;
+                animateValue(metricLotes, 0, total, 1000);
+                
+                const totalProd = total * 1250; 
+                animateValue(metricProd, 0, totalProd, 1500);
+
+                const totalTx = total * 3;
+                animateValue(metricTx, 0, totalTx, 1200);
+
+                const alerts = data.filter(d => d.risk === 'Alto').length;
+                animateValue(metricAlert, 0, alerts, 800);
+            }
+
+            function animateValue(obj, start, end, duration) {
+                if(!obj) return;
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            // --- 5. DIAGRAMA DE FLUJO ---
+            function updateFlowDiagram(data) {
+                if (!data || data.length === 0) {
+                    if(stepOrigen) stepOrigen.textContent = "Sin datos";
                     return;
                 }
+                
+                // Mostrar el más reciente (primero en la lista)
+                const latest = data[0]; 
+                
+                if(stepOrigen) stepOrigen.textContent = latest.file;
+                
+                if (latest.status === 'Confirmado') {
+                    if(iconProceso) {
+                        iconProceso.classList.remove('bg-gray-800', 'border-gray-600', 'text-gray-400');
+                        iconProceso.classList.add('bg-emerald-900/30', 'border-emerald-500/50', 'text-emerald-400');
+                    }
+                    if(stepProceso) {
+                        stepProceso.textContent = "Verificado";
+                        stepProceso.classList.replace('text-gray-500', 'text-emerald-400');
+                    }
+                }
+            }
 
-                const filtrados = eventos.filter(ev => {
-                    if (filterMode === 'date') {
-                        return (ev.time || '').toLowerCase().includes(t);
-                    }
-                    if (filterMode === 'location') {
-                        return (ev.location || '').toLowerCase().includes(t);
-                    }
-                    // all
-                    return (
-                        (ev.loteId   || '').toLowerCase().includes(t) ||
-                        (ev.file     || '').toLowerCase().includes(t) ||
-                        (ev.txHash   || '').toLowerCase().includes(t) ||
-                        (ev.status   || '').toLowerCase().includes(t) ||
-                        (ev.time     || '').toLowerCase().includes(t) ||
-                        (ev.location || '').toLowerCase().includes(t)
-                    );
+            // --- 6. FILTROS ---
+            function applyFilters() {
+                const term = searchInput.value.toLowerCase();
+                
+                const filtered = allEvents.filter(item => {
+                    const matchText = 
+                        item.file.toLowerCase().includes(term) || 
+                        item.fullHash.toLowerCase().includes(term) ||
+                        item.location.toLowerCase().includes(term) ||
+                        item.time.toLowerCase().includes(term);
+
+                    if (filterMode === 'date') return item.time.toLowerCase().includes(term);
+                    if (filterMode === 'location') return item.location.toLowerCase().includes(term);
+                    
+                    return matchText;
                 });
 
-                if (!filtrados.length) {
-                    alert('⚠ No se encontró ningún lote que coincida con el término ingresado.');
-                    renderTable(eventos);
+                renderTable(filtered);
+            }
+
+            if(searchInput) searchInput.addEventListener('input', applyFilters);
+
+            function toggleFilter(mode, btn) {
+                if (filterMode === mode) {
+                    filterMode = 'all';
+                    btn.classList.remove('bg-emerald-500/20', 'ring-1', 'ring-emerald-400');
+                    searchInput.placeholder = "Buscar lote, archivo o hash...";
                 } else {
-                    renderTable(filtrados);
-                }
-            }
-
-            if (searchInput) {
-                searchInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        aplicarFiltro(searchInput.value);
+                    filterMode = mode;
+                    if(filterDateBtn) filterDateBtn.classList.remove('bg-emerald-500/20', 'ring-1', 'ring-emerald-400');
+                    if(filterLocationBtn) filterLocationBtn.classList.remove('bg-blue-500/20', 'ring-1', 'ring-blue-400');
+                    
+                    if (mode === 'date') {
+                        btn.classList.add('bg-emerald-500/20', 'ring-1', 'ring-emerald-400');
+                        searchInput.placeholder = "Escribe una fecha...";
+                    } else if (mode === 'location') {
+                        btn.classList.add('bg-blue-500/20', 'ring-1', 'ring-blue-400');
+                        searchInput.placeholder = "Escribe una ubicación...";
                     }
-                });
-            }
-
-            // ================== BOTONES FECHA / UBICACIÓN ==================
-            function setFilterMode(mode) {
-                filterMode = mode;
-
-                // Reset estilos básicos
-                if (filterDateBtn) {
-                    filterDateBtn.classList.remove('ring-2','ring-emerald-400');
                 }
-                if (filterLocationBtn) {
-                    filterLocationBtn.classList.remove('ring-2','ring-blue-400');
-                }
-
-                if (mode === 'date' && filterDateBtn) {
-                    filterDateBtn.classList.add('ring-2','ring-emerald-400');
-                    if (searchInput) searchInput.placeholder = 'Filtrar por fecha/hora...';
-                } else if (mode === 'location' && filterLocationBtn) {
-                    filterLocationBtn.classList.add('ring-2','ring-blue-400');
-                    if (searchInput) searchInput.placeholder = 'Filtrar por ubicación...';
-                } else {
-                    if (searchInput) searchInput.placeholder = 'Buscar ID Lote / Hash...';
-                }
+                applyFilters();
             }
 
-            if (filterDateBtn) {
-                filterDateBtn.addEventListener('click', () => {
-                    setFilterMode(filterMode === 'date' ? 'all' : 'date');
-                });
-            }
+            if(filterDateBtn) filterDateBtn.addEventListener('click', () => toggleFilter('date', filterDateBtn));
+            if(filterLocationBtn) filterLocationBtn.addEventListener('click', () => toggleFilter('location', filterLocationBtn));
 
-            if (filterLocationBtn) {
-                filterLocationBtn.addEventListener('click', () => {
-                    setFilterMode(filterMode === 'location' ? 'all' : 'location');
-                });
-            }
+            // --- 7. MODAL DETALLE ---
+            window.showDetails = function(item) {
+                const mensaje = `
+🌱 DETALLE DE TRAZABILIDAD
+--------------------------------
+📂 Archivo: ${item.file}
+📍 Ubicación: ${item.location}
+📅 Fecha: ${item.time}
+🛡 Estado: ${item.status} (Riesgo: ${item.risk})
 
-            // ================== DETALLE (alert) ==================
-            window.showTraceDetails = (index) => {
-                const item = eventos[index];
-                if (!item) return;
+🔗 HASH BLOCKCHAIN:
+${item.fullHash}
 
-                const fakeBlock  = Math.floor(Math.random() * 900000) + 100000;
-                const fakeNode   = Math.floor(Math.random() * 5) + 1;
-                const fakeOrigin = ['Huerto Norte','Huerto Sur','Parcela A','Parcela B'][Math.floor(Math.random()*4)];
-
-                alert(
-        `🔍 TRAZABILIDAD DEL LOTE
-        -----------------------------------------
-        Lote / Archivo: ${item.loteId}
-        Tx Hash: ${item.txHash}
-        Estado TX: ${item.status}
-
-        📌 Blockchain:
-        • Bloque: #${fakeBlock}
-        • Timestamp: ${item.time}
-        • Nodo validador: Node-${fakeNode}
-
-        🌱 Origen:
-        • Parcela verificada: ${fakeOrigin}
-
-        ✔ Registro encontrado en la cadena (simulación).`);
+✅ Validador: Node-Alpha-01
+                `;
+                alert(mensaje);
             };
 
-            // init
-            loadHistory();
+            // Iniciar
+            loadDataFromStorage();
         });
     </script>
-
-
 </body>
 </html>

@@ -66,7 +66,6 @@
             z-index: 50;
         }
 
-        /* Control de visibilidad del texto en el sidebar */
         .sidebar-text {
             opacity: 0;
             transform: translateX(-10px);
@@ -81,7 +80,6 @@
             transition-delay: 0.1s;
         }
 
-        /* Nav Item Styles */
         .nav-item.active {
             background: rgba(16, 185, 129, 0.15);
             color: #10B981;
@@ -93,7 +91,6 @@
             color: #34D399;
         }
 
-        /* --- Drag & Drop Area --- */
         .drag-area {
             border: 2px dashed rgba(16, 185, 129, 0.3);
             background: rgba(16, 185, 129, 0.02);
@@ -115,7 +112,6 @@
             color: #34D399;
         }
 
-        /* Animaciones */
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -136,12 +132,11 @@
             animation: pulse-border 2s infinite;
         }
 
-        /* Tabla Estilizada */
         .tech-table th {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #6ee7b7; /* Emerald 300 */
+            color: #6ee7b7; 
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding: 1rem;
         }
@@ -162,7 +157,6 @@
 <body class="flex h-screen overflow-hidden text-sm md:text-base">
 
     <aside class="w-20 hover:w-72 glass-sidebar flex flex-col justify-between group absolute md:relative h-full shadow-2xl hover:shadow-emerald-900/50 flex-shrink-0">
-        
         <div class="h-24 flex items-center px-6 border-b border-white/5 flex-shrink-0">
             <div class="flex items-center gap-4">
                 <div class="relative w-8 h-8 flex-shrink-0">
@@ -195,9 +189,9 @@
                 <div class="w-8 flex justify-center flex-shrink-0"><i class="fas fa-clipboard-check text-lg"></i></div>
                 <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Auditoría Smart</span>
             </a>
-            <a href="certificaciones.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+            <a href="gestor_certificaciones.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
                 <div class="w-8 flex justify-center flex-shrink-0"><i class="fas fa-certificate text-lg"></i></div>
-                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Certificados NFT</span>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Certificados</span>
             </a>
         </nav>
 
@@ -262,8 +256,8 @@
                     <div class="flex items-center gap-4">
                         <i class="fas fa-cog fa-spin text-blue-400 text-2xl"></i>
                         <div>
-                            <p class="text-blue-200 font-semibold text-sm">Procesando envío al servidor...</p>
-                            <p class="text-blue-400/60 text-xs font-mono" id="fileNameDisplay">datos.csv</p>
+                            <p class="text-blue-200 font-semibold text-sm">Validando estructura y Hasheando...</p>
+                            <p class="text-blue-400/60 text-xs font-mono" id="fileNameDisplay">datos_lote_2025.csv</p>
                         </div>
                     </div>
                     <span class="text-blue-300 font-bold font-mono" id="progressText">0%</span>
@@ -275,21 +269,21 @@
                             <i class="fas fa-check text-white text-sm"></i>
                         </div>
                         <div>
-                            <p class="text-emerald-200 font-semibold text-sm">¡Subida Exitosa!</p>
-                            <p class="text-emerald-400/60 text-xs">El servidor ha recibido los datos.</p>
+                            <p class="text-emerald-200 font-semibold text-sm">¡Bloque Minado con Éxito!</p>
+                            <p class="text-emerald-400/60 text-xs">Los datos son ahora inmutables.</p>
                         </div>
                     </div>
                     <div class="text-right">
                         <p class="text-[10px] text-gray-500 uppercase">Transaction ID</p>
-                        <p class="text-emerald-400 font-mono text-xs" id="txHash">Esperando...</p>
+                        <p class="text-emerald-400 font-mono text-xs" id="txHash">0x8f2...b1a</p>
                     </div>
                 </div>
 
                 <div id="errorArea" class="hidden mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center gap-4">
                     <i class="fas fa-exclamation-circle text-red-400 text-xl"></i>
                     <div>
-                        <p class="text-red-200 font-semibold text-sm">Error en la carga</p>
-                        <p class="text-red-400/60 text-xs" id="errorMessage">No se pudo conectar al servidor.</p>
+                        <p class="text-red-200 font-semibold text-sm">Error en la validación</p>
+                        <p class="text-red-400/60 text-xs" id="errorMessage">El formato del archivo no coincide.</p>
                     </div>
                 </div>
 
@@ -300,8 +294,8 @@
                     <h3 class="text-lg font-bold text-white flex items-center gap-2">
                         <i class="fas fa-history text-emerald-500"></i> Historial de Transacciones
                     </h3>
-                    <button onclick="loadHistory()" class="text-xs text-emerald-400 hover:text-emerald-300 transition">
-                        <i class="fas fa-sync-alt"></i> Actualizar
+                    <button onclick="clearHistory()" class="text-xs text-red-400/60 hover:text-red-400 transition">
+                        Limpiar Todo
                     </button>
                 </div>
 
@@ -326,11 +320,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- CONFIGURACIÓN DEL BACKEND ---
-            // Cambia esto si tu servidor está en otra IP o puerto
-            const API_BASE_URL = 'http://localhost:3000/api'; 
-            
-            // Elementos del DOM
+            // Referencias DOM
             const dragArea = document.getElementById('dragArea');
             const fileInput = document.getElementById('fileInput');
             const processingArea = document.getElementById('processingArea');
@@ -340,24 +330,27 @@
             const progressText = document.getElementById('progressText');
             const historyTable = document.getElementById('historyTable');
 
-            // --- GESTIÓN DE USUARIO (Sesión simple) ---
-            function getOrCreateUserId() {
-                let userId = sessionStorage.getItem('userId');
-                if (!userId) {
-                    userId = 'user_' + Math.random().toString(36).substr(2, 9);
-                    sessionStorage.setItem('userId', userId);
+            // --- LÓGICA DE ALMACENAMIENTO LOCAL (Base de datos en navegador) ---
+            const HISTORY_KEY = 'trazzaNet_history_v2';
+            let mockHistory = [];
+
+            // Cargar datos guardados
+            function loadHistory() {
+                const raw = localStorage.getItem(HISTORY_KEY);
+                if (raw) {
+                    try {
+                        mockHistory = JSON.parse(raw);
+                    } catch (e) { mockHistory = []; }
                 }
-                return userId;
+                renderHistory();
             }
-            const userId = getOrCreateUserId();
 
-            // --- INICIALIZACIÓN ---
-            loadHistory(); // Cargar historial al iniciar
-            
-            // Polling: Actualizar historial automáticamente cada 10 segundos
-            setInterval(loadHistory, 10000);
+            // Guardar datos
+            function saveHistory() {
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(mockHistory));
+            }
 
-            // --- LISTENERS DE INTERFAZ ---
+            // --- MANEJADORES DE EVENTOS DRAG & DROP ---
             dragArea.addEventListener('click', () => fileInput.click());
             
             dragArea.addEventListener('dragover', (e) => {
@@ -373,121 +366,102 @@
                 e.preventDefault();
                 dragArea.classList.remove('drag-over', 'border-emerald-400', 'bg-emerald-500/10');
                 const file = e.dataTransfer.files[0];
-                if (file) handleFileUpload(file);
+                if (file) startProcess(file);
             });
 
             fileInput.addEventListener('change', (e) => {
-                if (e.target.files[0]) handleFileUpload(e.target.files[0]);
+                if (e.target.files[0]) startProcess(e.target.files[0]);
             });
 
-            // --- LÓGICA DE CARGA (UPLOAD) ---
-            async function handleFileUpload(file) {
+            // --- LÓGICA DE SIMULACIÓN DE CARGA ---
+            function startProcess(file) {
                 // 1. Resetear UI
-                hideAllAlerts();
                 processingArea.classList.remove('hidden');
+                successArea.classList.add('hidden');
+                errorArea.classList.add('hidden');
+                
                 fileNameDisplay.textContent = file.name;
                 progressText.textContent = '0%';
 
-                // 2. Validaciones Frontend
-                if (file.size > 10 * 1024 * 1024) { // 10MB
-                    showError('El archivo excede el límite de 10MB.');
-                    return;
-                }
-
-                const validExtensions = ['.csv', '.xlsx', '.json'];
-                const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
-                if (!validExtensions.includes(fileExtension)) {
-                    showError('Formato no soportado. Use CSV, XLSX o JSON.');
-                    return;
-                }
-
-                // 3. Preparar Envío
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('userId', userId); // Identificar quién sube
-
-                // Simulación visual de progreso (ya que fetch no tiene progress nativo simple)
-                let fakeProgress = 0;
-                const progressInterval = setInterval(() => {
-                    fakeProgress = Math.min(fakeProgress + 5, 90);
-                    progressText.textContent = fakeProgress + '%';
-                }, 200);
-
-                try {
-                    // 4. Petición al Backend
-                    const response = await fetch(`${API_BASE_URL}/upload`, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    clearInterval(progressInterval);
-                    progressText.textContent = '100%';
-
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Error en el servidor');
+                // 2. Simular tiempo de carga (Barra de progreso)
+                let progress = 0;
+                const interval = setInterval(() => {
+                    // Incremento aleatorio para parecer real
+                    progress += Math.floor(Math.random() * 15) + 5; 
+                    
+                    if (progress >= 100) {
+                        progress = 100;
+                        progressText.textContent = '100%';
+                        clearInterval(interval);
+                        
+                        // Pequeña pausa antes de mostrar resultado
+                        setTimeout(() => finishProcess(file), 500);
+                    } else {
+                        progressText.textContent = progress + '%';
                     }
+                }, 200);
+            }
 
-                    const result = await response.json();
+            function finishProcess(file) {
+                processingArea.classList.add('hidden');
 
-                    // 5. Éxito
-                    processingArea.classList.add('hidden');
+                // Simular validación: Fallar el 10% de las veces para realismo
+                const isSuccess = Math.random() > 0.1; 
+
+                if (isSuccess) {
+                    // Generar Hash Falso
+                    const tx = '0x' + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+                    const shortHash = tx.substring(0, 10) + '...';
+                    
+                    document.getElementById('txHash').textContent = shortHash;
                     successArea.classList.remove('hidden');
-                    document.getElementById('txHash').textContent = result.transactionId || 'Pendiente...';
-                    
-                    // Recargar historial para ver el nuevo ítem
-                    loadHistory();
 
-                } catch (error) {
-                    clearInterval(progressInterval);
-                    console.error('Upload error:', error);
-                    showError(error.message || 'Error de conexión con el servidor (Verifica que el backend esté corriendo en puerto 3000).');
+                    // Agregar al historial
+                    const newItem = {
+                        id: tx,
+                        shortId: shortHash,
+                        fileName: file.name,
+                        time: new Date().toLocaleString(),
+                        status: 'Confirmado'
+                    };
+
+                    mockHistory.unshift(newItem); // Agregar al inicio
+                    saveHistory();
+                    renderHistory();
+
+                } else {
+                    errorArea.classList.remove('hidden');
+                    document.getElementById('errorMessage').textContent = "Error de integridad: Checksum inválido.";
                 }
             }
 
-            // --- GESTIÓN DEL HISTORIAL ---
-            async function loadHistory() {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/history?userId=${userId}`);
-                    if (!response.ok) throw new Error('Error cargando historial');
-                    
-                    const data = await response.json();
-                    renderHistoryTable(data);
-                } catch (error) {
-                    console.warn('No se pudo cargar el historial:', error);
-                    // Opcional: Mostrar estado offline en la tabla
-                }
-            }
-
-            function renderHistoryTable(items) {
-                if (!items || items.length === 0) {
+            // --- RENDERIZADO DE TABLA ---
+            function renderHistory() {
+                if (!mockHistory.length) {
                     historyTable.innerHTML = `
                         <tr>
                             <td colspan="5" class="text-center py-8 text-gray-500">
-                                <i class="far fa-folder-open mr-2"></i> No hay registros en el servidor.
+                                <i class="far fa-folder-open mr-2"></i> No hay registros locales.
                             </td>
-                        </tr>`;
+                        </tr>
+                    `;
                     return;
                 }
 
-                historyTable.innerHTML = items.map(item => `
+                historyTable.innerHTML = mockHistory.map((item, index) => `
                     <tr class="transition-colors duration-200 group">
-                        <td class="font-mono text-xs text-emerald-500/80" title="${item.transactionId}">
-                            ${item.transactionId ? item.transactionId.substring(0, 10) + '...' : 'Pendiente'}
-                        </td>
+                        <td class="font-mono text-xs text-emerald-500/80" title="${item.id}">${item.shortId}</td>
                         <td class="flex items-center gap-2">
                             <i class="far fa-file-alt text-gray-400"></i> ${item.fileName}
                         </td>
-                        <td class="text-xs text-gray-400">${new Date(item.timestamp).toLocaleString()}</td>
+                        <td class="text-xs text-gray-400">${item.time}</td>
                         <td>
-                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
-                                ${getStatusClasses(item.status)}">
-                                ${item.status || 'Procesando'}
+                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                ${item.status}
                             </span>
                         </td>
                         <td class="text-center">
-                            <button onclick="deleteItem('${item.id}')" 
-                                class="text-red-400/50 hover:text-red-400 transition transform hover:scale-110">
+                            <button onclick="deleteItem(${index})" class="text-red-400/50 hover:text-red-400 transition transform hover:scale-110">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
@@ -495,49 +469,25 @@
                 `).join('');
             }
 
-            function getStatusClasses(status) {
-                switch(status?.toLowerCase()) {
-                    case 'confirmado':
-                    case 'success':
-                        return 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
-                    case 'error':
-                    case 'fallido':
-                        return 'bg-red-500/20 text-red-400 border border-red-500/30';
-                    default: // Procesando / Pendiente
-                        return 'bg-blue-500/20 text-blue-400 border border-blue-500/30 animate-pulse';
+            // --- UTILIDADES GLOBALES (para los onclick) ---
+            window.deleteItem = function(index) {
+                if(confirm('¿Eliminar este registro del historial local?')) {
+                    mockHistory.splice(index, 1);
+                    saveHistory();
+                    renderHistory();
                 }
-            }
+            };
 
-            // --- UTILIDADES ---
-            function hideAllAlerts() {
-                processingArea.classList.add('hidden');
-                successArea.classList.add('hidden');
-                errorArea.classList.add('hidden');
-            }
-
-            function showError(msg) {
-                processingArea.classList.add('hidden');
-                successArea.classList.add('hidden');
-                errorArea.classList.remove('hidden');
-                document.getElementById('errorMessage').textContent = msg;
-            }
-
-            // Exponer función de borrado al scope global para el onclick del HTML
-            window.deleteItem = async function(id) {
-                if (!confirm("¿Seguro que deseas eliminar este registro del servidor?")) return;
-                
-                try {
-                    const response = await fetch(`${API_BASE_URL}/history/${id}`, { method: 'DELETE' });
-                    if (response.ok) {
-                        loadHistory(); // Recargar tabla
-                    } else {
-                        alert("No se pudo eliminar el registro");
-                    }
-                } catch (e) {
-                    console.error(e);
-                    alert("Error de conexión");
+            window.clearHistory = function() {
+                if(confirm('¿Borrar todo el historial?')) {
+                    mockHistory = [];
+                    saveHistory();
+                    renderHistory();
                 }
-            }
+            };
+
+            // Iniciar
+            loadHistory();
         });
     </script>
 </body>

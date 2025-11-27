@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blockchain Explorer - TrazzaNet</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Configuración Tailwind -->
     <script>
         tailwind.config = {
             theme: {
@@ -137,7 +135,6 @@
 
     <div class="grid-bg"></div>
 
-    <!-- SIDEBAR -->
     <aside class="sidebar h-screen fixed left-0 top-0 flex flex-col justify-between shadow-2xl">
         <div>
             <div class="h-20 flex items-center px-5 relative border-b border-white/5">
@@ -149,9 +146,7 @@
                 </div>
                 <div class="sidebar-text ml-3">
                     <h1 class="text-lg font-bold text-white tracking-wide">Trazza<span class="text-emerald-400">Net</span></h1>
-                    <p class="text-[0.6rem] text-gray-400 uppercase tracking-widest">Blockchain System
-
-</p>
+                    <p class="text-[0.6rem] text-gray-400 uppercase tracking-widest">Blockchain System</p>
                 </div>
             </div>
 
@@ -176,7 +171,6 @@
                     <i class="fas fa-certificate group-hover:text-emerald-400 transition-colors"></i>
                     <span class="sidebar-text ml-4 font-medium text-sm">Certificaciones</span>
                 </a>
-                <!-- Active Link -->
                 <a href="blockchain.html" class="nav-link active">
                     <i class="fas fa-link text-emerald-400"></i>
                     <span class="sidebar-text ml-4 font-medium text-sm text-white">Blockchain</span>
@@ -191,16 +185,14 @@
                 </div>
                 <div class="sidebar-text ml-3">
                     <p class="text-sm font-medium text-white truncate">Usuario Activo</p>
-                    <p class="text-xs text-emerald-500 truncate" id="user-id-display">Cargando...</p>
+                    <p class="text-xs text-emerald-500 truncate" id="user-id-display">Conectado</p>
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-1 ml-20 p-8 lg:p-12 transition-all duration-300">
         
-        <!-- Header -->
         <div class="flex justify-between items-center mb-10 animate-[fadeIn_0.5s_ease-out]">
             <div>
                 <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">Blockchain Explorer</h1>
@@ -212,15 +204,13 @@
                     <div class="pulse-dot"></div>
                     <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Red Activa</span>
                 </div>
-                <button id="refresh-btn" onclick="window.location.reload()" class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full flex items-center justify-center text-gray-300 transition-all">
+                <button id="refresh-btn" onclick="initBlockchain()" class="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full flex items-center justify-center text-gray-300 transition-all">
                     <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 animate-[fadeIn_0.6s_ease-out]">
-            <!-- Total Blocks -->
             <div class="glass-panel p-6 rounded-2xl">
                 <div class="flex justify-between items-start mb-4">
                     <div>
@@ -236,7 +226,6 @@
                 </div>
             </div>
 
-            <!-- Transactions -->
             <div class="glass-panel p-6 rounded-2xl">
                 <div class="flex justify-between items-start mb-4">
                     <div>
@@ -252,7 +241,6 @@
                 </div>
             </div>
 
-            <!-- Hash Rate (Simulado) -->
             <div class="glass-panel p-6 rounded-2xl">
                 <div class="flex justify-between items-start mb-4">
                     <div>
@@ -268,7 +256,6 @@
                 </div>
             </div>
 
-            <!-- Block Time -->
             <div class="glass-panel p-6 rounded-2xl">
                 <div class="flex justify-between items-start mb-4">
                     <div>
@@ -285,10 +272,18 @@
             </div>
         </div>
 
-        <!-- Main Lists Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-[fadeIn_0.7s_ease-out]">
+        <div class="glass-panel p-6 rounded-2xl mb-8 animate-[fadeIn_0.7s_ease-out]">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-white text-sm uppercase tracking-wider">Historial de Transacciones (14 Días)</h3>
+                <span class="text-xs text-gray-500">Volumen Diario</span>
+            </div>
+            <div class="relative w-full h-48">
+                <canvas id="txChart"></canvas>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-[fadeIn_0.8s_ease-out]">
             
-            <!-- Latest Blocks (Lotes) -->
             <div class="glass-panel rounded-2xl overflow-hidden flex flex-col h-[600px]">
                 <div class="p-6 border-b border-white/5 bg-white/5 flex justify-between items-center">
                     <h3 class="font-bold text-white flex items-center gap-2">
@@ -298,7 +293,6 @@
                 </div>
                 
                 <div class="flex-1 overflow-y-auto p-2 space-y-2" id="blocks-container">
-                    <!-- JS Injection Area -->
                     <div class="p-10 text-center text-gray-500">
                         <i class="fas fa-circle-notch fa-spin text-2xl mb-3 text-emerald-500"></i>
                         <p>Sincronizando nodo...</p>
@@ -306,7 +300,6 @@
                 </div>
             </div>
 
-            <!-- Latest Transactions (Items) -->
             <div class="glass-panel rounded-2xl overflow-hidden flex flex-col h-[600px]">
                 <div class="p-6 border-b border-white/5 bg-white/5 flex justify-between items-center">
                     <h3 class="font-bold text-white flex items-center gap-2">
@@ -316,7 +309,6 @@
                 </div>
                 
                 <div class="flex-1 overflow-y-auto p-2 space-y-2" id="tx-container">
-                    <!-- JS Injection Area -->
                     <div class="p-10 text-center text-gray-500">
                         <i class="fas fa-circle-notch fa-spin text-2xl mb-3 text-purple-500"></i>
                         <p>Escaneando transacciones...</p>
@@ -328,15 +320,10 @@
 
     </main>
 
-    <!-- Firebase Scripts -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-        import { getFirestore, collection, query, orderBy, limit, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
-
-        let db, auth, user;
-
-        // --- Utils ---
+    <script>
+        const HISTORY_KEY = 'trazzaNet_history_v2';
+        
+        // --- Utils Generadores de Datos Falsos ---
         function stringToHash(string) {
             let hash = 0;
             if (string.length == 0) return '0x0000000000000000';
@@ -345,141 +332,114 @@
                 hash = ((hash << 5) - hash) + char;
                 hash = hash & hash;
             }
-            return '0x' + Math.abs(hash).toString(16).padEnd(16, '0') + '...';
+            return '0x' + Math.abs(hash).toString(16).padEnd(64, '0').substring(0, 16) + '...';
         }
 
-        function timeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            if (seconds < 60) return `${seconds}s ago`;
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return `${minutes}m ago`;
-            return `${Math.floor(minutes / 60)}h ago`;
+        function generateDummyTransactions(loteId, timestamp) {
+            return [
+                {
+                    hash: '0x' + Math.random().toString(16).substr(2, 20),
+                    type: 'Smart Contract Call',
+                    from: 'System',
+                    to: 'Trazza_Core',
+                    value: 'Batch Init',
+                    time: timestamp
+                },
+                {
+                    hash: '0x' + Math.random().toString(16).substr(2, 20),
+                    type: 'Data Upload',
+                    from: 'Node_01',
+                    to: 'Storage',
+                    value: 'CSV Parsing',
+                    time: timestamp
+                },
+                {
+                    hash: '0x' + Math.random().toString(16).substr(2, 20),
+                    type: 'Audit Check',
+                    from: 'AI_Auditor',
+                    to: `Lote ${loteId}`,
+                    value: 'Validation',
+                    time: timestamp
+                }
+            ];
         }
 
-        // --- Firebase ---
-        async function init() {
+        // --- CORE FUNCTIONS ---
+        function initBlockchain() {
+            // 1. Leer LocalStorage
+            const raw = localStorage.getItem(HISTORY_KEY);
+            let lotes = [];
+            
             try {
-                const firebaseConfig = JSON.parse(__firebase_config);
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                await signInAnonymously(auth);
-                
-                onAuthStateChanged(auth, (currentUser) => {
-                    if (currentUser) {
-                        user = currentUser;
-                        document.getElementById('user-id-display').textContent = user.uid.substring(0, 8) + '...';
-                        startBlockchainListener();
-                    }
-                });
-            } catch (e) { console.error(e); }
-        }
+                lotes = raw ? JSON.parse(raw) : [];
+            } catch(e) { console.error(e); }
 
-        function startBlockchainListener() {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
-            const q = query(
-                collection(db, 'artifacts', appId, 'users', user.uid, 'lotes'),
-                orderBy('date', 'desc'),
-                limit(20)
-            );
-
-            onSnapshot(q, (snapshot) => {
-                const lotes = [];
-                snapshot.forEach(doc => lotes.push({ id: doc.id, ...doc.data() }));
-                
-                if (lotes.length === 0) {
-                    renderEmpty();
-                } else {
-                    processData(lotes);
-                }
-            });
-        }
-
-        function processData(lotes) {
-            // 1. Update Stats
-            document.getElementById('stat-blocks').textContent = lotes.length;
-            
-            // Estimate total items (transactions)
-            // If we have real CSV data parsed, use it. If not, use totalItems metadata or estimate.
-            let totalItems = 0;
-            let transactions = [];
-
-            lotes.forEach(lote => {
-                // Try to get item count from metadata or csv line count
-                let itemCount = lote.totalItems || 0; 
-                if (!itemCount && lote.csvContent) {
-                    itemCount = lote.csvContent.split('\n').length - 1;
-                }
-                // Fallback if no data
-                if (!itemCount) itemCount = 0; 
-                
-                totalItems += itemCount;
-
-                // Create fake "transactions" from batch data to populate the list
-                // In a real blockchain, every item scan is a tx. Here we simulate 
-                // displaying a few items per block as transactions.
-                if (itemCount > 0) {
-                    transactions.push({
-                        hash: stringToHash(lote.id + "_tx_1"),
-                        from: user.uid.substring(0,6),
-                        to: 'Contract',
-                        val: 'Batch Init',
-                        time: lote.date
-                    });
-                    // Add a second dummy tx representing content if applicable
-                    transactions.push({
-                        hash: stringToHash(lote.id + "_tx_2"),
-                        from: 'Sensor IoT',
-                        to: 'Block ' + lote.id.substring(0,4),
-                        val: `${itemCount} Items`,
-                        time: lote.date
-                    });
-                }
-            });
-
-            document.getElementById('stat-txs').textContent = totalItems.toLocaleString();
-            
-            // Simulated Hashrate based on volume
-            const hashRate = (lotes.length * 0.5 + (totalItems/100)).toFixed(2);
-            document.getElementById('stat-hashrate').textContent = `${hashRate} TH/s`;
-
-            // Avg Block Time (Diff between first and last / count)
-            if (lotes.length > 1) {
-                const first = new Date(lotes[0].date).getTime();
-                const last = new Date(lotes[lotes.length-1].date).getTime();
-                const diffSeconds = (first - last) / 1000;
-                const avgTime = (diffSeconds / lotes.length).toFixed(1);
-                document.getElementById('stat-time').textContent = `${Math.abs(avgTime)} s`;
-            } else {
-                document.getElementById('stat-time').textContent = "12.5 s";
+            if(lotes.length === 0) {
+                renderEmptyState();
+                updateStats(0, 0);
+                initChart([]); // Chart vacío
+                return;
             }
 
+            // 2. Procesar Datos
+            let allTransactions = [];
+            lotes.forEach(lote => {
+                const txs = generateDummyTransactions(lote.id || 'Unknown', lote.time || lote.timestamp);
+                allTransactions.push(...txs);
+            });
+
+            // 3. Renderizar Listas y Stats
             renderBlocks(lotes);
-            renderTransactions(transactions);
+            renderTransactions(allTransactions);
+            updateStats(lotes.length, allTransactions.length);
+
+            // 4. Renderizar Gráfico
+            initChart(lotes);
+
+            // 5. Scroll automático si es necesario
+            const selectedHash = localStorage.getItem('selectedTxHash');
+            if(selectedHash) {
+                setTimeout(() => highlightBlock(selectedHash), 500);
+                localStorage.removeItem('selectedTxHash');
+            }
+        }
+
+        function updateStats(blockCount, txCount) {
+            document.getElementById('stat-blocks').textContent = blockCount;
+            document.getElementById('stat-txs').textContent = txCount;
+            
+            const hashrate = (12.5 + (blockCount * 0.8)).toFixed(2);
+            document.getElementById('stat-hashrate').textContent = hashrate + " TH/s";
+
+            document.getElementById('stat-time').textContent = "12.4 s";
         }
 
         function renderBlocks(lotes) {
             const container = document.getElementById('blocks-container');
             container.innerHTML = '';
 
-            lotes.forEach(block => {
-                const date = new Date(block.date);
-                const blockHash = stringToHash(block.id + block.date);
-                
+            lotes.forEach((lote, index) => {
                 const el = document.createElement('div');
-                el.className = "bg-white/5 hover:bg-white/10 p-4 rounded-xl border border-white/5 transition-all cursor-pointer group";
+                const safeId = lote.fullHash || lote.id || ('block-'+index);
+                el.id = 'block-row-' + safeId; 
+                el.className = "bg-white/5 hover:bg-white/10 p-4 rounded-xl border border-white/5 transition-all cursor-pointer group mb-2";
+                
+                const shortHash = (lote.fullHash || lote.id || '0x00').substring(0, 12) + '...';
+                const time = lote.time || lote.timestamp || 'Reciente';
+                const fileName = lote.fileName || lote.file || 'Unknown File';
+
                 el.innerHTML = `
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center text-gray-500 font-bold text-sm border border-white/10">
-                                Bk
+                                <i class="fas fa-cube"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-emerald-400 font-mono font-bold">#${block.id.substring(0, 8)}</span>
-                                    <span class="text-xs text-gray-500">${timeAgo(date)}</span>
+                                    <span class="text-emerald-400 font-mono font-bold text-sm" title="${lote.fullHash}">${shortHash}</span>
+                                    <span class="text-xs text-gray-500">${time}</span>
                                 </div>
-                                <p class="text-xs text-gray-400 mt-1">Miner: <span class="text-blue-400">TrazaNet Node</span></p>
+                                <p class="text-xs text-gray-400 mt-1">Archivo: <span class="text-blue-400">${fileName}</span></p>
                             </div>
                         </div>
                         <div class="text-right">
@@ -488,6 +448,7 @@
                         </div>
                     </div>
                 `;
+                el.onclick = () => alert(`BLOQUE DETALLADO\n------------------\nHash Completo:\n${lote.fullHash || lote.id}\n\nArchivo:\n${fileName}`);
                 container.appendChild(el);
             });
         }
@@ -496,8 +457,7 @@
             const container = document.getElementById('tx-container');
             container.innerHTML = '';
 
-            // Show latest 15 txs
-            txs.slice(0, 15).forEach(tx => {
+            txs.forEach(tx => {
                 const el = document.createElement('div');
                 el.className = "flex items-center justify-between p-3 hover:bg-white/5 rounded-lg transition-colors border-b border-white/5 last:border-0";
                 el.innerHTML = `
@@ -507,29 +467,121 @@
                         </div>
                         <div class="flex flex-col">
                             <span class="text-xs text-purple-300 font-mono cursor-pointer hover:underline">${tx.hash}</span>
-                            <span class="text-[0.65rem] text-gray-500">${timeAgo(new Date(tx.time))}</span>
+                            <span class="text-[0.65rem] text-gray-500">${tx.time}</span>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-xs text-white font-medium block">${tx.val}</span>
-                        <span class="text-[0.65rem] text-gray-500">To: ${tx.to}</span>
+                        <span class="text-xs text-white font-medium block">${tx.value}</span>
+                        <span class="text-[0.65rem] text-gray-500">${tx.type}</span>
                     </div>
                 `;
                 container.appendChild(el);
             });
         }
 
-        function renderEmpty() {
-            document.getElementById('blocks-container').innerHTML = `
+        function renderEmptyState() {
+            const msg = `
                 <div class="p-10 text-center text-gray-500">
                     <i class="fas fa-cube text-2xl mb-3 opacity-50"></i>
-                    <p>La blockchain está vacía. Registra un lote.</p>
-                </div>
-            `;
-            document.getElementById('tx-container').innerHTML = `<div class="p-10 text-center text-gray-500">Sin transacciones.</div>`;
+                    <p>Blockchain vacía. Comienza subiendo un lote.</p>
+                </div>`;
+            document.getElementById('blocks-container').innerHTML = msg;
+            document.getElementById('tx-container').innerHTML = msg;
         }
 
-        init();
+        function highlightBlock(hash) {
+            const allBlocks = document.querySelectorAll('[id^="block-row-"]');
+            allBlocks.forEach(block => {
+                if(block.id.includes(hash)) {
+                    block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    block.classList.add('ring-2', 'ring-emerald-500', 'bg-emerald-900/20');
+                    setTimeout(() => block.classList.remove('ring-2', 'ring-emerald-500', 'bg-emerald-900/20'), 3000);
+                }
+            });
+        }
+
+        // --- GRAPHIC LOGIC (CHART.JS) ---
+        function initChart(lotes) {
+            const ctx = document.getElementById('txChart').getContext('2d');
+            
+            // Generar datos aleatorios para los días anteriores + datos reales de lotes
+            // Creamos labels para 14 días
+            const labels = [];
+            const dataPoints = [];
+            const today = new Date();
+            
+            for (let i = 13; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(today.getDate() - i);
+                labels.push(d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }));
+                
+                // Simulación: valor base aleatorio + cantidad de lotes si coincide la fecha
+                let val = Math.floor(Math.random() * 50) + 10;
+                
+                // Si tienes lotes reales, esto los sumaría (simplificado aquí como random + base)
+                // Para que se vea bonito, si hay muchos lotes, subimos la curva
+                if (lotes.length > 0 && i === 0) val += (lotes.length * 10);
+                
+                dataPoints.push(val);
+            }
+
+            // Gradiente
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(16, 185, 129, 0.2)'); // Emerald
+            gradient.addColorStop(1, 'rgba(16, 185, 129, 0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Transacciones',
+                        data: dataPoints,
+                        borderColor: '#10B981',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#10B981',
+                        pointBorderColor: '#fff',
+                        fill: true,
+                        tension: 0.4 // Curva suave
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: '#10B981',
+                            bodyColor: '#fff'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { color: '#6b7280', font: { size: 10 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                            ticks: { display: false } // Ocultar números Y para diseño limpio
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', initBlockchain);
+
     </script>
+
 </body>
 </html>
