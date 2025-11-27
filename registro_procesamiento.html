@@ -4,385 +4,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recepción en Planta - TrazaNet</title>
+    <title>Recepción y Procesamiento - TrazaNet</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        trazza: {
+                            bg: '#011c16',      
+                            card: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            primary: '#10B981', 
+                            glow: '#34D399',    
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(6, 78, 59, 0.1) 0%, transparent 40%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
             pointer-events: none;
         }
 
-        .input-with-icon {
-            padding-left: 2.5rem;
+        /* Glassmorphism */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        .glass-panel:hover {
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.1);
+            transform: translateY(-2px);
         }
 
-        .status-intacto {
-            background-color: #d1fae5;
-            color: #065f46;
+        /* Inputs */
+        .tech-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .tech-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #10B981;
+            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+            outline: none;
         }
 
-        .status-violado {
-            background-color: #fee2e2;
-            color: #991b1b;
+        /* Animation */
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
-        .status-ausente {
-            background-color: #fef3c7;
-            color: #92400e;
+        /* Custom Select Arrow */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
         }
 
-        .submit-btn {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .submit-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
+        /* Alert Boxes */
         .alert-box {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
             display: none;
-            animation: slideIn 0.3s ease-out;
+            animation: slideDown 0.3s ease-out;
         }
+        .alert-success { background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10B981; color: #34D399; }
+        .alert-warning { background: rgba(245, 158, 11, 0.1); border-left: 4px solid #F59E0B; color: #FCD34D; }
+        .alert-error { background: rgba(239, 68, 68, 0.1); border-left: 4px solid #EF4444; color: #FCA5A5; }
 
-        .alert-success {
-            background-color: #d1fae5;
-            border-left: 4px solid #10b981;
-            color: #065f46;
-        }
-
-        .alert-warning {
-            background-color: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            color: #92400e;
-        }
-
-        .alert-error {
-            background-color: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #991b1b;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 
-<body>
-    <div class="glass-panel p-8 rounded-xl shadow-2xl w-full max-w-2xl">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold text-gray-800 flex items-center">
-                <i class="fas fa-industry mr-3 text-pink-600"></i> Recepción en Planta
-            </h2>
-            <span class="text-sm text-gray-500">
-                <i class="fas fa-shield-alt mr-1"></i> Control de Entrada
-            </span>
+<body class="flex flex-col min-h-screen">
+
+    <div class="grid-bg"></div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="w-full z-20 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-[#011c16]/80 backdrop-blur-sm sticky top-0">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 flex items-center justify-center bg-emerald-900/50 rounded-lg border border-emerald-500/30 text-emerald-400">
+                <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
+                    <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                </svg>
+            </div>
+            <span class="font-bold text-white tracking-wide text-lg">Trazza<span class="text-emerald-400">Net</span></span>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="text-right hidden sm:block">
+                <p class="text-xs text-gray-400 uppercase tracking-wider">Jefe de Planta</p>
+                <p class="text-sm text-emerald-400 font-mono truncate w-32 text-right" id="user-id-display">Cargando...</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center text-white font-bold text-xs border border-emerald-400/20">
+                <i class="fas fa-industry"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-3xl mx-auto p-6 lg:p-10 flex-1">
+        
+        <!-- Header with Back Button -->
+        <div class="mb-8 animate-[fadeIn_0.5s_ease-out]">
+            <a href="javascript:history.back()" class="inline-flex items-center text-sm text-gray-400 hover:text-emerald-400 mb-4 transition-colors group">
+                <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Volver al Dashboard
+            </a>
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center gap-3">
+                <i class="fas fa-conveyor-belt text-emerald-500"></i>
+                Recepción y Procesamiento
+            </h1>
+            <p class="text-gray-400 text-sm max-w-2xl">Control de entrada, validación de integridad y registro de lote en planta.</p>
         </div>
 
-        <form id="reception-form">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- ID del Lote de Origen -->
-                <div class="md:col-span-2">
-                    <label for="lote-id-origen" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-barcode mr-1 text-pink-500"></i> ID del Lote de Origen
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-qrcode input-icon"></i>
-                        <input type="text" id="lote-id-origen" name="lote-id-origen" required
-                            placeholder="Escanear o ingresar ID del lote"
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 p-2 border">
+        <!-- Form Container -->
+        <div class="glass-panel rounded-2xl overflow-hidden p-8 animate-[fadeIn_0.6s_ease-out]">
+            
+            <form id="reception-form" class="space-y-6">
+                
+                <!-- Grid 2 Cols -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- ID Lote Origen -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-300 mb-2 uppercase tracking-wide">
+                            <i class="fas fa-barcode text-emerald-500 mr-1"></i> ID del Lote de Origen
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-qrcode text-gray-500"></i>
+                            </div>
+                            <input type="text" id="lote-id-origen" required placeholder="Escanear o ingresar ID (ej. LOTE-AVO-2025-001)" 
+                                class="tech-input w-full rounded-xl py-3 pl-10 pr-12 text-white font-mono text-sm">
+                            <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fecha Recepción -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-300 mb-2 uppercase tracking-wide">
+                            <i class="fas fa-clock text-emerald-500 mr-1"></i> Fecha y Hora de Recepción
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-calendar-check text-gray-500"></i>
+                            </div>
+                            <input type="datetime-local" id="fecha-recepcion" required 
+                                class="tech-input w-full rounded-xl py-3 pl-10 pr-4 text-white font-mono text-sm cursor-pointer">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 ml-1">Crítico para cálculo de tiempos de tránsito y frescura.</p>
+                    </div>
+
+                    <!-- Peso Neto -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-300 mb-2 uppercase tracking-wide">
+                            <i class="fas fa-weight-hanging text-emerald-500 mr-1"></i> Peso Neto Recibido (KG)
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-balance-scale text-gray-500"></i>
+                            </div>
+                            <input type="number" id="peso-recibido" step="0.1" min="0" required placeholder="0.00" 
+                                class="tech-input w-full rounded-xl py-3 pl-10 pr-4 text-white font-bold text-lg">
+                        </div>
+                    </div>
+
+                    <!-- Condición Sello -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-300 mb-2 uppercase tracking-wide">
+                            <i class="fas fa-lock text-emerald-500 mr-1"></i> Condición del Sello
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-shield-alt text-gray-500"></i>
+                            </div>
+                            <select id="condicion-sello" required class="tech-input w-full rounded-xl py-3 pl-10 pr-8 text-white text-sm cursor-pointer">
+                                <option value="" disabled selected>Seleccionar estado...</option>
+                                <option value="Intacto">✓ Intacto (Conforme)</option>
+                                <option value="Violado">✗ Violado (Alerta)</option>
+                                <option value="Ausente">⚠ Ausente (Rechazo)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ID Receptor -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-300 mb-2 uppercase tracking-wide">
+                            <i class="fas fa-user-check text-emerald-500 mr-1"></i> ID del Receptor
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-id-badge text-gray-500"></i>
+                            </div>
+                            <input type="text" id="id-receptor" required readonly 
+                                class="tech-input w-full rounded-xl py-3 pl-10 pr-4 text-gray-400 font-mono text-sm bg-white/5 cursor-not-allowed">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Alert Box (Dynamic) -->
+                <div id="alert-box" class="alert-box p-4 rounded-xl border">
+                    <!-- Content injected via JS -->
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-900/40 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 group relative overflow-hidden mt-6">
+                    <span class="pulse-ring absolute w-full h-full rounded-xl opacity-0 group-hover:opacity-20"></span>
+                    <i class="fas fa-check-double text-lg group-hover:scale-110 transition-transform"></i>
+                    <span id="btn-text" class="tracking-wide">REGISTRAR RECEPCIÓN</span>
+                    <i id="btn-spinner" class="fas fa-circle-notch fa-spin hidden"></i>
+                </button>
+
+                <!-- Info Footer -->
+                <div class="flex items-start gap-3 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 mt-4">
+                    <i class="fas fa-info-circle text-blue-400 mt-1 shrink-0"></i>
+                    <div class="text-xs text-blue-200/80 leading-relaxed">
+                        <strong>Acción del Sistema:</strong> Al enviar, se registrará un evento <code class="bg-blue-900/50 px-1 rounded text-blue-300 font-mono">CustodyTransfer</code> en la blockchain y se ejecutará el Smart Contract de Integridad Logística para validar automáticamente la merma de peso.
                     </div>
                 </div>
 
-                <!-- Fecha y Hora de Recepción -->
-                <div class="md:col-span-2">
-                    <label for="fecha-recepcion" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-clock mr-1 text-pink-500"></i> Fecha y Hora de Recepción
-                        <span class="text-xs text-gray-500">(Crítico para cálculo de duración de tránsito)</span>
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-calendar-check input-icon"></i>
-                        <input type="datetime-local" id="fecha-recepcion" name="fecha-recepcion" required
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 p-2 border">
+            </form>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+        let db, auth, user;
+
+        async function init() {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                await signInAnonymously(auth);
+                
+                onAuthStateChanged(auth, (currentUser) => {
+                    if (currentUser) {
+                        user = currentUser;
+                        document.getElementById('user-id-display').textContent = user.uid.substring(0, 8) + '...';
+                        document.getElementById('id-receptor').value = user.uid;
+                    }
+                });
+
+                // Set Default Date
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                document.getElementById('fecha-recepcion').value = now.toISOString().slice(0, 16);
+
+            } catch (e) { console.error(e); }
+        }
+
+        // Seal Condition Logic
+        document.getElementById('condicion-sello').addEventListener('change', (e) => {
+            const val = e.target.value;
+            const box = document.getElementById('alert-box');
+            
+            box.style.display = 'block';
+            box.className = 'alert-box p-4 rounded-xl border mt-4';
+
+            if (val === 'Violado' || val === 'Ausente') {
+                box.classList.add('alert-warning');
+                box.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-exclamation-triangle text-xl mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-sm">Alerta de Integridad</h4>
+                            <p class="text-xs mt-1 opacity-90">Se ha detectado una anomalía en el sello. Se marcará el lote para <strong>Inspección de Calidad Obligatoria</strong> en el siguiente bloque.</p>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Peso Neto Recibido -->
-                <div>
-                    <label for="peso-recibido" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-weight mr-1 text-pink-500"></i> Peso Neto Recibido (KG)
-                        <span class="text-xs text-gray-500">(Parámetro de evaluación)</span>
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-balance-scale input-icon"></i>
-                        <input type="number" id="peso-recibido" name="peso-recibido" step="0.1" min="0" required
-                            placeholder="0.0"
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 p-2 border">
-                    </div>
-                </div>
-
-                <!-- Condición del Sello de Seguridad -->
-                <div>
-                    <label for="condicion-sello" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-lock mr-1 text-pink-500"></i> Condición del Sello de Seguridad
-                        <span class="text-xs text-gray-500">(Evaluación de integridad)</span>
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-certificate input-icon"></i>
-                        <select id="condicion-sello" name="condicion-sello" required
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 p-2 border">
-                            <option value="">Seleccionar condición...</option>
-                            <option value="Intacto">✓ Intacto</option>
-                            <option value="Violado">✗ Violado</option>
-                            <option value="Ausente">⚠ Ausente</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- ID del Receptor -->
-                <div class="md:col-span-2">
-                    <label for="id-receptor" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-user-check mr-1 text-pink-500"></i> ID del Receptor
-                        <span class="text-xs text-gray-500">(Persona que firma la recepción)</span>
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-id-card input-icon"></i>
-                        <input type="text" id="id-receptor" name="id-receptor" required
-                            placeholder="ID del operador que recibe"
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 p-2 border">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alert Box -->
-            <div id="alert-box" class="alert-box"></div>
-
-            <!-- Submit Button -->
-            <button type="submit"
-                class="submit-btn w-full mt-6 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition duration-150">
-                <i class="fas fa-check-circle mr-2"></i>
-                <span id="btn-text">Registrar Recepción y Transferir Custodia</span>
-                <span id="btn-spinner" class="loading-spinner ml-2" style="display: none;"></span>
-            </button>
-
-            <!-- Info Box -->
-            <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-info-circle text-blue-400"></i>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-blue-700">
-                            <strong>Acción del Sistema:</strong> Al enviar, se registrará un evento de tipo
-                            <code class="bg-blue-100 px-1 rounded">CustodyTransfer</code> en la blockchain y se
-                            ejecutará el Smart Contract de Integridad Logística para validar
-                            <strong>Peso Salida vs. Peso Recepción</strong>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        // Set current date/time as default
-        document.addEventListener('DOMContentLoaded', function () {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('fecha-recepcion').value = now.toISOString().slice(0, 16);
-        });
-
-        // Visual feedback for seal condition selection
-        document.getElementById('condicion-sello').addEventListener('change', function (e) {
-            const value = e.target.value;
-            const alertBox = document.getElementById('alert-box');
-
-            if (value === 'Violado' || value === 'Ausente') {
-                alertBox.className = 'alert-box alert-warning';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <strong>Alerta de Seguridad:</strong> Se ha detectado una condición anómala en el sello. 
-                    Se activará una revisión adicional del lote.
                 `;
-                alertBox.style.display = 'block';
-            } else if (value === 'Intacto') {
-                alertBox.className = 'alert-box alert-success';
-                alertBox.innerHTML = `
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <strong>Verificación Exitosa:</strong> El sello de seguridad está intacto.
-                `;
-                alertBox.style.display = 'block';
             } else {
-                alertBox.style.display = 'none';
+                box.classList.add('alert-success');
+                box.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-shield-check text-xl"></i>
+                        <div>
+                            <h4 class="font-bold text-sm">Verificación Exitosa</h4>
+                            <p class="text-xs opacity-90">El sello de seguridad es válido. Cadena de custodia intacta.</p>
+                        </div>
+                    </div>
+                `;
             }
         });
 
-        // Form submission handler
-        document.getElementById('reception-form').addEventListener('submit', async function (e) {
+        // Submit Handler
+        document.getElementById('reception-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            const btn = document.getElementById('submit-btn');
             const btnText = document.getElementById('btn-text');
-            const btnSpinner = document.getElementById('btn-spinner');
+            const spinner = document.getElementById('btn-spinner');
             const alertBox = document.getElementById('alert-box');
-            const submitBtn = e.target.querySelector('button[type="submit"]');
 
-            // Disable button and show loading state
-            submitBtn.disabled = true;
-            btnText.textContent = 'Procesando...';
-            btnSpinner.style.display = 'inline-block';
+            // UI Loading State
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            btnText.textContent = 'Procesando en Blockchain...';
+            spinner.classList.remove('hidden');
 
-            // Collect form data
+            // Collect Data
             const formData = {
-                loteIdOrigen: document.getElementById('lote-id-origen').value,
-                fechaHoraRecepcion: document.getElementById('fecha-recepcion').value,
-                pesoNetoRecibidoKg: parseFloat(document.getElementById('peso-recibido').value),
+                loteId: document.getElementById('lote-id-origen').value,
+                fechaRecepcion: document.getElementById('fecha-recepcion').value,
+                pesoRecibido: parseFloat(document.getElementById('peso-recibido').value),
                 condicionSello: document.getElementById('condicion-sello').value,
-                idUsuarioReceptor: document.getElementById('id-receptor').value,
-                tipoEvento: 'CustodyTransfer',
-                fase: 'Procesamiento',
-                timestamp: new Date().toISOString()
+                receptorId: document.getElementById('id-receptor').value,
+                timestamp: new Date().toISOString(),
+                tipoEvento: 'RecepcionPlanta'
             };
 
             try {
-                // TODO: Replace with actual API endpoint
-                // const response = await fetch('http://localhost:3000/api/register-reception', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(formData)
-                // });
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
+                
+                // Simulate Smart Contract Weight Validation
+                await new Promise(r => setTimeout(r, 2000)); // Artificial delay
+                
+                // Simulated logic: Random weight diff check
+                const isWeightOk = Math.random() > 0.3; 
 
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Save to Firestore
+                await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'eventos_recepcion'), formData);
 
-                // Simulate weight validation
-                const weightDifference = Math.random() * 5; // Simulated difference
-                const isWeightValid = weightDifference < 2; // Less than 2kg difference is acceptable
-
-                // Show success message
-                alertBox.className = 'alert-box alert-success';
+                // Success UI
+                alertBox.style.display = 'block';
+                alertBox.className = 'alert-box p-4 rounded-xl border mt-4 alert-success';
                 alertBox.innerHTML = `
-                    <div class="flex items-start">
-                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white shrink-0">
+                            <i class="fas fa-check"></i>
+                        </div>
                         <div>
-                            <strong>Recepción Registrada Exitosamente</strong>
-                            <ul class="mt-2 text-sm list-disc list-inside">
-                                <li>Evento de transferencia de custodia registrado en blockchain</li>
-                                <li>Lote: <strong>${formData.loteIdOrigen}</strong></li>
-                                <li>Peso recibido: <strong>${formData.pesoNetoRecibidoKg} KG</strong></li>
-                                <li>Condición del sello: <strong>${formData.condicionSello}</strong></li>
-                                <li>Smart Contract ejecutado: ${isWeightValid ?
-                        '<span class="text-green-700">✓ Validación de peso exitosa</span>' :
-                        '<span class="text-yellow-700">⚠ Diferencia de peso detectada</span>'}</li>
+                            <h4 class="font-bold text-sm text-emerald-700">Recepción Registrada</h4>
+                            <ul class="mt-2 text-xs space-y-1 list-disc list-inside text-emerald-800">
+                                <li>Evento grabado en Bloque #${Math.floor(Math.random()*100000)}</li>
+                                <li>Custodia transferida a: <strong>${formData.receptorId.substring(0,8)}...</strong></li>
+                                <li>Validación de Peso: ${isWeightOk ? '<strong>Conforme</strong>' : '<strong class="text-yellow-700">Diferencia Detectada (Advertencia)</strong>'}</li>
                             </ul>
                         </div>
                     </div>
                 `;
-                alertBox.style.display = 'block';
 
-                // Reset form after 3 seconds
+                // Reset (partial)
                 setTimeout(() => {
-                    e.target.reset();
-                    alertBox.style.display = 'none';
-                    const now = new Date();
-                    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-                    document.getElementById('fecha-recepcion').value = now.toISOString().slice(0, 16);
-                }, 3000);
+                    document.getElementById('lote-id-origen').value = '';
+                    document.getElementById('peso-recibido').value = '';
+                    document.getElementById('condicion-sello').value = '';
+                }, 2000);
 
             } catch (error) {
-                console.error('Error al registrar recepción:', error);
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-circle mr-2"></i>
-                    <strong>Error:</strong> No se pudo registrar la recepción. Por favor, intente nuevamente.
-                `;
+                console.error(error);
                 alertBox.style.display = 'block';
+                alertBox.className = 'alert-box p-4 rounded-xl border mt-4 alert-error';
+                alertBox.innerHTML = `<i class="fas fa-times-circle mr-2"></i> Error al registrar en la red. Intente nuevamente.`;
             } finally {
-                // Re-enable button
-                submitBtn.disabled = false;
-                btnText.textContent = 'Registrar Recepción y Transferir Custodia';
-                btnSpinner.style.display = 'none';
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btnText.textContent = 'REGISTRAR RECEPCIÓN';
+                spinner.classList.add('hidden');
             }
         });
+
+        init();
     </script>
 </body>
-
 </html>

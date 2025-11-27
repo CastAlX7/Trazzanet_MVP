@@ -4,423 +4,553 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - TrazaNet</title>
+    <title>Dashboard Corporativo - TrazzaNet Blockchain</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        trazza: {
+                            bg: '#011c16',      
+                            card: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            primary: '#10B981', 
+                            glow: '#34D399',    
+                        }
+                    },
+                    transitionProperty: {
+                        'width': 'width',
+                        'spacing': 'margin, padding',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(6, 78, 59, 0.2) 0%, transparent 40%);
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card-animate {
-            animation: slideIn 0.5s ease-out;
-        }
-
-        .pulse-dot {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .5;
-            }
-        }
-
-        .chart-bar {
+        /* --- Glassmorphism --- */
+        .glass-panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
+        }
+
+        .glass-sidebar {
+            background: rgba(1, 28, 22, 0.85); /* Fondo un poco más sólido para legibilidad */
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            /* Transición ultra suave para el efecto de expansión */
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            white-space: nowrap; /* Evita que el texto salte de línea */
+            z-index: 50;
+        }
+
+        /* Control de visibilidad del texto en el sidebar */
+        .sidebar-text {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none; /* Evita clicks accidentales cuando está oculto */
+        }
+
+        /* Cuando el sidebar (group) tiene hover */
+        .group:hover .sidebar-text {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            transition-delay: 0.1s; /* Pequeño delay para que se vea elegante */
+        }
+
+        /* Hover Effects Cards */
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.15);
+        }
+
+        /* Animaciones */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-entry {
+            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0; 
+        }
+
+        /* Utilidades para Gráficos */
+        .bar-container {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .bar-fill {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Nav Item Styles */
+        .nav-item.active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            border-right: 3px solid #10B981;
+        }
+        
+        .nav-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.03);
+            color: #34D399;
         }
     </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="flex h-screen overflow-hidden text-sm md:text-base">
 
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-gray-200 p-4 flex flex-col shadow-lg">
-            <h1 class="text-2xl font-bold text-indigo-600 mb-8">TrazaNet</h1>
-            <nav class="space-y-2">
-                <a href="dashboard.html"
-                    class="flex items-center p-3 bg-indigo-50 text-indigo-600 font-semibold rounded-lg transition duration-150">
-                    <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
-                    Dashboard
-                </a>
-                <a href="carga.html"
-                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
-                    <i class="fas fa-upload w-5 h-5 mr-3"></i>
-                    Carga de Datos
-                </a>
-                <a href="trazabilidad.html"
-                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
-                    <i class="fas fa-project-diagram w-5 h-5 mr-3"></i>
-                    Trazabilidad
-                </a>
-                <a href="auditoria.html"
-                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
-                    <i class="fas fa-clipboard-check w-5 h-5 mr-3"></i>
-                    Auditoría
-                </a>
-                <a href="gestor_certificaciones.html"
-                    class="flex items-center p-3 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition duration-150">
-                    <i class="fas fa-certificate w-5 h-5 mr-3"></i>
-                    Certificaciones
-                </a>
-            </nav>
-            <div class="mt-auto pt-4 border-t border-gray-200">
-                <p class="text-xs text-gray-500 truncate" id="user-id-display">ID Usuario: Cargando...</p>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 p-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6">Dashboard de Trazabilidad</h2>
-
-            <!-- Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-
-                <!-- Card 1: Lotes Activos -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-500 card-animate">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-500">Lotes Activos</p>
-                        <i class="fas fa-boxes text-indigo-500 text-2xl"></i>
-                    </div>
-                    <p class="text-4xl font-bold text-gray-900 mt-2" id="lotes-activos">0</p>
-                    <p class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up mr-1"></i>Actualizado</p>
+    <!-- SIDEBAR INTELIGENTE (Expandable) -->
+    <aside class="w-20 hover:w-72 glass-sidebar flex flex-col justify-between group absolute md:relative h-full shadow-2xl hover:shadow-emerald-900/50 flex-shrink-0">
+        
+        <!-- Logo Area -->
+        <div class="h-24 flex items-center px-6 border-b border-white/5 flex-shrink-0">
+            <div class="flex items-center gap-4">
+                <!-- Símbolo (Siempre visible) -->
+                <div class="relative w-8 h-8 flex-shrink-0">
+                    <svg class="w-8 h-8 text-emerald-500 drop-shadow-[0_0_8px_rgba(16,185,129,0.5)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-180" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
+                        <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                    </svg>
                 </div>
-
-                <!-- Card 2: Transacciones Recientes -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-green-500 card-animate"
-                    style="animation-delay: 0.1s;">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-500">Transacciones Confirmadas</p>
-                        <i class="fas fa-check-circle text-green-500 text-2xl"></i>
-                    </div>
-                    <p class="text-4xl font-bold text-gray-900 mt-2" id="transacciones-confirmadas">0</p>
-                    <p class="text-xs text-gray-500 mt-1">Total de transacciones en cadena</p>
-                </div>
-
-                <!-- Card 3: Alertas Pendientes -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-red-500 card-animate"
-                    style="animation-delay: 0.2s;">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-500">Alertas Críticas</p>
-                        <i class="fas fa-exclamation-triangle text-red-500 text-2xl pulse-dot"></i>
-                    </div>
-                    <p class="text-4xl font-bold text-gray-900 mt-2 text-red-600" id="alertas-criticas">0</p>
-                    <button onclick="verAlerta()" class="text-xs text-indigo-500 hover:underline mt-1 block">Ver
-                        Detalle</button>
-                </div>
-
-                <!-- Card 4: Dirección de Billetera -->
-                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-yellow-500 card-animate"
-                    style="animation-delay: 0.3s;">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-gray-500">Mi Dirección</p>
-                        <i class="fas fa-wallet text-yellow-500 text-2xl"></i>
-                    </div>
-                    <p class="text-lg font-mono text-gray-900 mt-2 truncate" id="wallet-address">
-                        0x71C7656EC7ab88b098def...</p>
-                    <button onclick="copiarDireccion()"
-                        class="text-xs text-indigo-500 hover:underline mt-1 block">Copiar</button>
+                
+                <!-- Texto (Visible solo al expandir/hover) -->
+                <div class="sidebar-text flex flex-col justify-center">
+                    <h1 class="text-xl font-bold text-white tracking-wide leading-none">Trazza<span class="text-emerald-400">Net</span></h1>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] mt-1">Blockchain System</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Main Sections -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Navigation -->
+        <nav class="flex-1 py-8 space-y-2 px-3 overflow-y-auto overflow-x-hidden">
+            
+            <a href="dashboard.html" class="nav-item active flex items-center p-3 rounded-lg transition-all duration-200">
+                <div class="w-8 flex justify-center flex-shrink-0">
+                    <i class="fas fa-chart-pie text-lg"></i>
+                </div>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Dashboard General</span>
+            </a>
 
-                <!-- Left Column: Activity Feed -->
-                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg card-animate">
-                    <h3 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4 flex items-center">
-                        <i class="fas fa-stream mr-2 text-indigo-500"></i>
-                        Feed de Actividad Reciente
+            <a href="carga.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+                <div class="w-8 flex justify-center flex-shrink-0">
+                    <i class="fas fa-cloud-upload-alt text-lg"></i>
+                </div>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Carga de Lotes</span>
+            </a>
+
+            <a href="trazabilidad.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+                <div class="w-8 flex justify-center flex-shrink-0">
+                    <i class="fas fa-link text-lg"></i>
+                </div>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Trazabilidad</span>
+            </a>
+
+            <a href="auditoria.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+                <div class="w-8 flex justify-center flex-shrink-0">
+                    <i class="fas fa-clipboard-check text-lg"></i>
+                </div>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Auditoría Smart</span>
+            </a>
+
+            <a href="certificaciones.html" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+                <div class="w-8 flex justify-center flex-shrink-0">
+                    <i class="fas fa-certificate text-lg"></i>
+                </div>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Certificados NFT</span>
+            </a>
+            
+            <div class="my-4 border-t border-white/5 mx-2"></div>
+            
+            <a href="#" class="nav-item flex items-center p-3 rounded-lg text-gray-400 transition-all duration-200">
+                <div class="w-8 flex justify-center flex-shrink-0">
+                    <i class="fas fa-cog text-lg"></i>
+                </div>
+                <span class="sidebar-text ml-3 font-medium whitespace-nowrap">Configuración Nodo</span>
+            </a>
+
+        </nav>
+
+        <!-- User Info Bottom -->
+        <div class="p-4 border-t border-white/5 bg-gradient-to-t from-emerald-900/20 to-transparent flex-shrink-0">
+            <div class="flex items-center gap-3 overflow-hidden">
+                <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 flex-shrink-0">
+                    <i class="fas fa-user-astronaut text-emerald-400"></i>
+                </div>
+                <div class="sidebar-text overflow-hidden">
+                    <p class="text-sm font-semibold text-white truncate">Admin Node</p>
+                    <p class="text-xs text-emerald-500/60 truncate" id="user-id-display">Conectando...</p>
+                </div>
+                <button class="ml-auto text-gray-500 hover:text-red-400 transition-colors sidebar-text">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 overflow-y-auto relative p-4 md:p-8 ml-20 transition-all duration-400">
+        
+        <!-- Top Bar Decorativa -->
+        <div class="flex justify-between items-center mb-8 animate-entry" style="animation-delay: 0.1s;">
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-1">Panel de Control</h2>
+                <p class="text-gray-400 text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Red Blockchain Activa • Sincronizando...
+                </p>
+            </div>
+            
+            <div class="flex gap-4">
+                <button class="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg glass-panel hover:bg-white/5 transition-colors text-xs font-mono text-emerald-400 border border-emerald-500/30">
+                    <i class="fas fa-wallet"></i>
+                    <span id="wallet-address-short">0x...</span>
+                </button>
+                <button class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center text-white hover:text-emerald-400 relative">
+                    <i class="fas fa-bell"></i>
+                    <!-- Indicador de notificación eliminado por defecto -->
+                </button>
+            </div>
+        </div>
+
+        <!-- STATS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            
+            <!-- Card 1 -->
+            <div class="glass-panel rounded-2xl p-6 hover-lift animate-entry" style="animation-delay: 0.2s;">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Lotes en Cadena</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="lotes-activos">0</h3>
+                    </div>
+                    <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-400">
+                        <i class="fas fa-cubes text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex items-center text-xs text-gray-500 bg-white/5 px-2 py-1 rounded w-fit">
+                    <i class="fas fa-minus mr-1"></i> Sin actividad
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glass-panel rounded-2xl p-6 hover-lift animate-entry" style="animation-delay: 0.3s;">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Transacciones</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="transacciones-confirmadas">0</h3>
+                    </div>
+                    <div class="p-3 rounded-xl bg-blue-500/10 text-blue-400">
+                        <i class="fas fa-exchange-alt text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex items-center text-xs text-gray-500">
+                    Esperando bloques...
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glass-panel rounded-2xl p-6 hover-lift animate-entry" style="animation-delay: 0.4s;">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-red-300 text-xs uppercase tracking-wider font-semibold">Alertas Críticas</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="alertas-criticas">0</h3>
+                    </div>
+                    <div class="p-3 rounded-xl bg-red-500/10 text-red-400 relative">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                </div>
+                <button onclick="verAlerta()" class="text-xs text-gray-500 hover:text-white transition-colors">
+                    Sin anomalías detectadas
+                </button>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="glass-panel rounded-2xl p-6 hover-lift animate-entry" style="animation-delay: 0.5s; background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(0,0,0,0) 100%);">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-emerald-200 text-xs uppercase tracking-wider font-semibold">Estado del Nodo</p>
+                        <h3 class="text-xl font-bold text-white mt-2">En línea</h3>
+                    </div>
+                    <div class="p-3 rounded-xl bg-teal-500/10 text-teal-400">
+                        <i class="fas fa-server text-xl"></i>
+                    </div>
+                </div>
+                <div class="w-full bg-gray-700/50 rounded-full h-1.5 mt-2">
+                    <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+                </div>
+                <p class="text-[10px] text-emerald-400/70 mt-1 text-right">Listo para operar</p>
+            </div>
+        </div>
+
+        <!-- MAIN SECTIONS GRID -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Activity Feed (Left Column) -->
+            <div class="lg:col-span-2 glass-panel rounded-2xl p-6 animate-entry" style="animation-delay: 0.6s;">
+                <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+                    <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <i class="fas fa-stream text-emerald-500"></i>
+                        Ledger de Actividad
                     </h3>
-
-                    <ul id="activity-feed" class="divide-y divide-gray-100">
-                        <!-- Feed items generated by JS -->
-                    </ul>
-                    <div class="mt-4 text-center">
-                        <button onclick="crearNuevoLote()"
-                            class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-150">
-                            <i class="fas fa-plus mr-2"></i> Crear Nuevo Lote de Traza
-                        </button>
-                    </div>
+                    <button onclick="crearNuevoLote()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition-all shadow-lg shadow-emerald-900/50 flex items-center gap-2">
+                        <i class="fas fa-plus"></i> Nuevo Registro
+                    </button>
                 </div>
 
-                <!-- Right Column: Charts/Status -->
-                <div class="lg:col-span-1 space-y-6">
-                    <!-- Chart Simulation -->
-                    <div class="bg-white p-6 rounded-xl shadow-lg card-animate" style="animation-delay: 0.5s;">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Métricas de Calidad</h3>
-                        <div class="space-y-4">
-                            <!-- Simulated bars -->
-                            <div class="relative">
-                                <p class="text-sm text-gray-600 mb-1">Temperatura</p>
-                                <div class="h-2 bg-gray-200 rounded-full">
-                                    <div class="chart-bar h-full bg-green-500 rounded-full" style="width: 95%;"></div>
-                                </div>
-                                <span class="absolute right-0 top-0 text-xs font-medium text-gray-700">95% OK</span>
+                <ul id="activity-feed" class="space-y-3">
+                    <!-- Placeholder Empty State -->
+                    <li class="flex flex-col items-center justify-center p-8 rounded-lg border border-white/5 bg-white/5 border-dashed">
+                        <div class="w-12 h-12 rounded-full bg-gray-500/10 flex items-center justify-center mb-3 text-gray-500">
+                            <i class="fas fa-wind text-xl"></i>
+                        </div>
+                        <p class="text-sm font-medium text-gray-400">No hay actividad reciente</p>
+                        <p class="text-xs text-gray-600 mt-1">Las transacciones aparecerán aquí una vez registradas.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Metrics (Right Column) -->
+            <div class="lg:col-span-1 space-y-6">
+                
+                <!-- Quality Metrics -->
+                <div class="glass-panel rounded-2xl p-6 animate-entry" style="animation-delay: 0.7s;">
+                    <h3 class="text-lg font-semibold text-white mb-6">Métricas IoT (Tiempo Real)</h3>
+                    
+                    <div class="space-y-6">
+                        <!-- Temperatura -->
+                        <div class="relative">
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="text-gray-400"><i class="fas fa-temperature-high mr-1"></i> Temperatura Promedio</span>
+                                <span class="text-gray-500 font-mono metric-text">--</span>
                             </div>
-                            <div class="relative">
-                                <p class="text-sm text-gray-600 mb-1">Humedad</p>
-                                <div class="h-2 bg-gray-200 rounded-full">
-                                    <div class="chart-bar h-full bg-yellow-500 rounded-full" style="width: 80%;"></div>
-                                </div>
-                                <span class="absolute right-0 top-0 text-xs font-medium text-gray-700">80% OK</span>
+                            <div class="bar-container h-2 rounded-full w-full">
+                                <div class="chart-bar bar-fill h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 0%;"></div>
                             </div>
-                            <div class="relative">
-                                <p class="text-sm text-gray-600 mb-1">Origen Verificado</p>
-                                <div class="h-2 bg-gray-200 rounded-full">
-                                    <div class="chart-bar h-full bg-indigo-500 rounded-full" style="width: 100%;"></div>
-                                </div>
-                                <span class="absolute right-0 top-0 text-xs font-medium text-gray-700">100% OK</span>
+                        </div>
+
+                        <!-- Humedad -->
+                        <div class="relative">
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="text-gray-400"><i class="fas fa-tint mr-1"></i> Humedad Relativa</span>
+                                <span class="text-gray-500 font-mono metric-text">--</span>
+                            </div>
+                            <div class="bar-container h-2 rounded-full w-full">
+                                <div class="chart-bar bar-fill h-full bg-gradient-to-r from-teal-600 to-teal-400 rounded-full" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Origen -->
+                        <div class="relative">
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="text-gray-400"><i class="fas fa-map-marker-alt mr-1"></i> Origen Verificado</span>
+                                <span class="text-gray-500 font-mono metric-text">--</span>
+                            </div>
+                            <div class="bar-container h-2 rounded-full w-full">
+                                <div class="chart-bar bar-fill h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Mini Info Box -->
+                    <div class="mt-6 p-4 rounded-xl bg-emerald-900/20 border border-emerald-500/20">
+                        <p class="text-xs text-emerald-200/70 text-center">
+                            <i class="fas fa-info-circle mr-1"></i> Esperando conexión con sensores IoT...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Wallet Card (Mobile) -->
+                <div class="glass-panel rounded-2xl p-6 animate-entry block md:hidden" style="animation-delay: 0.8s;">
+                    <p class="text-xs text-gray-400 mb-2">Mi Dirección Pública</p>
+                    <div class="flex items-center justify-between bg-black/30 p-3 rounded-lg border border-white/5">
+                        <span class="text-xs font-mono text-emerald-400 truncate w-32" id="wallet-address-mobile">0x...</span>
+                        <button onclick="copiarDireccion()" class="text-white hover:text-emerald-400"><i class="far fa-copy"></i></button>
+                    </div>
                 </div>
 
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+
+    <!-- Hidden element for clipboard -->
+    <div id="wallet-full" class="hidden"></div>
 
     <script>
         // ===========================================
-        // CONFIGURACIÓN Y VARIABLES GLOBALES
+        // CONFIGURACIÓN INICIAL (SIN DATOS)
         // ===========================================
-        const API_BASE_URL = '/api';
         let userId = null;
-        let recentActivity = [];
 
-        /**
-         * Genera o recupera un ID de usuario local único
-         */
-        function getOrCreateUserId() {
-            let storedUserId = sessionStorage.getItem('trazanet_user_id');
-            if (!storedUserId) {
-                storedUserId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-                sessionStorage.setItem('trazanet_user_id', storedUserId);
-            }
-            return storedUserId;
+        // Estructura lista para recibir datos, pero vacía por defecto
+        const MOCK_API = {
+            stats: {
+                lotesActivos: 0,
+                transacciones: 0,
+                alertas: 0,
+                metricas: { temperatura: 0, humedad: 0, origen: 0 }
+            },
+            history: [] // Array vacío
+        };
+
+        // --- Utilidades ---
+        function timeAgo(date) {
+            // ... (Lógica igual, pero solo se usará si hay datos)
+            const seconds = Math.floor((new Date() - date) / 1000);
+            return "Hace un momento";
         }
 
-        /**
-         * Muestra un mensaje temporal de estado
-         */
-        function showStatusMessage(message, type = 'info') {
-            const modal = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-green-500' : (type === 'error' ? 'bg-red-500' : 'bg-blue-500');
-
-            modal.className = `${bgColor} text-white p-4 rounded-lg shadow-xl mb-4 fixed top-4 right-4 z-50 transition duration-300 opacity-0`;
-            modal.innerHTML = `<p class="font-semibold">${message}</p>`;
-
-            document.body.appendChild(modal);
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        function showNotification(msg, type = 'success') {
+            const div = document.createElement('div');
+            const color = type === 'success' ? 'bg-emerald-500' : 'bg-blue-500';
+            div.className = `fixed top-4 right-4 ${color} text-white px-6 py-3 rounded-xl shadow-2xl z-50 transform transition-all duration-300 translate-y-[-100px] flex items-center gap-3 border border-white/20 backdrop-blur-md`;
+            div.innerHTML = `<i class="fas fa-check-circle"></i> <span>${msg}</span>`;
+            document.body.appendChild(div);
+            
+            setTimeout(() => div.classList.remove('translate-y-[-100px]'), 10);
             setTimeout(() => {
-                modal.classList.add('opacity-0');
-                modal.addEventListener('transitionend', () => modal.remove());
-            }, 5000);
+                div.classList.add('opacity-0', 'translate-y-[-20px]');
+                setTimeout(() => div.remove(), 500);
+            }, 3000);
         }
 
-        /**
-         * Calcula tiempo transcurrido
-         */
-        function timeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const minutes = Math.floor((now - date) / 60000);
+        // --- Core Logic ---
+        function initDashboard() {
+            // Recuperar sesión
+            const session = JSON.parse(localStorage.getItem('trazzaSession'));
+            userId = session ? session.user : 'Invitado';
+            document.getElementById('user-id-display').textContent = `ID: ${userId.substring(0,8)}...`;
 
-            const timeAgoElement = document.createElement('span');
-            timeAgoElement.className = 'text-xs text-gray-500';
+            // Cargar Stats (0 por defecto)
+            animateValue("lotes-activos", 0, MOCK_API.stats.lotesActivos, 1000);
+            animateValue("transacciones-confirmadas", 0, MOCK_API.stats.transacciones, 1000);
+            document.getElementById('alertas-criticas').textContent = MOCK_API.stats.alertas;
 
-            if (minutes < 60) {
-                timeAgoElement.textContent = `Hace ${minutes} min`;
-            } else if (minutes < 1440) {
-                const hours = Math.floor(minutes / 60);
-                timeAgoElement.textContent = `Hace ${hours} hr`;
-            } else {
-                const days = Math.floor(minutes / 1440);
-                timeAgoElement.textContent = `Hace ${days} días`;
-            }
-            return timeAgoElement;
+            // Cargar Métricas (0 por defecto)
+            updateMetrics(MOCK_API.stats.metricas);
+
+            // Cargar Feed (Vacío por defecto)
+            renderFeed(MOCK_API.history);
         }
 
-        // ===========================================
-        // CARGAR ESTADÍSTICAS DEL DASHBOARD
-        // ===========================================
-        async function loadDashboardStats() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/dashboard/stats?userId=${userId}`);
-                if (!response.ok) throw new Error('Error al cargar estadísticas');
-
-                const result = await response.json();
-                if (result.success) {
-                    const stats = result.data;
-
-                    // Actualizar tarjetas
-                    document.getElementById('lotes-activos').textContent = stats.lotesActivos;
-                    document.getElementById('transacciones-confirmadas').textContent = stats.transaccionesConfirmadas.toLocaleString();
-                    document.getElementById('alertas-criticas').textContent = stats.alertasCriticas;
-
-                    // Actualizar métricas de calidad
-                    updateQualityMetrics(stats.metricas);
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            if(end === 0) { obj.innerHTML = "0"; return; }
+            
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
                 }
-            } catch (error) {
-                console.error('Error al cargar estadísticas:', error);
-            }
+            };
+            window.requestAnimationFrame(step);
         }
 
-        /**
-         * Actualizar métricas de calidad
-         */
-        function updateQualityMetrics(metricas) {
+        function updateMetrics(data) {
             const bars = document.querySelectorAll('.chart-bar');
-            if (bars[0]) bars[0].style.width = `${metricas.temperatura}%`;
-            if (bars[1]) bars[1].style.width = `${metricas.humedad}%`;
-            if (bars[2]) bars[2].style.width = `${metricas.origenVerificado}%`;
-
-            const percentages = document.querySelectorAll('.chart-bar + span');
-            if (percentages[0]) percentages[0].textContent = `${metricas.temperatura}% OK`;
-            if (percentages[1]) percentages[1].textContent = `${metricas.humedad}% OK`;
-            if (percentages[2]) percentages[2].textContent = `${metricas.origenVerificado}% OK`;
+            const texts = document.querySelectorAll('.metric-text');
+            
+            // Si data es 0, las barras no se mueven
+            setTimeout(() => {
+                bars[0].style.width = `${data.temperatura}%`;
+                if(data.temperatura > 0) texts[0].innerHTML = `${data.temperatura}% <span class="text-[10px] text-gray-500">OPTIMO</span>`;
+                
+                bars[1].style.width = `${data.humedad}%`;
+                if(data.humedad > 0) texts[1].innerHTML = `${data.humedad}% <span class="text-[10px] text-gray-500">NORMAL</span>`;
+                
+                bars[2].style.width = `${data.origenVerificado}%`;
+                if(data.origenVerificado > 0) texts[2].innerHTML = `${data.origenVerificado}% <span class="text-[10px] text-gray-500">VERIFICADO</span>`;
+            }, 500);
         }
 
-        // ===========================================
-        // CARGAR ACTIVIDAD RECIENTE
-        // ===========================================
-        async function loadRecentActivity() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/history?userId=${userId}`);
-                if (!response.ok) throw new Error('Error al cargar actividad');
+        function renderFeed(items) {
+            const list = document.getElementById('activity-feed');
+            
+            // Si no hay items, no hacemos nada (el HTML ya tiene el placeholder "No hay actividad")
+            if (!items || items.length === 0) return;
 
-                const result = await response.json();
-                if (result.success) {
-                    recentActivity = result.data.slice(0, 5); // Últimas 5 actividades
-                    renderActivityFeed();
-                }
-            } catch (error) {
-                console.error('Error al cargar actividad:', error);
-                renderActivityFeed(); // Renderizar vacío
-            }
-        }
-
-        /**
-         * Renderizar feed de actividad
-         */
-        function renderActivityFeed() {
-            const feed = document.getElementById('activity-feed');
-            feed.innerHTML = '';
-
-            if (recentActivity.length === 0) {
-                feed.innerHTML = '<li class="py-8 text-center text-gray-500">No hay actividad reciente</li>';
-                return;
-            }
-
-            recentActivity.forEach(record => {
+            // Si llegaran datos, limpiamos el placeholder y renderizamos
+            list.innerHTML = '';
+            
+            items.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.className = 'py-3 flex justify-between items-center hover:bg-gray-50 p-2 -mx-2 rounded-lg cursor-pointer transition duration-150';
-                li.onclick = () => verDetalles(record);
-
-                let iconClass = 'fas fa-upload text-indigo-500';
-                let evento = 'Carga de Archivo';
-
-                if (record.simResult === 'Conforme') {
-                    iconClass = 'fas fa-clipboard-check text-green-500';
-                    evento = 'Auditoría Aprobada';
-                } else if (record.simResult === 'Hallazgo') {
-                    iconClass = 'fas fa-exclamation-triangle text-yellow-500';
-                    evento = 'Hallazgo Detectado';
-                } else if (record.simResult === 'Descarte') {
-                    iconClass = 'fas fa-trash-alt text-red-500';
-                    evento = 'Lote para Descarte';
-                }
+                li.className = 'group flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-200 cursor-pointer border border-transparent hover:border-white/5';
+                li.style.animation = `slideIn 0.5s ease-out forwards ${index * 0.1}s`;
+                li.style.opacity = '0'; // Inicial para animación
+                
+                let iconData = { class: 'fa-cube', bg: 'bg-gray-500/20', color: 'text-gray-400' };
+                if (item.status === 'Conforme') iconData = { class: 'fa-check-double', bg: 'bg-emerald-500/20', color: 'text-emerald-400' };
+                if (item.status === 'Riesgo') iconData = { class: 'fa-exclamation-triangle', bg: 'bg-red-500/20', color: 'text-red-400' };
+                if (item.status === 'Pendiente') iconData = { class: 'fa-clock', bg: 'bg-blue-500/20', color: 'text-blue-400' };
 
                 li.innerHTML = `
-                    <div class="flex items-center">
-                        <i class="${iconClass} w-5 h-5 mr-3"></i>
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">${evento}</p>
-                            <p class="text-xs text-gray-500 font-mono truncate">${record.transactionId.substring(0, 15)}...</p>
-                        </div>
+                    <div class="w-10 h-10 rounded-full ${iconData.bg} flex items-center justify-center shrink-0 border border-white/5 group-hover:scale-110 transition-transform">
+                        <i class="fas ${iconData.class} ${iconData.color}"></i>
                     </div>
-                    ${timeAgo(record.date).outerHTML}
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-200 truncate">${item.desc}</p>
+                        <p class="text-xs text-gray-500 font-mono">Hash: <span class="text-emerald-500/60">${item.hash}</span></p>
+                    </div>
+                    <div class="text-xs text-gray-500 whitespace-nowrap text-right">
+                        ${timeAgo(item.date)}
+                        <i class="fas fa-chevron-right ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500"></i>
+                    </div>
                 `;
-                feed.appendChild(li);
+                li.onclick = () => showDetails(item);
+                list.appendChild(li);
             });
         }
 
-        // ===========================================
-        // FUNCIONES DE INTERACCIÓN
-        // ===========================================
-        window.crearNuevoLote = function () {
-            window.location.href = 'carga.html';
+        // --- Actions ---
+        window.crearNuevoLote = () => window.location.href = 'carga.html';
+        window.verAlerta = () => window.location.href = 'auditoria.html';
+        
+        window.copiarDireccion = () => {
+            // Sin dirección real no copiamos nada o mostramos mensaje
+            showNotification('Dirección no disponible (Sin conexión Wallet)', 'info');
+        };
+
+        window.showDetails = (item) => {
+            alert(`🔍 EXPLORADOR DE BLOQUES\n\nHash Transacción: ${item.hash}\nEstado: ${item.status}\nTimestamp: ${item.date}\n\nLos datos están inmutados en la blockchain.`);
         }
 
-        window.verAlerta = function () {
-            window.location.href = 'auditoria.html';
-        }
+        // Init
+        document.addEventListener('DOMContentLoaded', initDashboard);
 
-        window.verDetalles = function (record) {
-            if (record.id) {
-                window.location.href = `auditoria_detalle.html?id=${record.id}`;
-            } else {
-                const detailsMessage = `📋 DETALLES DE TRANSACCIÓN<br>Hash: ${record.transactionId}<br>Archivo: ${record.fileName}<br>Estado: ${record.status}`;
-                showStatusMessage(detailsMessage, 'info');
-            }
-        }
-
-        window.copiarDireccion = function () {
-            const address = document.getElementById('wallet-address').textContent;
-
-            const tempInput = document.createElement('input');
-            tempInput.value = address;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            showStatusMessage('Dirección copiada al portapapeles.', 'info');
-        }
-
-        // ===========================================
-        // INICIALIZACIÓN
-        // ===========================================
-        async function initializeApp() {
-            userId = getOrCreateUserId();
-            document.getElementById('user-id-display').textContent = `ID Usuario: ${userId}`;
-
-            console.log('🚀 Iniciando Dashboard...');
-
-            await Promise.all([
-                loadDashboardStats(),
-                loadRecentActivity()
-            ]);
-        }
-
-        document.addEventListener('DOMContentLoaded', initializeApp);
-
-        // Actualizar cada 30 segundos
-        setInterval(() => {
-            loadDashboardStats();
-            loadRecentActivity();
-        }, 30000);
     </script>
 </body>
-
 </html>

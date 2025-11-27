@@ -4,75 +4,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Transporte - TrazaNet</title>
+    <title>Registro Logístico - TrazzaNet</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Flatpickr (Calendario Personalizable) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        trazza: {
+                            bg: '#011c16',      
+                            card: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            primary: '#10B981', 
+                            glow: '#34D399',    
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(6, 78, 59, 0.2) 0%, transparent 50%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* --- Fondo de Malla --- */
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* --- Glassmorphism --- */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        /* Inputs Modernos */
+        .tech-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .tech-input:focus {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #10B981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+            outline: none;
+        }
+
+        .tech-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Logo Animation */
+        .logo-container {
+            transition: transform 0.3s ease;
+        }
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        /* Botón con brillo */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-glow:hover::after {
+            left: 100%;
+        }
+
+        /* --- PERSONALIZACIÓN DEL CALENDARIO (Flatpickr Theme) --- */
+        .flatpickr-calendar {
+            background: rgba(1, 28, 22, 0.95) !important;
+            border: 1px solid rgba(16, 185, 129, 0.2) !important;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            color: white !important;
+        }
+
+        .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after {
+            border-bottom-color: rgba(16, 185, 129, 0.2) !important;
+        }
+
+        .flatpickr-month {
+            background: transparent !important;
+            color: #10B981 !important;
+            fill: #10B981 !important;
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        .flatpickr-current-month input.cur-year {
+            color: #fff !important;
+            font-weight: 700;
+        }
+        
+        .flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .flatpickr-weekdays {
+            background: transparent !important;
+        }
+        
+        span.flatpickr-weekday {
+            color: #34D399 !important; /* Verde claro para días */
+        }
+
+        .flatpickr-day {
+            color: #e2e8f0 !important;
+        }
+
+        .flatpickr-day:hover, .flatpickr-day.prevMonthDay:hover, .flatpickr-day.nextMonthDay:hover, .flatpickr-day:focus {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: #10B981 !important;
+        }
+
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, .flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, .flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, .flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.selected.prevMonthDay, .flatpickr-day.startRange.prevMonthDay, .flatpickr-day.endRange.prevMonthDay, .flatpickr-day.selected.nextMonthDay, .flatpickr-day.startRange.nextMonthDay, .flatpickr-day.endRange.nextMonthDay {
+            background: #10B981 !important;
+            border-color: #10B981 !important;
+            color: #011c16 !important; /* Texto oscuro en selección para contraste */
+            font-weight: bold;
+        }
+
+        .flatpickr-time {
+            border-top: 1px solid rgba(255,255,255,0.1) !important;
+        }
+
+        .flatpickr-time input {
+            color: white !important;
+        }
+
+        .flatpickr-time .flatpickr-time-separator, .flatpickr-time .flatpickr-am-pm {
+            color: #10B981 !important;
+        }
+
+        .flatpickr-day.today {
+            border-color: #34D399 !important;
         }
     </style>
 </head>
 
-<body>
-    <div class="glass-panel p-8 rounded-xl shadow-2xl w-full max-w-lg">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800 flex items-center">
-            <i class="fas fa-truck mr-3 text-indigo-600"></i> Registrar Transporte
+<body class="p-4">
+
+    <!-- Fondo decorativo -->
+    <div class="grid-bg"></div>
+    
+    <!-- Contenedor Principal Centrado -->
+    <div class="glass-panel w-full max-w-xl rounded-3xl p-8 md:p-10 relative overflow-hidden animate-[fadeIn_0.5s_ease-out]">
+        
+        <!-- Decoración esquina -->
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl"></div>
+
+        <!-- Header con Logo -->
+        <div class="flex items-center gap-4 mb-8">
+            <div class="logo-container w-14 h-14 bg-emerald-900/30 rounded-xl border border-emerald-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+                <!-- Logo SVG -->
+                <svg class="w-8 h-8 text-emerald-400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
+                    <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-wide">Trazza<span class="text-emerald-400">Net</span></h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Blockchain System
+
+</p>
+            </div>
+            
+            <!-- Botón cerrar simulado -->
+            <a href="dashboard.html" class="ml-auto text-gray-500 hover:text-white transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </a>
+        </div>
+
+        <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+            <i class="fas fa-truck-moving text-emerald-500"></i> Registrar Transporte
         </h2>
-        <form id="transport-form">
-            <div class="space-y-4">
-                <div>
-                    <label for="lote-id" class="block text-sm font-medium text-gray-700">ID del Lote</label>
-                    <input type="text" id="lote-id" name="lote-id" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
-                </div>
-                <div>
-                    <label for="fecha-salida" class="block text-sm font-medium text-gray-700">Fecha y Hora de
-                        Salida</label>
-                    <input type="datetime-local" id="fecha-salida" name="fecha-salida" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
-                </div>
-                <div>
-                    <label for="vehiculo-id" class="block text-sm font-medium text-gray-700">Identificación del Vehículo
-                        (Placa)</label>
-                    <input type="text" id="vehiculo-id" name="vehiculo-id" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
-                </div>
-                <div>
-                    <label for="temperatura" class="block text-sm font-medium text-gray-700">Temperatura Promedio
-                        (°C)</label>
-                    <input type="number" id="temperatura" name="temperatura" step="0.1" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border">
+
+        <form id="transport-form" class="space-y-5">
+            
+            <!-- Campo ID Lote -->
+            <div class="group">
+                <label for="lote-id" class="block text-xs font-medium text-emerald-400 mb-2 uppercase tracking-wider">ID del Lote</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fas fa-cube text-gray-500 group-focus-within:text-emerald-400 transition-colors"></i>
+                    </div>
+                    <input type="text" id="lote-id" name="lote-id" required placeholder="LOTE-2025-XXX"
+                        class="w-full tech-input rounded-xl py-3.5 pl-11 pr-4 text-sm font-mono">
                 </div>
             </div>
 
-            <button type="submit"
-                class="w-full mt-6 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
-                <i class="fas fa-save mr-2"></i> Registrar Salida
+            <!-- Campo Fecha con Calendario Temático -->
+            <div class="group">
+                <label for="fecha-salida" class="block text-xs font-medium text-emerald-400 mb-2 uppercase tracking-wider">Fecha de Salida</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                        <i class="far fa-calendar-alt text-gray-500 group-focus-within:text-emerald-400 transition-colors"></i>
+                    </div>
+                    <!-- Input de Texto simple para Flatpickr -->
+                    <input type="text" id="fecha-salida" name="fecha-salida" required placeholder="Seleccionar fecha y hora..."
+                        class="w-full tech-input rounded-xl py-3.5 pl-11 pr-4 text-sm font-sans cursor-pointer">
+                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                        <i class="fas fa-chevron-down text-xs text-gray-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Campo Vehículo -->
+                <div class="group">
+                    <label for="vehiculo-id" class="block text-xs font-medium text-emerald-400 mb-2 uppercase tracking-wider">Placa Vehículo</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-truck text-gray-500 group-focus-within:text-emerald-400 transition-colors"></i>
+                        </div>
+                        <input type="text" id="vehiculo-id" name="vehiculo-id" required placeholder="ABC-123"
+                            class="w-full tech-input rounded-xl py-3.5 pl-11 pr-4 text-sm uppercase">
+                    </div>
+                </div>
+
+                <!-- Campo Temperatura -->
+                <div class="group">
+                    <label for="temperatura" class="block text-xs font-medium text-emerald-400 mb-2 uppercase tracking-wider">Temp. Promedio (°C)</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-temperature-low text-gray-500 group-focus-within:text-emerald-400 transition-colors"></i>
+                        </div>
+                        <input type="number" id="temperatura" name="temperatura" step="0.1" required placeholder="4.5"
+                            class="w-full tech-input rounded-xl py-3.5 pl-11 pr-4 text-sm font-mono">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkbox IoT -->
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
+                <input type="checkbox" id="iot-sync" class="w-4 h-4 rounded bg-gray-800 border-gray-600 text-emerald-500 focus:ring-emerald-500">
+                <label for="iot-sync" class="text-xs text-gray-400 cursor-pointer">Sincronizar con GPS/Termógrafo del camión</label>
+            </div>
+
+            <!-- Botón Submit -->
+            <button type="submit" 
+                class="w-full btn-glow mt-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-900/50 transition-transform active:scale-95 flex items-center justify-center gap-2 group">
+                <i class="fas fa-satellite-dish group-hover:rotate-12 transition-transform"></i>
+                <span>Registrar Salida en Blockchain</span>
             </button>
+
         </form>
+
+        <!-- Status Footer -->
+        <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-xs text-gray-500">
+            <span class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Nodo Activo
+            </span>
+            <span>v2.4 Logística</span>
+        </div>
     </div>
+
     <script>
-        // Aquí iría la lógica JavaScript para tomar los datos del formulario 
-        // y enviarlos a la API para registrar el evento de transporte.
+        // Inicializar Flatpickr con tema personalizado
+        document.addEventListener('DOMContentLoaded', () => {
+            flatpickr("#fecha-salida", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+                // Personalización adicional para que coincida con el tema
+                onOpen: function(selectedDates, dateStr, instance) {
+                    // Puedes añadir lógica extra al abrir si es necesario
+                }
+            });
+        });
+
         document.getElementById('transport-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            alert('Datos de Transporte enviados para el Lote: ' + document.getElementById('lote-id').value);
-            // sendTransportData({...}); 
+            
+            const btn = this.querySelector('button');
+            const originalContent = btn.innerHTML;
+            const loteId = document.getElementById('lote-id').value;
+            
+            // Simulación de carga
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Encriptando Datos...';
+            btn.classList.add('opacity-75');
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> ¡Registro Exitoso!';
+                btn.classList.remove('from-emerald-600', 'to-teal-600');
+                btn.classList.add('bg-emerald-500');
+                
+                // Efecto visual de éxito
+                alert(`✅ TRANSPORTE REGISTRADO\n\nEl Lote ${loteId} ha iniciado su ruta.\nHash generado: 0x7f...3a9`);
+
+                setTimeout(() => {
+                    // Reset
+                    this.reset();
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                    btn.classList.add('from-emerald-600', 'to-teal-600');
+                    btn.classList.remove('bg-emerald-500', 'opacity-75');
+                }, 1000);
+            }, 1500);
         });
     </script>
 </body>
-
 </html>

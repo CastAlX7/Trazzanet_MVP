@@ -4,144 +4,342 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Acceso Corporativo – AvocadoTrace</title>
+    <title>Acceso Seguro – TrazzaNet Blockchain</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Configuración Tailwind personalizada -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        trazza: {
+                            base: '#022c22',    // Fondo oscuro
+                            glass: 'rgba(255, 255, 255, 0.03)', // Cristal base
+                            border: 'rgba(255, 255, 255, 0.08)', // Bordes sutiles
+                            accent: '#10B981',  // Verde Esmeralda (Principal)
+                            glow: '#34D399',    // Verde Luz (Brillo)
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(2deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            /* Fondo profundo con gradientes sutiles para dar profundidad */
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(5, 150, 105, 0.1) 0%, transparent 25%);
+            overflow: hidden; /* Evita scrollbars innecesarios por efectos decorativos */
         }
 
-        /* Efecto Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            /* Sutil sombra para mejor relieve */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        /* --- Glassmorphism Avanzado --- */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 4px 24px -1px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.02) inset; /* Borde interior de luz */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .input-icon {
-            color: #9CA3AF;
+        /* Efecto Hover en el Panel Principal */
+        .glass-panel:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 
+                0 20px 40px -5px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(16, 185, 129, 0.3) inset; /* El borde brilla verde al hacer hover */
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
-        .btn-primary {
-            transition: all 0.2s ease;
+        /* Inputs Estilizados */
+        .tech-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);
-            /* Sombra más pronunciada al hacer hover */
+        .tech-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #10B981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+            outline: none;
+        }
+
+        .tech-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9em;
+        }
+
+        /* Botón con gradiente animado */
+        .btn-glow {
+            background-size: 200% auto;
+            background-image: linear-gradient(to right, #059669 0%, #10B981 51%, #059669 100%);
+            transition: 0.5s;
+        }
+        .btn-glow:hover {
+            background-position: right center;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Decoración de fondo */
+        .grid-bg {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(500px) rotateX(60deg);
+            z-index: -1;
+            pointer-events: none;
         }
     </style>
 </head>
 
-<body
-    class="bg-gradient-to-r from-indigo-600 via-purple-700 to-pink-600 min-h-screen flex items-center justify-center p-4">
-    <div
-        class="max-w-4xl w-full h-auto bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden glass">
-        <div
-            class="hidden md:flex w-1/2 bg-gradient-to-br from-indigo-700 to-purple-900 p-12 flex-col justify-between relative">
-            <div class="relative z-10 text-white">
-                <h2 class="text-3xl font-bold mb-4">Trazabilidad transparente del campo a la mesa.</h2>
-                <p class="text-blue-100 mb-6">Gestiona tus lotes, certifica la calidad y asegura la confianza de tus
-                    clientes con tecnología **Blockchain inmutable**.</p>
-                <p class="text-sm">© 2025 AvocadoTrace Platform</p>
-            </div>
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-indigo-400 rounded-full opacity-30 blur-3xl transform translate-x-1/2 -translate-y-1/2">
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full opacity-20 blur-3xl transform -translate-x-1/2 translate-y-1/2">
-                </div>
-            </div>
-        </div>
-        <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white">
-            <div class="mb-8 text-center md:text-left">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2">Acceso Corporativo</h1>
-                <p class="text-gray-500 text-sm">Ingresa tus credenciales para continuar.</p>
-            </div>
-            <form id="login-form" class="space-y-5">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1" for="input-ruc">RUC de la
-                        Empresa</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fa-solid fa-building input-icon"></i>
-                        </div>
-                        <input type="text" id="input-ruc" placeholder="Ej: 20601234567" maxlength="11"
-                            class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+<body class="min-h-screen flex items-center justify-center p-4 relative">
+
+    <!-- Fondo de Malla Tecnológica -->
+    <div class="grid-bg"></div>
+
+    <!-- Elementos Flotantes (Nodos Blockchain) -->
+    <div class="absolute top-20 left-20 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-20 right-20 w-64 h-64 bg-teal-600/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+    <!-- Contenedor Principal (Tarjeta Glass) -->
+    <main class="w-full max-w-5xl h-[600px] flex rounded-3xl overflow-hidden glass-panel relative z-10">
+        
+        <!-- SECCIÓN IZQUIERDA: Branding Visual -->
+        <section class="hidden md:flex w-5/12 relative flex-col justify-between p-12 overflow-hidden group">
+            <!-- Capa de oscurecimiento suave para legibilidad -->
+            <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/40 to-black/60 z-0"></div>
+            
+            <!-- Imagen de fondo conceptual (Campo/Tech) - Usando degradado CSS para no depender de URLs externas -->
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1599827050186-b480c5a7536e?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-overlay transition-transform duration-1000 group-hover:scale-110 z-[-1]"></div>
+
+            <!-- Header Branding -->
+            <div class="relative z-10">
+                <!-- Logo TrazzaNet Vectorial -->
+                <div class="flex items-center gap-3 mb-6">
+                    <svg class="w-12 h-12 text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="6" fill="rgba(16,185,129,0.1)"/>
+                        <circle cx="50" cy="50" r="10" fill="currentColor"/>
+                        <path d="M50 20 V35" stroke="currentColor" stroke-width="3"/>
+                        <path d="M25 65 L37 57" stroke="currentColor" stroke-width="3"/>
+                        <path d="M75 65 L63 57" stroke="currentColor" stroke-width="3"/>
+                    </svg>
+                    <div>
+                        <h1 class="text-3xl font-bold text-white tracking-wide">Trazza<span class="text-emerald-400">Net</span></h1>
+                        <p class="text-[10px] text-emerald-200/80 uppercase tracking-[0.2em] font-medium">Blockchain System</p>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1" for="input-user">Usuario
-                        Administrador</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fa-solid fa-user-shield input-icon"></i>
-                        </div>
-                        <input type="text" id="input-user" placeholder="admin"
-                            class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1" for="input-pass">Contraseña</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fa-solid fa-lock input-icon"></i>
-                        </div>
-                        <input type="password" id="input-pass" placeholder="••••••••"
-                            class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
-                    </div>
-                </div>
-                <button type="submit"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition shadow-md flex items-center justify-center gap-2 btn-primary">
-                    <span>Ingresar al Sistema</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <div id="error-msg"
-                    class="hidden p-3 bg-red-50 text-red-600 text-xs rounded-lg flex items-center gap-2 border border-red-200">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                    <span id="msg-text">Credenciales incorrectas.</span>
-                </div>
-            </form>
-            <div class="mt-8 text-center text-xs text-gray-400">
-                <p>Acceso protegido por **Blockchain Security**</p>
-                <p class="mt-1">IP Registrada: 192.168.1.XX</p>
             </div>
-        </div>
-    </div>
+
+            <!-- Contenido Central Izquierda -->
+            <div class="relative z-10 space-y-6">
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500 bg-black/20 hover:bg-black/30 transition-colors">
+                    <i class="fa-solid fa-cube text-emerald-400 text-xl mb-3"></i>
+                    <h3 class="text-white font-semibold text-lg mb-1">Inmutabilidad Garantizada</h3>
+                    <p class="text-gray-300 text-xs leading-relaxed">
+                        Cada lote de producción es registrado en nodos distribuidos, asegurando que la historia de sus alimentos nunca pueda ser alterada.
+                    </p>
+                </div>
+                
+                <!-- Pequeños badges de estatus -->
+                <div class="flex items-center gap-4 text-xs font-mono text-emerald-400/80">
+                    <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Network Active</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Verified</span>
+                </div>
+            </div>
+
+            <!-- Footer Izquierda -->
+            <div class="relative z-10 text-xs text-gray-400">
+                <p>© 2025 TrazzaNet Platform.</p>
+                <p>v3.4.2 Stable Release</p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DERECHA: Formulario de Login -->
+        <section class="w-full md:w-7/12 bg-black/20 backdrop-blur-xl p-10 md:p-14 flex flex-col justify-center relative">
+            
+            <!-- Decoración sutil esquina superior derecha -->
+            <div class="absolute top-0 right-0 p-6">
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                </div>
+            </div>
+
+            <div class="max-w-md mx-auto w-full">
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-3xl font-bold text-white mb-2">Iniciar Sesión</h2>
+                    <p class="text-gray-400 text-sm">Ingrese sus credenciales corporativas para acceder al Ledger.</p>
+                </div>
+
+                <form id="login-form" class="space-y-5">
+                    
+                    <!-- Campo RUC -->
+                    <div class="group">
+                        <label class="block text-xs font-medium text-emerald-500 mb-2 ml-1" for="ruc">
+                            <i class="fa-regular fa-building mr-1"></i> RUC EMPRESA
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="ruc" 
+                                class="w-full tech-input rounded-xl px-4 py-3.5 pl-10 text-sm font-mono tracking-wider focus:ring-0" 
+                                placeholder="20601234567" maxlength="11" autocomplete="off">
+                            <i class="fa-solid fa-hashtag absolute left-3.5 top-3.5 text-gray-500 transition-colors group-focus-within:text-emerald-400 text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Campo Usuario -->
+                    <div class="group">
+                        <label class="block text-xs font-medium text-emerald-500 mb-2 ml-1" for="user">
+                            <i class="fa-regular fa-user mr-1"></i> USUARIO ADMINISTRADOR
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="user" 
+                                class="w-full tech-input rounded-xl px-4 py-3.5 pl-10 text-sm focus:ring-0" 
+                                placeholder="admin">
+                            <i class="fa-solid fa-user-astronaut absolute left-3.5 top-3.5 text-gray-500 transition-colors group-focus-within:text-emerald-400 text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Campo Password -->
+                    <div class="group">
+                        <label class="block text-xs font-medium text-emerald-500 mb-2 ml-1" for="pass">
+                            <i class="fa-solid fa-key mr-1"></i> CONTRASEÑA
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="pass" 
+                                class="w-full tech-input rounded-xl px-4 py-3.5 pl-10 text-sm focus:ring-0" 
+                                placeholder="••••••••••••">
+                            <i class="fa-solid fa-fingerprint absolute left-3.5 top-3.5 text-gray-500 transition-colors group-focus-within:text-emerald-400 text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Acciones Extra -->
+                    <div class="flex justify-between items-center text-xs text-gray-400 pt-2">
+                        <label class="flex items-center gap-2 cursor-pointer hover:text-white transition-colors">
+                            <input type="checkbox" class="accent-emerald-500 rounded bg-gray-800 border-gray-700">
+                            Recordarme
+                        </label>
+                        <a href="#" class="hover:text-emerald-400 transition-colors underline decoration-dotted">¿Recuperar acceso?</a>
+                    </div>
+
+                    <!-- Botón Principal -->
+                    <button type="submit" 
+                        class="w-full btn-glow text-white font-bold py-4 rounded-xl mt-6 shadow-lg flex items-center justify-center gap-3 group relative overflow-hidden">
+                        <span class="relative z-10">Conectar al Sistema</span>
+                        <i class="fa-solid fa-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
+                        <!-- Efecto de brillo interior -->
+                        <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-xl blur-md"></div>
+                    </button>
+                </form>
+
+                <!-- Mensaje de Estado -->
+                <div id="status-msg" class="hidden mt-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-xs flex items-center gap-3 animate-pulse">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    <span id="msg-text">Error de conexión con el nodo.</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Script de Funcionalidad -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const CREDENCIALES = { ruc: "20601234567", usuario: "admin", pass: "avocado123" };
             const loginForm = document.getElementById('login-form');
-            const errorMsg = document.getElementById('error-msg');
+            const statusMsg = document.getElementById('status-msg');
             const msgText = document.getElementById('msg-text');
-            loginForm.addEventListener('submit', e => {
+            const submitBtn = loginForm.querySelector('button');
+
+            // Credenciales Demo
+            const DEMO = {
+                ruc: "20601234567",
+                user: "admin",
+                pass: "avocado123"
+            };
+
+            loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const ruc = document.getElementById('input-ruc').value.trim();
-                const user = document.getElementById('input-user').value.trim();
-                const pass = document.getElementById('input-pass').value.trim();
-                if (ruc === CREDENCIALES.ruc && user === CREDENCIALES.usuario && pass === CREDENCIALES.pass) {
-                    const btn = loginForm.querySelector('button');
-                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Validando...';
-                    btn.disabled = true;
-                    setTimeout(() => {
-                        localStorage.setItem('avocadoSession', JSON.stringify({ isLoggedIn: true, usuario: user }));
-                        window.location.href = "dashboard.html";
-                    }, 1200);
-                } else {
-                    errorMsg.classList.remove('hidden');
-                    msgText.textContent = "Datos incorrectos. Prueba: 20601234567 / admin / avocado123";
-                    setTimeout(() => errorMsg.classList.add('hidden'), 5000);
-                }
+                
+                // Obtener valores
+                const ruc = document.getElementById('ruc').value.trim();
+                const user = document.getElementById('user').value.trim();
+                const pass = document.getElementById('pass').value.trim();
+
+                // UI Loading
+                const originalBtnContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verificando Hash...';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    if (ruc === DEMO.ruc && user === DEMO.user && pass === DEMO.pass) {
+                        // Éxito
+                        statusMsg.className = "mt-6 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-xs flex items-center gap-3";
+                        statusMsg.innerHTML = '<i class="fa-solid fa-shield-check"></i> <span>Credenciales Validadas. Redirigiendo...</span>';
+                        statusMsg.classList.remove('hidden');
+                        
+                        setTimeout(() => {
+                            localStorage.setItem('trazzaSession', JSON.stringify({ user, token: 'xyz-hash-123' }));
+                            alert("Bienvenido al sistema TrazzaNet.\n\n(Aquí se redirigiría al Dashboard)");
+                            // window.location.href = 'dashboard.html'; // Descomentar en producción
+                            
+                            // Reset UI para demo
+                            submitBtn.innerHTML = originalBtnContent;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                        }, 1000);
+
+                    } else {
+                        // Error
+                        statusMsg.className = "mt-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-xs flex items-center gap-3";
+                        msgText.textContent = "Credenciales inválidas. (Prueba: 20601234567 / admin / avocado123)";
+                        statusMsg.classList.remove('hidden');
+                        
+                        // Shake Animation en inputs
+                        document.querySelectorAll('.tech-input').forEach(input => {
+                            input.classList.add('border-red-500');
+                            setTimeout(() => input.classList.remove('border-red-500'), 500);
+                        });
+
+                        submitBtn.innerHTML = originalBtnContent;
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+                    }
+                }, 1500);
             });
         });
     </script>
 </body>
-
 </html>

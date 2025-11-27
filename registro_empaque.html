@@ -5,514 +5,478 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Empaque - TrazaNet</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        trazza: {
+                            bg: '#011c16',      
+                            card: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            primary: '#10B981', 
+                            glow: '#34D399',    
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(6, 78, 59, 0.1) 0%, transparent 40%);
             min-height: 100vh;
-            padding: 2rem 1rem;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
             pointer-events: none;
         }
 
-        .input-with-icon {
-            padding-left: 2.5rem;
-        }
-
-        .submit-btn {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .submit-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .alert-box {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .alert-success {
-            background-color: #d1fae5;
-            border-left: 4px solid #10b981;
-            color: #065f46;
-        }
-
-        .alert-error {
-            background-color: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #991b1b;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .lote-row {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-left: 4px solid #3b82f6;
+        /* Glassmorphism */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
-        .lote-row:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-        }
-
-        .delete-btn {
-            transition: all 0.2s ease;
-        }
-
-        .delete-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .add-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
-        }
-
-        .add-btn:hover {
+        .glass-panel:hover {
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
 
-        .section-header {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        /* Inputs */
+        .tech-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .tech-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #10B981;
+            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+            outline: none;
         }
 
-        .qc-section {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
+        /* Custom Select Arrow */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2310B981' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+
+        /* Animation */
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Alert Boxes */
+        .alert-box {
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+        .alert-success { background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10B981; color: #34D399; }
+        .alert-error { background: rgba(239, 68, 68, 0.1); border-left: 4px solid #EF4444; color: #FCA5A5; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Dynamic Row Animation */
+        .lote-row {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 
-<body>
-    <div class="glass-panel p-8 rounded-xl shadow-2xl w-full max-w-6xl mx-auto">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold text-gray-800 flex items-center">
-                <i class="fas fa-box mr-3 text-blue-600"></i> Registro de Empaque
-            </h2>
-            <span class="text-sm text-gray-500">
-                <i class="fas fa-layer-group mr-1"></i> Creación de Lotes Comerciales
-            </span>
+<body class="flex flex-col min-h-screen">
+
+    <div class="grid-bg"></div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="w-full z-20 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-[#011c16]/80 backdrop-blur-sm sticky top-0">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 flex items-center justify-center bg-emerald-900/50 rounded-lg border border-emerald-500/30 text-emerald-400">
+                <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
+                    <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                </svg>
+            </div>
+            <span class="font-bold text-white tracking-wide text-lg">Trazza<span class="text-emerald-400">Net</span></span>
+        </div>
+        
+        <!-- Sección de usuario eliminada -->
+        <div></div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-5xl mx-auto p-6 lg:p-10 flex-1">
+        
+        <!-- Header with Back Button -->
+        <div class="mb-8 animate-[fadeIn_0.5s_ease-out]">
+            <a href="javascript:history.back()" class="inline-flex items-center text-sm text-gray-400 hover:text-emerald-400 mb-4 transition-colors group">
+                <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Volver al Dashboard
+            </a>
+            <div class="flex justify-between items-end">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center gap-3">
+                        <i class="fas fa-boxes text-emerald-500"></i>
+                        Registro de Empaque
+                    </h1>
+                    <p class="text-gray-400 text-sm max-w-2xl">Transformación de materia prima en lotes comerciales exportables.</p>
+                </div>
+                <div class="hidden md:block text-right">
+                    <p class="text-xs text-gray-500 uppercase tracking-wider">Lotes Generados Hoy</p>
+                    <p class="text-2xl font-bold text-white font-mono">12</p>
+                </div>
+            </div>
         </div>
 
-        <form id="empaque-form">
-            <!-- Información del Lote de Origen -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <!-- ID del Lote de Origen (Read-only) -->
-                <div>
-                    <label for="lote-id-origen" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-barcode mr-1 text-blue-500"></i> ID del Lote de Origen
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-qrcode input-icon"></i>
-                        <input type="text" id="lote-id-origen" name="lote-id-origen" required readonly
-                            placeholder="LOTE-ORIGEN-001"
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm p-2 border cursor-not-allowed">
-                    </div>
-                </div>
-
-                <!-- Fecha de Empaque -->
-                <div>
-                    <label for="fecha-empaque" class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-calendar-alt mr-1 text-blue-500"></i> Fecha de Empaque
-                    </label>
-                    <div class="input-group">
-                        <i class="fas fa-clock input-icon"></i>
-                        <input type="date" id="fecha-empaque" name="fecha-empaque" required
-                            class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sección de Lotes Comerciales -->
-            <div class="section-header">
-                <h3 class="text-xl font-semibold flex items-center">
-                    <i class="fas fa-boxes mr-2"></i> Lotes Comerciales de Exportación
-                </h3>
-                <p class="text-sm opacity-90 mt-1">Subdivida el lote de origen en múltiples lotes comerciales</p>
-            </div>
-
-            <div id="lotes-container" class="space-y-4 mb-6">
-                <!-- Los lotes comerciales se añadirán dinámicamente aquí -->
-            </div>
-
-            <button type="button" id="add-lote-btn"
-                class="add-btn w-full py-3 px-4 rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mb-6">
-                <i class="fas fa-plus-circle mr-2"></i> Añadir Nuevo Lote Comercial
-            </button>
-
-            <!-- Control de Calidad Final -->
-            <div class="section-header">
-                <h3 class="text-xl font-semibold flex items-center">
-                    <i class="fas fa-clipboard-check mr-2"></i> Control de Calidad Final (QC)
-                </h3>
-                <p class="text-sm opacity-90 mt-1">Parámetros críticos para validación del Smart Contract</p>
-            </div>
-
-            <div class="qc-section p-6 rounded-lg mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Materia Seca -->
-                    <div>
-                        <label for="materia-seca" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-flask mr-1 text-amber-600"></i> Materia Seca (%)
-                            <span class="text-xs text-red-600 font-semibold">(Parámetro Crítico)</span>
-                        </label>
-                        <div class="input-group">
-                            <i class="fas fa-percentage input-icon"></i>
-                            <input type="number" id="materia-seca" name="materia-seca" step="0.1" min="0" max="100"
-                                required placeholder="0.0"
-                                class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 p-2 border">
+        <!-- Form Container -->
+        <div class="glass-panel rounded-2xl overflow-hidden p-8 animate-[fadeIn_0.6s_ease-out]">
+            
+            <form id="empaque-form">
+                
+                <!-- Sección 1: Origen -->
+                <div class="border-b border-white/10 pb-6 mb-6">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-arrow-circle-down text-emerald-400"></i> Origen del Producto
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">ID Lote Origen (Materia Prima)</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-barcode text-gray-500"></i>
+                                </div>
+                                <input type="text" id="lote-id-origen" required readonly 
+                                    class="tech-input w-full rounded-xl py-3 pl-10 pr-4 text-gray-300 font-mono text-sm bg-white/5 cursor-not-allowed border-dashed">
+                            </div>
                         </div>
-                        <p class="text-xs text-gray-600 mt-1">
-                            <i class="fas fa-info-circle"></i> Umbral mínimo: 20%
-                        </p>
-                    </div>
-
-                    <!-- Observaciones de Descarte -->
-                    <div>
-                        <label for="observaciones-descarte" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-comment-alt mr-1 text-amber-600"></i> Observaciones de Descarte
-                        </label>
-                        <textarea id="observaciones-descarte" name="observaciones-descarte" rows="3"
-                            placeholder="Registre cualquier rechazo parcial o anomalía detectada..."
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 p-2 border"></textarea>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">Fecha de Empaque</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-calendar-alt text-gray-500"></i>
+                                </div>
+                                <input type="date" id="fecha-empaque" required 
+                                    class="tech-input w-full rounded-xl py-3 pl-10 pr-4 text-white font-mono text-sm">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Alert Box -->
-            <div id="alert-box" class="alert-box"></div>
-
-            <!-- Submit Button -->
-            <button type="submit"
-                class="submit-btn w-full mt-6 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150">
-                <i class="fas fa-paper-plane mr-2"></i>
-                <span id="btn-text">Registrar Empaque y Ejecutar Smart Contract</span>
-                <span id="btn-spinner" class="loading-spinner ml-2" style="display: none;"></span>
-            </button>
-
-            <!-- Info Box -->
-            <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-400 rounded">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-info-circle text-blue-400"></i>
+                <!-- Sección 2: Lotes Comerciales (Dinámica) -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-box-open text-emerald-400"></i> Lotes Comerciales
+                        </h3>
+                        <button type="button" id="add-lote-btn" class="text-xs bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-2 rounded-lg transition flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Agregar Caja/Pallet
+                        </button>
                     </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-blue-700">
-                            <strong>Acción del Sistema:</strong> Al enviar, se registrará una transacción de tipo
-                            <code class="bg-blue-100 px-1 rounded">BatchTransformation</code> en la blockchain y se
-                            ejecutará el <strong>Smart Contract de Calidad Final</strong> para validar que
-                            <strong>MATERIA_SECA_PORCENTAJE ≥ 20%</strong>.
-                        </p>
+
+                    <div id="lotes-container" class="space-y-4">
+                        <!-- Los lotes se inyectan aquí -->
+                    </div>
+                    
+                    <!-- Total Summary -->
+                    <div class="mt-4 bg-white/5 rounded-xl p-4 flex justify-between items-center border border-white/5">
+                        <span class="text-sm text-gray-400">Resumen de Producción:</span>
+                        <div class="flex gap-6">
+                            <div class="text-right">
+                                <p class="text-[0.65rem] text-gray-500 uppercase">Total Cajas</p>
+                                <p class="text-lg font-bold text-white font-mono" id="total-boxes">0</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[0.65rem] text-gray-500 uppercase">Peso Total</p>
+                                <p class="text-lg font-bold text-emerald-400 font-mono" id="total-weight">0.00 KG</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
 
-    <script>
+                <!-- Sección 3: Control de Calidad Final -->
+                <div class="border-t border-white/10 pt-6 mb-8">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-microscope text-emerald-400"></i> Control de Calidad Final (QC)
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">Materia Seca (%) <span class="text-red-400">*</span></label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-percent text-gray-500"></i>
+                                </div>
+                                <input type="number" id="materia-seca" step="0.1" min="0" max="100" required placeholder="0.0" 
+                                    class="tech-input w-full rounded-xl py-3 pl-10 pr-4 text-white font-bold text-lg">
+                            </div>
+                            <p class="text-[0.65rem] text-gray-500 mt-1">Umbral mínimo para exportación: <strong>20.0%</strong></p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2 uppercase tracking-wide">Observaciones de Descarte</label>
+                            <textarea id="observaciones-descarte" rows="1" placeholder="Sin observaciones..." 
+                                class="tech-input w-full rounded-xl py-3 px-4 text-white text-sm h-[52px] resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert Box -->
+                <div id="alert-box" class="alert-box p-4 rounded-xl border mb-6"></div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-900/40 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 group relative overflow-hidden">
+                    <span class="pulse-ring absolute w-full h-full rounded-xl opacity-0 group-hover:opacity-20"></span>
+                    <i class="fas fa-print text-lg group-hover:scale-110 transition-transform"></i>
+                    <span id="btn-text" class="tracking-wide">GENERAR LOTE COMERCIAL</span>
+                    <i id="btn-spinner" class="fas fa-circle-notch fa-spin hidden"></i>
+                </button>
+
+            </form>
+        </div>
+
+    </main>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+        let db, auth, user;
         let loteCounter = 0;
 
-        // Set current date as default
-        document.addEventListener('DOMContentLoaded', function () {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha-empaque').value = today;
+        async function init() {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                await signInAnonymously(auth);
+                
+                onAuthStateChanged(auth, (currentUser) => {
+                    if (currentUser) {
+                        user = currentUser;
+                    }
+                });
 
-            // Simulate loading lote origen from URL params or previous step
-            const urlParams = new URLSearchParams(window.location.search);
-            const loteOrigen = urlParams.get('lote') || 'LOTE-CAMPO-' + Math.floor(Math.random() * 1000).toString().padStart(4, '0');
-            document.getElementById('lote-id-origen').value = loteOrigen;
+                // Init Form Defaults
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('fecha-empaque').value = today;
+                
+                // Simular Lote Origen desde URL o generar
+                const urlParams = new URLSearchParams(window.location.search);
+                const loteOrigen = urlParams.get('lote') || 'RAW-AVO-' + Math.floor(Math.random() * 1000).toString().padStart(4, '0');
+                document.getElementById('lote-id-origen').value = loteOrigen;
 
-            // Add first commercial lot by default
-            addLoteComercial();
-        });
+                // Add first row
+                addLoteComercial();
 
-        // Add new commercial lot row
-        document.getElementById('add-lote-btn').addEventListener('click', function () {
-            addLoteComercial();
-        });
+            } catch (e) { console.error(e); }
+        }
 
-        function addLoteComercial() {
+        // --- Dynamic Rows ---
+        window.addLoteComercial = function() {
             loteCounter++;
             const container = document.getElementById('lotes-container');
+            const rowId = `lote-row-${loteCounter}`;
 
-            const loteRow = document.createElement('div');
-            loteRow.className = 'lote-row p-4 rounded-lg';
-            loteRow.id = `lote-${loteCounter}`;
-
-            loteRow.innerHTML = `
-                <div class="flex items-center justify-between mb-3">
-                    <h4 class="text-lg font-semibold text-gray-700">
-                        <i class="fas fa-box-open mr-2 text-blue-500"></i> Lote Comercial #${loteCounter}
-                    </h4>
-                    <button type="button" class="delete-btn text-red-500 hover:text-red-700" onclick="removeLote(${loteCounter})">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+            const div = document.createElement('div');
+            div.id = rowId;
+            div.className = "lote-row bg-white/5 border border-white/10 rounded-xl p-4 relative group";
+            
+            div.innerHTML = `
+                <div class="absolute -left-[1px] top-0 bottom-0 w-1 bg-emerald-500 rounded-l-xl opacity-0 group-hover:opacity-100 transition"></div>
+                
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold text-emerald-400 uppercase">Lote Comercial #${loteCounter}</span>
+                    <button type="button" onclick="removeLote('${rowId}')" class="text-gray-500 hover:text-red-400 transition"><i class="fas fa-trash-alt"></i></button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- ID Comercial Único -->
-                    <div>
-                        <label for="lote-comercial-id-${loteCounter}" class="block text-xs font-medium text-gray-700 mb-1">
-                            <i class="fas fa-tag mr-1"></i> ID Comercial
-                        </label>
-                        <input type="text" id="lote-comercial-id-${loteCounter}" name="lote-comercial-id[]" required
-                            placeholder="EXP-${loteCounter.toString().padStart(4, '0')}"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border text-sm">
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="md:col-span-1">
+                        <input type="text" name="lote-comercial-id[]" readonly value="EXP-${Date.now().toString().slice(-6)}-${loteCounter}" 
+                            class="tech-input w-full rounded-lg p-2 text-xs font-mono text-gray-400 bg-black/20 border-none">
                     </div>
-
-                    <!-- Calibre -->
                     <div>
-                        <label for="calibre-${loteCounter}" class="block text-xs font-medium text-gray-700 mb-1">
-                            <i class="fas fa-ruler mr-1"></i> Calibre
-                        </label>
-                        <select id="calibre-${loteCounter}" name="calibre[]" required
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border text-sm">
-                            <option value="">Seleccionar...</option>
-                            <option value="10">10</option>
-                            <option value="12">12</option>
-                            <option value="14">14</option>
-                            <option value="16">16</option>
-                            <option value="18">18</option>
-                            <option value="20">20</option>
+                        <select name="calibre[]" class="tech-input w-full rounded-lg p-2 text-sm bg-[#011c16]">
+                            <option value="" disabled selected>Calibre...</option>
+                            <option value="12">Calibre 12</option>
+                            <option value="14">Calibre 14</option>
+                            <option value="16">Calibre 16</option>
+                            <option value="18">Calibre 18</option>
+                            <option value="20">Calibre 20</option>
                         </select>
                     </div>
-
-                    <!-- Peso por Caja -->
                     <div>
-                        <label for="peso-caja-${loteCounter}" class="block text-xs font-medium text-gray-700 mb-1">
-                            <i class="fas fa-weight-hanging mr-1"></i> Peso/Caja (KG)
-                        </label>
-                        <input type="number" id="peso-caja-${loteCounter}" name="peso-caja[]" step="0.01" min="0" required
-                            placeholder="0.00"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border text-sm">
+                        <input type="number" name="peso-caja[]" step="0.1" placeholder="Peso Caja (KG)" oninput="updateTotals()"
+                            class="tech-input w-full rounded-lg p-2 text-sm">
                     </div>
-
-                    <!-- Cantidad de Cajas -->
                     <div>
-                        <label for="num-cajas-${loteCounter}" class="block text-xs font-medium text-gray-700 mb-1">
-                            <i class="fas fa-boxes mr-1"></i> Nº de Cajas
-                        </label>
-                        <input type="number" id="num-cajas-${loteCounter}" name="num-cajas[]" min="1" required
-                            placeholder="0"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border text-sm">
+                        <input type="number" name="num-cajas[]" step="1" placeholder="Nº Cajas" oninput="updateTotals()"
+                            class="tech-input w-full rounded-lg p-2 text-sm">
                     </div>
                 </div>
             `;
-
-            container.appendChild(loteRow);
-
-            // Auto-generate commercial ID
-            const comercialIdInput = document.getElementById(`lote-comercial-id-${loteCounter}`);
-            comercialIdInput.value = `EXP-${Date.now().toString().slice(-6)}-${loteCounter.toString().padStart(2, '0')}`;
+            
+            container.appendChild(div);
         }
 
-        function removeLote(id) {
-            const loteRow = document.getElementById(`lote-${id}`);
-            if (loteRow) {
-                loteRow.style.opacity = '0';
-                loteRow.style.transform = 'translateX(-20px)';
-                setTimeout(() => {
-                    loteRow.remove();
-                    // Ensure at least one lot remains
-                    if (document.getElementById('lotes-container').children.length === 0) {
-                        addLoteComercial();
-                    }
-                }, 300);
+        window.removeLote = function(id) {
+            const el = document.getElementById(id);
+            if(el) el.remove();
+            updateTotals();
+            // Ensure 1 row
+            if(document.getElementById('lotes-container').children.length === 0) addLoteComercial();
+        }
+
+        window.updateTotals = function() {
+            let totalBoxes = 0;
+            let totalWeight = 0;
+
+            const weights = document.getElementsByName('peso-caja[]');
+            const boxes = document.getElementsByName('num-cajas[]');
+
+            for(let i=0; i<weights.length; i++) {
+                const w = parseFloat(weights[i].value) || 0;
+                const b = parseFloat(boxes[i].value) || 0;
+                totalBoxes += b;
+                totalWeight += (w * b);
             }
+
+            document.getElementById('total-boxes').textContent = totalBoxes;
+            document.getElementById('total-weight').textContent = totalWeight.toFixed(2) + ' KG';
         }
 
-        // Form submission handler
-        document.getElementById('empaque-form').addEventListener('submit', async function (e) {
+        document.getElementById('add-lote-btn').addEventListener('click', addLoteComercial);
+
+
+        // --- Submit ---
+        document.getElementById('empaque-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-
+            
+            const btn = document.getElementById('submit-btn');
             const btnText = document.getElementById('btn-text');
-            const btnSpinner = document.getElementById('btn-spinner');
+            const spinner = document.getElementById('btn-spinner');
             const alertBox = document.getElementById('alert-box');
-            const submitBtn = e.target.querySelector('button[type="submit"]');
 
-            // Validate materia seca threshold
-            const materiaSeca = parseFloat(document.getElementById('materia-seca').value);
-            if (materiaSeca < 20) {
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <strong>Error de Validación:</strong> La materia seca debe ser ≥ 20%. 
-                    Valor actual: ${materiaSeca}%. El lote no cumple con los estándares de calidad.
-                `;
+            // Validation
+            const ms = parseFloat(document.getElementById('materia-seca').value);
+            if(ms < 20) {
                 alertBox.style.display = 'block';
+                alertBox.className = 'alert-box p-4 rounded-xl border mb-6 bg-red-500/10 border-red-500/50 text-red-400';
+                alertBox.innerHTML = `<i class="fas fa-exclamation-circle mr-2"></i> Error de Calidad: Materia Seca debe ser ≥ 20% (Actual: ${ms}%)`;
                 return;
             }
 
-            // Disable button and show loading state
-            submitBtn.disabled = true;
-            btnText.textContent = 'Procesando...';
-            btnSpinner.style.display = 'inline-block';
+            // Loading
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            btnText.textContent = 'Minando Bloque...';
+            spinner.classList.remove('hidden');
+            alertBox.style.display = 'none';
 
-            // Collect commercial lots data
+            // Gather Data
+            const loteOrigen = document.getElementById('lote-id-origen').value;
             const lotesComerciales = [];
-            const comercialIds = document.getElementsByName('lote-comercial-id[]');
-            const calibres = document.getElementsByName('calibre[]');
-            const pesosCaja = document.getElementsByName('peso-caja[]');
-            const numCajas = document.getElementsByName('num-cajas[]');
+            const ids = document.getElementsByName('lote-comercial-id[]');
+            const cals = document.getElementsByName('calibre[]');
+            const ws = document.getElementsByName('peso-caja[]');
+            const bs = document.getElementsByName('num-cajas[]');
 
-            for (let i = 0; i < comercialIds.length; i++) {
+            for(let i=0; i<ids.length; i++) {
                 lotesComerciales.push({
-                    idComercial: comercialIds[i].value,
-                    calibre: calibres[i].value,
-                    pesoCajaKg: parseFloat(pesosCaja[i].value),
-                    numeroCajas: parseInt(numCajas[i].value),
-                    pesoTotalKg: parseFloat(pesosCaja[i].value) * parseInt(numCajas[i].value)
+                    id: ids[i].value,
+                    calibre: cals[i].value,
+                    pesoCaja: ws[i].value,
+                    numCajas: bs[i].value
                 });
             }
 
-            // Collect form data
-            const formData = {
-                loteIdOrigen: document.getElementById('lote-id-origen').value,
-                fechaEmpaque: document.getElementById('fecha-empaque').value,
-                lotesComerciales: lotesComerciales,
-                controlCalidad: {
-                    materiaSecaPorcentaje: materiaSeca,
-                    observacionesDescarte: document.getElementById('observaciones-descarte').value
-                },
-                tipoEvento: 'BatchTransformation',
-                fase: 'Empaque',
-                timestamp: new Date().toISOString()
-            };
-
             try {
-                // TODO: Replace with actual API endpoint
-                // const response = await fetch('http://localhost:3000/api/register-empaque', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(formData)
-                // });
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
+                
+                const payload = {
+                    loteOrigen,
+                    fechaEmpaque: document.getElementById('fecha-empaque').value,
+                    lotesComerciales,
+                    calidad: { materiaSeca: ms, obs: document.getElementById('observaciones-descarte').value },
+                    timestamp: new Date().toISOString(),
+                    tipoEvento: 'Empaque'
+                };
 
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // Simulate / Save
+                await new Promise(r => setTimeout(r, 2000));
+                await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'eventos_empaque'), payload);
 
-                // Calculate totals
-                const totalCajas = lotesComerciales.reduce((sum, lote) => sum + lote.numeroCajas, 0);
-                const totalPeso = lotesComerciales.reduce((sum, lote) => sum + lote.pesoTotalKg, 0);
-
-                // Show success message
-                alertBox.className = 'alert-box alert-success';
-                alertBox.innerHTML = `
-                    <div class="flex items-start">
-                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
-                        <div>
-                            <strong>Empaque Registrado Exitosamente</strong>
-                            <ul class="mt-2 text-sm list-disc list-inside">
-                                <li>Lote de origen: <strong>${formData.loteIdOrigen}</strong></li>
-                                <li>Lotes comerciales creados: <strong>${lotesComerciales.length}</strong></li>
-                                <li>Total de cajas: <strong>${totalCajas}</strong></li>
-                                <li>Peso total: <strong>${totalPeso.toFixed(2)} KG</strong></li>
-                                <li>Materia seca: <strong>${materiaSeca}%</strong> 
-                                    <span class="text-green-700">✓ Aprobado</span>
-                                </li>
-                                <li>Smart Contract ejecutado: <span class="text-green-700">✓ Validación exitosa</span></li>
-                                <li>Transacción blockchain: <strong>#${Math.random().toString(36).substr(2, 9).toUpperCase()}</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                `;
+                // Success UI
                 alertBox.style.display = 'block';
+                alertBox.className = 'alert-box p-4 rounded-xl border mb-6 bg-emerald-500/10 border-emerald-500/50 text-emerald-400';
+                alertBox.innerHTML = `
+                    <h4 class="font-bold text-sm flex items-center gap-2"><i class="fas fa-check-circle"></i> Lotes Comerciales Generados</h4>
+                    <p class="text-xs mt-1 opacity-80">Se han creado ${lotesComerciales.length} nuevos activos digitales en la blockchain.</p>
+                    <div class="mt-2 text-xs font-mono bg-black/20 p-2 rounded">TX: 0x${Math.random().toString(16).substr(2,32)}...</div>
+                `;
 
-                // Reset form after 4 seconds
                 setTimeout(() => {
-                    if (confirm('¿Desea registrar otro empaque?')) {
-                        location.reload();
-                    }
-                }, 4000);
+                    if(confirm("¿Registrar otro empaque?")) location.reload();
+                }, 3000);
 
-            } catch (error) {
-                console.error('Error al registrar empaque:', error);
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-circle mr-2"></i>
-                    <strong>Error:</strong> No se pudo registrar el empaque. Por favor, intente nuevamente.
-                `;
-                alertBox.style.display = 'block';
+            } catch (err) {
+                console.error(err);
+                alert("Error al guardar. Ver consola.");
             } finally {
-                // Re-enable button
-                submitBtn.disabled = false;
-                btnText.textContent = 'Registrar Empaque y Ejecutar Smart Contract';
-                btnSpinner.style.display = 'none';
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btnText.textContent = 'GENERAR LOTE COMERCIAL';
+                spinner.classList.add('hidden');
             }
         });
+
+        init();
     </script>
 </body>
-
 </html>

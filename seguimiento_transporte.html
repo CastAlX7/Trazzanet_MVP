@@ -4,100 +4,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimiento de Transporte - TrazaNet</title>
+    <title>Seguimiento GPS - TrazaNet</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet CSS (Mapas) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        trazza: {
+                            bg: '#011c16',      
+                            card: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            primary: '#10B981', 
+                            glow: '#34D399',    
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(6, 78, 59, 0.1) 0%, transparent 40%);
             min-height: 100vh;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Map Container Styling */
+        #map-container {
+            height: 400px;
+            width: 100%;
+            border-radius: 1rem;
+            z-index: 1;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(16, 185, 129, 0.4); }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-width: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+        }
+        .status-transit { background: rgba(59, 130, 246, 0.1); color: #60A5FA; border-color: rgba(59, 130, 246, 0.3); }
+        .status-delivered { background: rgba(16, 185, 129, 0.1); color: #34D399; border-color: rgba(16, 185, 129, 0.3); }
+        .status-alert { background: rgba(239, 68, 68, 0.1); color: #F87171; border-color: rgba(239, 68, 68, 0.3); }
+
+        /* Radar Animation for Live Status */
+        .radar-ping {
+            position: relative;
+        }
+        .radar-ping::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background-color: currentColor;
+            opacity: 0.7;
+            animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        @keyframes ping {
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+        
+        /* Leaflet Dark Mode Override */
+        .leaflet-layer,
+        .leaflet-control-zoom-in,
+        .leaflet-control-zoom-out,
+        .leaflet-control-attribution {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+        .leaflet-container {
+            background: #011c16 !important;
         }
     </style>
 </head>
 
-<body>
-    <div class="container mx-auto p-6 lg:p-12">
-        <header class="text-white mb-8">
-            <h1 class="text-4xl font-extrabold flex items-center">
-                <i class="fas fa-route mr-3"></i> Seguimiento de Transporte
-            </h1>
-            <p class="text-indigo-200 mt-2">Estado y ubicación de los lotes en movimiento.</p>
-        </header>
+<body class="flex flex-col min-h-screen">
 
-        <div class="glass-card rounded-xl p-6 shadow-2xl">
-            <div class="flex justify-between items-center mb-4 border-b pb-4">
-                <h3 class="text-xl font-semibold text-gray-800">Lotes en Tránsito</h3>
-                <button onclick="loadTransportData()"
-                    class="text-indigo-600 hover:text-indigo-800 transition duration-150">
-                    <i class="fas fa-sync-alt mr-1"></i> Actualizar
-                </button>
+    <div class="grid-bg"></div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="w-full z-20 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-[#011c16]/80 backdrop-blur-sm sticky top-0">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 flex items-center justify-center bg-emerald-900/50 rounded-lg border border-emerald-500/30 text-emerald-400">
+                <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
+                    <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                </svg>
             </div>
+            <span class="font-bold text-white tracking-wide text-lg">Trazza<span class="text-emerald-400">Net</span></span>
+        </div>
+        
+        <!-- Menu Links (Simplified for Top Nav) -->
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+            <a href="dashboard.html" class="hover:text-white transition">Dashboard</a>
+            <a href="transaccion_lote.html" class="hover:text-white transition">Transferencias</a>
+            <a href="seguimiento_transporte.html" class="text-emerald-400">Seguimiento GPS</a>
+        </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead>
-                        <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
-                            <th class="px-6 py-3">LOTE ID</th>
-                            <th class="px-6 py-3">Vehículo</th>
-                            <th class="px-6 py-3">Salida</th>
-                            <th class="px-6 py-3">Estatus</th>
-                            <th class="px-6 py-3">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transport-list" class="divide-y divide-gray-200">
-                        <tr class="hover:bg-indigo-50 transition duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">A34-006</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">JES-456</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2025-11-23 10:00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    En Tránsito
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="Auditoria_Detalle.html?id=A34-006"
-                                    class="text-indigo-600 hover:text-indigo-900">Ver Detalle</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-indigo-50 transition duration-150">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">A34-007</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">KLI-789</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2025-11-23 08:30</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Entregado
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="Auditoria_Detalle.html?id=A34-007"
-                                    class="text-indigo-600 hover:text-indigo-900">Ver Detalle</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="flex items-center gap-4">
+            <div class="text-right hidden sm:block">
+                <p class="text-xs text-gray-400 uppercase tracking-wider">Centro de Control</p>
+                <p class="text-sm text-emerald-400 font-mono truncate w-32 text-right" id="user-id-display">Conectado</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center text-white font-bold text-xs border border-emerald-400/20">
+                <i class="fas fa-satellite-dish"></i>
             </div>
         </div>
-    </div>
-    <script>
-        // Función placeholder para simular la carga de datos desde el servidor
-        function loadTransportData() {
-            // Aquí iría la llamada a la API, por ejemplo:
-            // fetch(`${API_BASE_URL}/transports/active`).then(...)
-            console.log("Actualizando datos de transporte...");
-            alert("Datos actualizados (simulación).");
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-7xl mx-auto p-6 lg:p-10 flex-1">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-end mb-8 animate-[fadeIn_0.5s_ease-out]">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center gap-3">
+                    <i class="fas fa-map-marked-alt text-emerald-500"></i>
+                    Seguimiento de Transporte
+                </h1>
+                <p class="text-gray-400 text-sm max-w-2xl">Monitoreo en tiempo real de la flota y condiciones ambientales de la carga.</p>
+            </div>
+            
+            <div class="mt-4 md:mt-0 flex gap-3">
+                <button onclick="loadTransportData()" class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white text-sm flex items-center gap-2 transition-all">
+                    <i class="fas fa-sync-alt" id="refresh-icon"></i> Actualizar Datos
+                </button>
+                <div class="px-4 py-2 bg-emerald-900/30 border border-emerald-500/30 rounded-lg flex items-center gap-2">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full radar-ping text-emerald-500"></div>
+                    <span class="text-xs font-bold text-emerald-400 uppercase">En Vivo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 animate-[fadeIn_0.6s_ease-out]">
+            <!-- Active -->
+            <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-bold">En Tránsito</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">8</h3>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                    <i class="fas fa-truck-moving"></i>
+                </div>
+            </div>
+            <!-- On Time -->
+            <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-bold">A Tiempo</p>
+                    <h3 class="text-2xl font-bold text-emerald-400 mt-1">6</h3>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+            <!-- Delayed -->
+            <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase font-bold">Retrasados</p>
+                    <h3 class="text-2xl font-bold text-yellow-400 mt-1">1</h3>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-400">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+            </div>
+            <!-- Alerts -->
+            <div class="glass-panel p-5 rounded-xl flex items-center justify-between border border-red-500/20 bg-red-900/10">
+                <div>
+                    <p class="text-xs text-red-400 uppercase font-bold">Alerta Temp.</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">1</h3>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-red-400 animate-pulse">
+                    <i class="fas fa-thermometer-full"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map & List Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-[fadeIn_0.7s_ease-out]">
+            
+            <!-- Map Section (2/3) -->
+            <div class="lg:col-span-2">
+                <div class="glass-panel rounded-2xl overflow-hidden border border-white/10 relative h-[500px]">
+                    <div id="map-container"></div>
+                    
+                    <!-- Map Overlay Controls -->
+                    <div class="absolute top-4 right-4 z-[400] flex flex-col gap-2">
+                        <button class="bg-black/50 hover:bg-black/70 text-white p-2 rounded-lg backdrop-blur-sm transition" title="Centrar Flota">
+                            <i class="fas fa-crosshairs"></i>
+                        </button>
+                        <button class="bg-black/50 hover:bg-black/70 text-white p-2 rounded-lg backdrop-blur-sm transition" title="Capas">
+                            <i class="fas fa-layer-group"></i>
+                        </button>
+                    </div>
+
+                    <!-- Selected Truck Info Overlay (Hidden by default) -->
+                    <div id="truck-info-overlay" class="absolute bottom-6 left-6 right-6 z-[400] glass-panel p-4 rounded-xl border border-emerald-500/30 hidden transform translate-y-4 opacity-0 transition-all duration-300">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-emerald-900/50 rounded-lg flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+                                    <i class="fas fa-truck text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg" id="overlay-plate">XYZ-123</h4>
+                                    <p class="text-xs text-gray-400" id="overlay-driver">Conductor: Juan Pérez</p>
+                                </div>
+                            </div>
+                            <button onclick="closeOverlay()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-white/10">
+                            <div>
+                                <p class="text-[0.65rem] text-gray-500 uppercase">Temperatura</p>
+                                <p class="font-mono text-emerald-400 font-bold" id="overlay-temp">4.5°C</p>
+                            </div>
+                            <div>
+                                <p class="text-[0.65rem] text-gray-500 uppercase">Humedad</p>
+                                <p class="font-mono text-blue-400 font-bold">85%</p>
+                            </div>
+                            <div>
+                                <p class="text-[0.65rem] text-gray-500 uppercase">Destino</p>
+                                <p class="font-mono text-white font-bold text-xs truncate">Puerto Callao</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List Section (1/3) -->
+            <div class="lg:col-span-1 flex flex-col h-[500px]">
+                <div class="glass-panel rounded-2xl overflow-hidden flex-1 flex flex-col">
+                    <div class="p-5 border-b border-white/5 bg-white/5 flex justify-between items-center">
+                        <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+                            <i class="fas fa-list-ul text-emerald-400"></i> Lotes en Tránsito
+                        </h3>
+                        <span class="text-xs text-gray-500 bg-black/20 px-2 py-1 rounded">8 Activos</span>
+                    </div>
+                    
+                    <div class="overflow-y-auto flex-1 p-2 space-y-2" id="transport-list-container">
+                        <!-- Items injected via JS -->
+                        <div class="p-8 text-center text-gray-500">
+                            <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i>
+                            <p>Cargando flota...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Firebase & Logic -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+        let db, auth, user;
+        let map, markers = {};
+
+        // --- Map Initialization ---
+        function initMap() {
+            // Initialize map centered on a generic location (e.g., Peru for avocado context)
+            map = L.map('map-container', {
+                zoomControl: false,
+                attributionControl: false
+            }).setView([-12.0464, -77.0428], 6); // Lima coordinates
+
+            // Dark theme tiles
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            L.control.zoom({ position: 'topright' }).addTo(map);
         }
+
+        // --- Firebase ---
+        async function init() {
+            initMap();
+            
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                await signInAnonymously(auth);
+                
+                onAuthStateChanged(auth, (currentUser) => {
+                    if (currentUser) {
+                        user = currentUser;
+                        window.loadTransportData();
+                    }
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        // --- Logic ---
+        window.loadTransportData = async function() {
+            const btnIcon = document.getElementById('refresh-icon');
+            btnIcon.classList.add('fa-spin');
+
+            try {
+                // Simulate fetching data or fetch real data if 'transportes' collection existed
+                // Here we use 'lotes' and mock GPS data for visual demo purposes
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app';
+                const q = query(
+                    collection(db, 'artifacts', appId, 'users', user.uid, 'lotes'),
+                    orderBy('date', 'desc'),
+                    limit(10)
+                );
+                const snapshot = await getDocs(q);
+                
+                const shipments = [];
+                // Mock locations for demo
+                const baseLat = -12.0; 
+                const baseLng = -77.0;
+
+                let index = 0;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    // Only simulate 'In Transit' for recent items or random ones
+                    const status = index === 0 ? 'alert' : (index < 5 ? 'transit' : 'delivered');
+                    
+                    shipments.push({
+                        id: data.loteId || doc.id,
+                        plate: `TRK-${100 + index}`,
+                        driver: `Conductor ${index + 1}`,
+                        temp: (4 + Math.random() * 3).toFixed(1),
+                        lat: baseLat + (Math.random() * 2 - 1),
+                        lng: baseLng + (Math.random() * 2 - 1),
+                        status: status,
+                        lastUpdate: new Date().toLocaleTimeString()
+                    });
+                    index++;
+                });
+
+                // Fallback if no data
+                if(shipments.length === 0) {
+                     shipments.push(
+                        { id: 'LOTE-DEMO-001', plate: 'XYZ-999', driver: 'Carlos V.', temp: '4.2', lat: -11.5, lng: -77.2, status: 'transit', lastUpdate: '10:00 AM' },
+                        { id: 'LOTE-DEMO-002', plate: 'ABC-111', driver: 'Luis M.', temp: '8.5', lat: -13.2, lng: -76.5, status: 'alert', lastUpdate: '09:45 AM' }
+                     );
+                }
+
+                renderMapMarkers(shipments);
+                renderList(shipments);
+
+            } catch (e) {
+                console.error("Error loading data", e);
+            } finally {
+                btnIcon.classList.remove('fa-spin');
+            }
+        }
+
+        function renderMapMarkers(shipments) {
+            // Clear existing markers
+            for(let id in markers) map.removeLayer(markers[id]);
+            markers = {};
+
+            shipments.forEach(s => {
+                if(s.status === 'delivered') return; // Don't show delivered on map
+
+                const color = s.status === 'alert' ? '#ef4444' : '#10b981';
+                
+                // Custom Icon
+                const icon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px ${color};"></div>`,
+                    iconSize: [12, 12],
+                    iconAnchor: [6, 6]
+                });
+
+                const marker = L.marker([s.lat, s.lng], { icon: icon }).addTo(map);
+                
+                marker.on('click', () => showOverlay(s));
+                markers[s.id] = marker;
+            });
+        }
+
+        function renderList(shipments) {
+            const container = document.getElementById('transport-list-container');
+            container.innerHTML = '';
+
+            shipments.forEach(s => {
+                const el = document.createElement('div');
+                
+                // Styles
+                let statusBadge = '';
+                let borderClass = 'border-white/5';
+                
+                if(s.status === 'transit') {
+                    statusBadge = '<span class="status-badge status-transit"><i class="fas fa-truck"></i> En Ruta</span>';
+                } else if(s.status === 'alert') {
+                    statusBadge = '<span class="status-badge status-alert"><i class="fas fa-exclamation-triangle"></i> Alerta</span>';
+                    borderClass = 'border-red-500/30 bg-red-900/10';
+                } else {
+                    statusBadge = '<span class="status-badge status-delivered"><i class="fas fa-check"></i> Entregado</span>';
+                }
+
+                el.className = `p-3 rounded-xl border ${borderClass} hover:bg-white/5 transition cursor-pointer group`;
+                el.onclick = () => {
+                    if(s.status !== 'delivered') {
+                        map.flyTo([s.lat, s.lng], 10);
+                        showOverlay(s);
+                    }
+                };
+
+                el.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-sm font-bold text-white">${s.id}</h4>
+                        ${statusBadge}
+                    </div>
+                    <div class="flex items-center gap-4 text-xs text-gray-400">
+                        <span class="flex items-center gap-1"><i class="fas fa-truck-moving text-emerald-500"></i> ${s.plate}</span>
+                        <span class="flex items-center gap-1"><i class="fas fa-thermometer-half ${s.status === 'alert' ? 'text-red-400' : 'text-blue-400'}"></i> ${s.temp}°C</span>
+                    </div>
+                    <div class="mt-2 text-[0.65rem] text-gray-500 flex justify-between">
+                        <span>Actualizado: ${s.lastUpdate}</span>
+                        <span class="text-emerald-500 opacity-0 group-hover:opacity-100 transition">Ver en mapa <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        // Overlay Logic
+        window.showOverlay = function(data) {
+            const overlay = document.getElementById('truck-info-overlay');
+            document.getElementById('overlay-plate').textContent = data.plate;
+            document.getElementById('overlay-driver').textContent = "Conductor: " + data.driver;
+            
+            const tempEl = document.getElementById('overlay-temp');
+            tempEl.textContent = data.temp + "°C";
+            tempEl.className = data.status === 'alert' ? "font-mono text-red-400 font-bold" : "font-mono text-emerald-400 font-bold";
+
+            overlay.classList.remove('hidden');
+            // Small delay for transition
+            setTimeout(() => {
+                overlay.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+        }
+
+        window.closeOverlay = function() {
+            const overlay = document.getElementById('truck-info-overlay');
+            overlay.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 300);
+        }
+
+        init();
     </script>
 </body>
-
 </html>

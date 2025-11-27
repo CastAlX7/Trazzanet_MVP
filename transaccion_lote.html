@@ -4,630 +4,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transferencia de Activo Digital - TrazaNet</title>
+    <title>Transferencia de Lote - TrazzaNet</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes e Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        trazza: {
+                            bg: '#011c16',      
+                            card: 'rgba(255, 255, 255, 0.03)',
+                            border: 'rgba(255, 255, 255, 0.05)',
+                            primary: '#10B981', 
+                            glow: '#34D399',    
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         body {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #011c16;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(6, 78, 59, 0.1) 0%, transparent 40%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
+            color: #e2e8f0;
+            overflow-x: hidden;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
             pointer-events: none;
-            z-index: 10;
         }
 
-        .input-with-icon {
-            padding-left: 2.5rem;
+        /* Glassmorphism */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .submit-btn {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .submit-btn:hover::before {
-            width: 400px;
-            height: 400px;
-        }
-
-        .alert-box {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .alert-success {
-            background-color: #d1fae5;
-            border-left: 4px solid #10b981;
-            color: #065f46;
-        }
-
-        .alert-error {
-            background-color: #fee2e2;
-            border-left: 4px solid #ef4444;
-            color: #991b1b;
-        }
-
-        .alert-warning {
-            background-color: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            color: #92400e;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .wallet-display {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border-left: 4px solid #8b5cf6;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-            color: #1e293b;
-            word-break: break-all;
-        }
-
-        .security-badge {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-left: 4px solid #f59e0b;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .transaction-summary {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-            border-left: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .crypto-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Inputs */
+        .tech-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .tech-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #10B981;
+            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.2);
+            outline: none;
+        }
+        .tech-input:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+            cursor: not-allowed;
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #6b7280;
-            z-index: 10;
-            transition: color 0.2s;
+        /* Warning Banner */
+        .warning-banner {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            color: #fbbf24;
         }
 
-        .password-toggle:hover {
-            color: #4b5563;
-        }
-
-        .fee-info {
-            background: #f9fafb;
-            border: 1px dashed #d1d5db;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
+        /* Info Footer */
+        .info-footer {
+            border-left: 4px solid #10B981;
+            background: rgba(16, 185, 129, 0.05);
         }
     </style>
 </head>
 
-<body>
-    <div class="glass-panel p-8 rounded-xl shadow-2xl w-full max-w-2xl">
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-3xl font-bold text-gray-800 flex items-center">
-                <div class="crypto-icon mr-3">
-                    <i class="fas fa-exchange-alt"></i>
-                </div>
+<body class="flex flex-col min-h-screen">
+
+    <div class="grid-bg"></div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="w-full z-20 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-[#011c16]/80 backdrop-blur-sm sticky top-0">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 flex items-center justify-center bg-emerald-900/50 rounded-lg border border-emerald-500/30 text-emerald-400">
+                <svg class="w-6 h-6" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 L50 8Z" stroke="currentColor" stroke-width="8" fill="none"/>
+                    <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                </svg>
+            </div>
+            <span class="font-bold text-white tracking-wide text-lg">Trazza<span class="text-emerald-400">Net</span></span>
+        </div>
+        
+        <!-- Removed User/Operator Info Block -->
+        <div></div> 
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-3xl mx-auto p-6 lg:p-10 flex-1">
+        
+        <!-- Header with Back Button -->
+        <div class="mb-8">
+            <a href="javascript:history.back()" class="inline-flex items-center text-sm text-gray-400 hover:text-emerald-400 mb-4 transition-colors group">
+                <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Volver
+            </a>
+            <h1 class="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                <i class="fas fa-exchange-alt text-emerald-500"></i>
                 Transferencia de Activo Digital
-            </h2>
-            <span class="text-sm text-gray-500 flex items-center">
-                <i class="fas fa-shield-alt mr-1 text-green-600"></i>
-                Blockchain Seguro
-            </span>
+            </h1>
         </div>
 
-        <!-- Security Notice -->
-        <div class="security-badge mb-6">
-            <i class="fas fa-info-circle text-amber-600 text-xl"></i>
-            <div>
-                <p class="text-sm font-semibold text-amber-900">Transacción Criptográfica</p>
-                <p class="text-xs text-amber-700">Esta operación requiere autenticación digital y es irreversible</p>
-            </div>
-        </div>
-
-        <form id="transaction-form">
-            <!-- Asset ID -->
-            <div class="mb-6">
-                <label for="asset-id" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-cube mr-1 text-purple-600"></i> ID del Activo a Transferir
-                    <span class="text-red-600">*</span>
-                </label>
-                <div class="input-group">
-                    <i class="fas fa-barcode input-icon"></i>
-                    <input type="text" id="asset-id" name="asset-id" required placeholder="LOTE-COMERCIAL-001"
-                        class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3 border">
-                </div>
-                <p class="text-xs text-gray-500 mt-1">
-                    <i class="fas fa-lightbulb"></i> Ingrese el ID del lote comercial (NFT) que desea vender
-                </p>
-            </div>
-
-            <!-- Wallet Origin (Read-only) -->
-            <div class="mb-6">
-                <label for="wallet-origin" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-wallet mr-1 text-purple-600"></i> Wallet Origen (Vendedor)
-                </label>
-                <div class="wallet-display">
-                    <div class="flex items-center justify-between">
-                        <span id="wallet-origin">0x0000000000000000000000000000000000000000</span>
-                        <button type="button" onclick="copyToClipboard('wallet-origin')"
-                            class="text-purple-600 hover:text-purple-800 ml-2">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">
-                    <i class="fas fa-user-shield"></i> Su dirección de wallet (generada automáticamente)
-                </p>
-            </div>
-
-            <!-- Wallet Destination -->
-            <div class="mb-6">
-                <label for="wallet-destination" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-paper-plane mr-1 text-purple-600"></i> Wallet Destino (Comprador)
-                    <span class="text-red-600">*</span>
-                </label>
-                <div class="input-group">
-                    <i class="fas fa-address-card input-icon"></i>
-                    <input type="text" id="wallet-destination" name="wallet-destination" required
-                        placeholder="0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
-                        class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3 border font-mono text-sm">
-                </div>
-                <p class="text-xs text-gray-500 mt-1">
-                    <i class="fas fa-exclamation-triangle text-amber-500"></i> Verifique cuidadosamente la dirección del
-                    comprador
-                </p>
-            </div>
-
-            <!-- Transaction Amount -->
-            <div class="mb-6">
-                <label for="transaction-amount" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-dollar-sign mr-1 text-green-600"></i> Monto de la Transacción (USD)
-                    <span class="text-red-600">*</span>
-                </label>
-                <div class="input-group">
-                    <i class="fas fa-money-bill-wave input-icon"></i>
-                    <input type="number" id="transaction-amount" name="transaction-amount" step="0.01" min="0.01"
-                        required placeholder="0.00"
-                        class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-3 border text-lg font-semibold">
-                </div>
-                <div class="fee-info mt-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-600">Tarifa de Gas (estimada):</span>
-                        <span class="font-semibold text-gray-800">$<span id="gas-fee">0.50</span></span>
-                    </div>
-                    <div class="flex justify-between items-center mt-1 pt-1 border-t border-gray-300">
-                        <span class="text-gray-800 font-medium">Total a Recibir:</span>
-                        <span class="font-bold text-green-600 text-lg">$<span id="total-receive">0.00</span></span>
-                    </div>
+        <!-- Transaction Form Container -->
+        <div class="glass-panel rounded-2xl overflow-hidden p-8">
+            
+            <!-- Warning Banner -->
+            <div class="warning-banner p-4 rounded-lg mb-8 flex items-start gap-3">
+                <i class="fas fa-info-circle text-xl mt-0.5"></i>
+                <div>
+                    <h4 class="font-bold text-sm text-yellow-500">Transacción Criptográfica</h4>
+                    <p class="text-xs text-yellow-200/80 mt-1">Esta operación requiere autenticación digital y es irreversible una vez confirmada en la Blockchain.</p>
                 </div>
             </div>
 
-            <!-- Digital Signature / PIN -->
-            <div class="mb-6">
-                <label for="digital-pin" class="block text-sm font-medium text-gray-700 mb-2">
-                    <i class="fas fa-key mr-1 text-red-600"></i> Firma Digital / PIN de Autorización
-                    <span class="text-red-600">*</span>
-                </label>
-                <div class="input-group">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="digital-pin" name="digital-pin" required
-                        placeholder="Ingrese su PIN o clave privada"
-                        class="input-with-icon mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 p-3 border">
-                    <i class="fas fa-eye password-toggle" id="toggle-password" onclick="togglePasswordVisibility()"></i>
+            <form id="transfer-form" class="space-y-6">
+                
+                <!-- 1. ID del Activo -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
+                        <i class="fas fa-cube text-emerald-500"></i> ID del Activo a Transferir <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-barcode text-gray-500"></i>
+                        </div>
+                        <input type="text" id="asset-id" class="tech-input w-full rounded-lg py-3 pl-10 pr-4 text-white font-mono" placeholder="LOTE-COMERCIAL-001">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 ml-1">Ingrese el ID del lote comercial (NFT) que desea vender/transferir</p>
                 </div>
-                <p class="text-xs text-red-600 mt-1">
-                    <i class="fas fa-shield-alt"></i> Requerido para autenticación criptográfica
-                </p>
-            </div>
 
-            <!-- Transaction Summary -->
-            <div class="transaction-summary" id="transaction-summary" style="display: none;">
-                <h4 class="font-semibold text-blue-900 mb-2 flex items-center">
-                    <i class="fas fa-clipboard-list mr-2"></i> Resumen de Transacción
-                </h4>
-                <div class="space-y-1 text-sm text-blue-800">
-                    <div class="flex justify-between">
-                        <span>Activo:</span>
-                        <span class="font-mono font-semibold" id="summary-asset">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>De:</span>
-                        <span class="font-mono text-xs" id="summary-from">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Para:</span>
-                        <span class="font-mono text-xs" id="summary-to">-</span>
-                    </div>
-                    <div class="flex justify-between font-bold text-base pt-2 border-t border-blue-300">
-                        <span>Monto:</span>
-                        <span class="text-green-700" id="summary-amount">$0.00</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alert Box -->
-            <div id="alert-box" class="alert-box"></div>
-
-            <!-- Submit Button -->
-            <button type="submit"
-                class="submit-btn w-full mt-6 py-4 px-4 border border-transparent rounded-md shadow-sm text-base font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150">
-                <i class="fas fa-rocket mr-2"></i>
-                <span id="btn-text">Ejecutar Transferencia Blockchain</span>
-                <span id="btn-spinner" class="loading-spinner ml-2" style="display: none;"></span>
-            </button>
-
-            <!-- Info Box -->
-            <div class="mt-4 p-4 bg-purple-50 border-l-4 border-purple-400 rounded">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <i class="fas fa-info-circle text-purple-400 text-xl"></i>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-purple-700">
-                            <strong>Acción del Sistema:</strong> Al confirmar, se ejecutará un
-                            <code class="bg-purple-100 px-1 rounded">AssetTransfer</code> en la blockchain,
-                            transfiriendo la propiedad del lote al comprador y activando el
-                            <strong>Smart Contract de Escrow</strong> para procesar el pago de
-                            <strong id="info-amount">$0.00 USD</strong>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        // Initialize wallet address
-        function getOrCreateWalletId() {
-            let walletId = sessionStorage.getItem('trazanet_wallet_id');
-            if (!walletId) {
-                // Generate a simulated Ethereum-style address
-                walletId = '0x' + Array.from({ length: 40 }, () =>
-                    Math.floor(Math.random() * 16).toString(16)
-                ).join('');
-                sessionStorage.setItem('trazanet_wallet_id', walletId);
-            }
-            return walletId;
-        }
-
-        // Copy to clipboard function
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            const text = element.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                // Show temporary feedback
-                const originalText = element.innerHTML;
-                element.innerHTML = '<span class="text-green-600">✓ Copiado</span>';
-                setTimeout(() => {
-                    element.textContent = text;
-                }, 2000);
-            });
-        }
-
-        // Toggle password visibility
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('digital-pin');
-            const toggleIcon = document.getElementById('toggle-password');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-
-        // Update transaction summary
-        function updateSummary() {
-            const assetId = document.getElementById('asset-id').value;
-            const walletOrigin = document.getElementById('wallet-origin').textContent;
-            const walletDestination = document.getElementById('wallet-destination').value;
-            const amount = parseFloat(document.getElementById('transaction-amount').value) || 0;
-
-            if (assetId && walletDestination && amount > 0) {
-                document.getElementById('summary-asset').textContent = assetId;
-                document.getElementById('summary-from').textContent = walletOrigin.substring(0, 20) + '...';
-                document.getElementById('summary-to').textContent = walletDestination.substring(0, 20) + '...';
-                document.getElementById('summary-amount').textContent = `$${amount.toFixed(2)}`;
-                document.getElementById('transaction-summary').style.display = 'block';
-            } else {
-                document.getElementById('transaction-summary').style.display = 'none';
-            }
-        }
-
-        // Calculate fees and total
-        function updateFees() {
-            const amount = parseFloat(document.getElementById('transaction-amount').value) || 0;
-            const gasFee = 0.50; // Fixed gas fee for simplicity
-            const totalReceive = Math.max(0, amount - gasFee);
-
-            document.getElementById('gas-fee').textContent = gasFee.toFixed(2);
-            document.getElementById('total-receive').textContent = totalReceive.toFixed(2);
-            document.getElementById('info-amount').textContent = `$${amount.toFixed(2)}`;
-
-            updateSummary();
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const walletId = getOrCreateWalletId();
-            document.getElementById('wallet-origin').textContent = walletId;
-
-            // Auto-populate asset ID from URL params if available
-            const urlParams = new URLSearchParams(window.location.search);
-            const assetId = urlParams.get('asset') || urlParams.get('lote');
-            if (assetId) {
-                document.getElementById('asset-id').value = assetId;
-            }
-
-            // Add event listeners for real-time updates
-            document.getElementById('transaction-amount').addEventListener('input', updateFees);
-            document.getElementById('asset-id').addEventListener('input', updateSummary);
-            document.getElementById('wallet-destination').addEventListener('input', updateSummary);
-        });
-
-        // Form submission handler
-        document.getElementById('transaction-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const btnText = document.getElementById('btn-text');
-            const btnSpinner = document.getElementById('btn-spinner');
-            const alertBox = document.getElementById('alert-box');
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-
-            // Collect form data
-            const formData = {
-                assetId: document.getElementById('asset-id').value,
-                walletOrigin: document.getElementById('wallet-origin').textContent,
-                walletDestination: document.getElementById('wallet-destination').value,
-                transactionAmountUSD: parseFloat(document.getElementById('transaction-amount').value),
-                digitalPin: document.getElementById('digital-pin').value,
-                gasFee: parseFloat(document.getElementById('gas-fee').textContent),
-                netAmount: parseFloat(document.getElementById('total-receive').textContent),
-                tipoEvento: 'AssetTransfer',
-                timestamp: new Date().toISOString()
-            };
-
-            // Validation
-            if (formData.transactionAmountUSD <= 0) {
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <strong>Error de Validación:</strong> El monto de la transacción debe ser mayor a $0.00
-                `;
-                alertBox.style.display = 'block';
-                return;
-            }
-
-            if (formData.walletDestination.length < 20) {
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <strong>Error de Validación:</strong> La dirección de wallet de destino no es válida
-                `;
-                alertBox.style.display = 'block';
-                return;
-            }
-
-            if (formData.walletOrigin === formData.walletDestination) {
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <strong>Error de Validación:</strong> No puede transferir a su propia wallet
-                `;
-                alertBox.style.display = 'block';
-                return;
-            }
-
-            if (formData.digitalPin.length < 4) {
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    <strong>Error de Autenticación:</strong> El PIN debe tener al menos 4 caracteres
-                `;
-                alertBox.style.display = 'block';
-                return;
-            }
-
-            // Disable button and show loading state
-            submitBtn.disabled = true;
-            btnText.textContent = 'Procesando Transacción...';
-            btnSpinner.style.display = 'inline-block';
-            alertBox.style.display = 'none';
-
-            try {
-                // Show warning during processing
-                alertBox.className = 'alert-box alert-warning';
-                alertBox.innerHTML = `
-                    <i class="fas fa-hourglass-half mr-2"></i>
-                    <strong>Procesando:</strong> Ejecutando Smart Contract de Escrow y registrando en blockchain...
-                `;
-                alertBox.style.display = 'block';
-
-                // TODO: Replace with actual API endpoint
-                // const response = await fetch('http://localhost:3000/api/transfer-asset', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify(formData)
-                // });
-
-                // Simulate blockchain transaction processing
-                await new Promise(resolve => setTimeout(resolve, 3000));
-
-                // Generate transaction hash
-                const txHash = '0x' + Array.from({ length: 64 }, () =>
-                    Math.floor(Math.random() * 16).toString(16)
-                ).join('');
-
-                const blockNumber = Math.floor(Math.random() * 1000000) + 15000000;
-
-                // Show success message
-                alertBox.className = 'alert-box alert-success';
-                alertBox.innerHTML = `
-                    <div class="flex items-start">
-                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1 text-2xl"></i>
-                        <div class="flex-1">
-                            <strong class="text-lg">¡Transferencia Exitosa!</strong>
-                            <ul class="mt-3 text-sm space-y-2">
-                                <li class="flex justify-between">
-                                    <span>Activo transferido:</span>
-                                    <span class="font-semibold">${formData.assetId}</span>
-                                </li>
-                                <li class="flex justify-between">
-                                    <span>Monto procesado:</span>
-                                    <span class="font-semibold text-green-700">$${formData.transactionAmountUSD.toFixed(2)} USD</span>
-                                </li>
-                                <li class="flex justify-between">
-                                    <span>Monto neto recibido:</span>
-                                    <span class="font-semibold text-green-700">$${formData.netAmount.toFixed(2)} USD</span>
-                                </li>
-                                <li class="flex justify-between">
-                                    <span>Nuevo propietario:</span>
-                                    <span class="font-mono text-xs">${formData.walletDestination.substring(0, 15)}...</span>
-                                </li>
-                                <li class="flex justify-between">
-                                    <span>Hash de transacción:</span>
-                                    <span class="font-mono text-xs">${txHash.substring(0, 20)}...</span>
-                                </li>
-                                <li class="flex justify-between">
-                                    <span>Bloque:</span>
-                                    <span class="font-semibold">#${blockNumber}</span>
-                                </li>
-                                <li class="pt-2 border-t border-green-300">
-                                    <span class="text-green-700">✓ Smart Contract de Escrow ejecutado</span>
-                                </li>
-                                <li>
-                                    <span class="text-green-700">✓ Propiedad transferida en blockchain</span>
-                                </li>
-                                <li>
-                                    <span class="text-green-700">✓ Pago procesado y confirmado</span>
-                                </li>
-                            </ul>
+                <!-- 2. Wallet Origen (Read Only) -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
+                        <i class="fas fa-wallet text-emerald-500"></i> Wallet Origen (Vendedor)
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                            <div class="w-1 h-8 bg-emerald-500 rounded-full"></div>
+                        </div>
+                        <div class="tech-input w-full rounded-lg py-3 pl-6 pr-10 text-gray-400 font-mono text-sm bg-black/20 border-emerald-500/20 flex items-center justify-between">
+                            <span id="wallet-origin" class="truncate">Cargando...</span>
+                            <i class="far fa-copy cursor-pointer hover:text-white transition"></i>
                         </div>
                     </div>
-                `;
-                alertBox.style.display = 'block';
+                    <p class="text-xs text-gray-500 mt-1 ml-1 flex items-center gap-1"><i class="fas fa-user"></i> Su dirección de wallet (generada automáticamente)</p>
+                </div>
 
-                // Reset form after 5 seconds
-                setTimeout(() => {
-                    if (confirm('¿Desea realizar otra transferencia?')) {
-                        location.reload();
-                    } else {
-                        // Optionally redirect to wallet or dashboard
-                        // window.location.href = 'wallet.html';
+                <!-- 3. Wallet Destino -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
+                        <i class="fas fa-paper-plane text-emerald-500"></i> Wallet Destino (Comprador) <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-address-card text-gray-500"></i>
+                        </div>
+                        <input type="text" id="wallet-dest" class="tech-input w-full rounded-lg py-3 pl-10 pr-4 text-white font-mono text-sm" placeholder="0x...">
+                    </div>
+                    <p class="text-xs text-yellow-500/80 mt-1 ml-1 flex items-center gap-1"><i class="fas fa-exclamation-triangle"></i> Verifique cuidadosamente la dirección del comprador</p>
+                </div>
+
+                <!-- 4. Monto Transacción -->
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
+                        <i class="fas fa-dollar-sign text-emerald-500"></i> Monto de la Transacción (USD) <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-money-bill-wave text-gray-500"></i>
+                        </div>
+                        <input type="number" id="amount" step="0.01" class="tech-input w-full rounded-lg py-3 pl-10 pr-4 text-white font-bold text-lg" placeholder="0.00">
+                    </div>
+                </div>
+
+                <!-- 5. Gas Fee / Total Box -->
+                <div class="bg-white/5 rounded-xl p-4 border border-dashed border-white/10">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-gray-400">Tarifa de Gas (estimada):</span>
+                        <span class="text-sm text-white font-mono">$0.50</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-white/10">
+                        <span class="text-base font-bold text-white">Total a Recibir:</span>
+                        <span class="text-xl font-bold text-emerald-400" id="total-receive">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- 6. Firma Digital -->
+                <div class="pt-4">
+                    <label class="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
+                        <i class="fas fa-key text-red-400"></i> Firma Digital / PIN de Autorización <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-500"></i>
+                        </div>
+                        <input type="password" id="private-key" class="tech-input w-full rounded-lg py-3 pl-10 pr-10 text-white" placeholder="Ingrese su PIN o clave privada">
+                        <button type="button" onclick="toggleKey()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition">
+                            <i class="fas fa-eye" id="toggle-icon"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-red-400/80 mt-1 ml-1 flex items-center gap-1"><i class="fas fa-shield-alt"></i> Requerido para autenticación criptográfica</p>
+                </div>
+
+                <!-- 7. Submit Button -->
+                <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-900/40 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 group relative overflow-hidden mt-4">
+                    <span class="pulse-ring absolute w-full h-full rounded-xl opacity-0 group-hover:opacity-20"></span>
+                    <i class="fas fa-rocket text-lg group-hover:-translate-y-1 transition-transform"></i>
+                    <span class="tracking-wide">Ejecutar Transferencia Blockchain</span>
+                </button>
+
+            </form>
+            
+            <!-- 8. Info Footer -->
+            <div class="info-footer mt-8 p-4 rounded-r-lg text-sm text-emerald-100/80 flex gap-3">
+                <i class="fas fa-info-circle text-emerald-400 text-xl shrink-0"></i>
+                <div>
+                    <strong class="text-white block mb-1">Acción del Sistema:</strong>
+                    Al confirmar, se ejecutará un <code class="bg-emerald-900/50 px-1 py-0.5 rounded text-emerald-300 font-mono text-xs">AssetTransfer</code> en la blockchain, transfiriendo la propiedad del lote al comprador y activando el <strong class="text-white">Smart Contract de Escrow</strong> para procesar el pago.
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Processing Modal -->
+    <div id="processing-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center backdrop-blur-md transition-opacity duration-300">
+        <div class="relative mb-8">
+            <div class="w-24 h-24 border-4 border-emerald-900 rounded-full"></div>
+            <div class="w-24 h-24 border-4 border-emerald-500 rounded-full border-t-transparent animate-spin absolute top-0 left-0"></div>
+            <i class="fas fa-cube absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-emerald-400 text-2xl animate-pulse"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-2 tracking-tight">Procesando en Blockchain</h2>
+        <p class="text-emerald-400 font-mono text-sm bg-emerald-900/30 px-4 py-2 rounded-full border border-emerald-500/30" id="processing-step">Validando firma digital...</p>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="toast" class="fixed top-5 right-5 transform translate-x-full opacity-0 transition-all duration-500 z-[60]">
+        <div class="bg-[#011c16] border border-emerald-500/50 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 relative overflow-hidden">
+            <div class="absolute inset-0 bg-emerald-500/10"></div>
+            <div class="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 border border-emerald-500/30 z-10">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="z-10">
+                <h4 class="font-bold text-sm text-emerald-100">Transacción Exitosa</h4>
+                <p class="text-xs text-emerald-400/70 mt-1">Hash: <span class="font-mono text-emerald-300">0x8a2...3b91</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+        import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getFirestore, doc, updateDoc, addDoc, collection } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+        let db, auth, user;
+
+        async function init() {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                await signInAnonymously(auth);
+                
+                onAuthStateChanged(auth, (currentUser) => {
+                    if (currentUser) {
+                        user = currentUser;
+                        // Removed operator display
+                        // Set simulated wallet
+                        document.getElementById('wallet-origin').textContent = "0x" + user.uid.replace(/\W/g, '').padEnd(40, '0').substring(0, 40);
                     }
-                }, 5000);
+                });
+            } catch (e) { console.error(e); }
+        }
 
-            } catch (error) {
-                console.error('Error al procesar transferencia:', error);
-                alertBox.className = 'alert-box alert-error';
-                alertBox.innerHTML = `
-                    <i class="fas fa-exclamation-circle mr-2"></i>
-                    <strong>Error de Transacción:</strong> No se pudo completar la transferencia. 
-                    Por favor, verifique su conexión y los datos ingresados, luego intente nuevamente.
-                `;
-                alertBox.style.display = 'block';
-            } finally {
-                // Re-enable button
-                submitBtn.disabled = false;
-                btnText.textContent = 'Ejecutar Transferencia Blockchain';
-                btnSpinner.style.display = 'none';
-            }
+        // Calculate Total
+        document.getElementById('amount').addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value) || 0;
+            const gas = 0.50;
+            const total = Math.max(0, val - gas);
+            document.getElementById('total-receive').textContent = `$${total.toFixed(2)}`;
         });
+
+        // Toggle Password
+        window.toggleKey = function() {
+            const input = document.getElementById('private-key');
+            const icon = document.getElementById('toggle-icon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Submit
+        document.getElementById('transfer-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const modal = document.getElementById('processing-modal');
+            const step = document.getElementById('processing-step');
+            
+            modal.classList.remove('hidden');
+            
+            setTimeout(() => step.textContent = "Ejecutando Smart Contract...", 1500);
+            setTimeout(() => step.textContent = "Confirmando en Bloque #18294...", 3000);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Show custom toast instead of alert for better UX
+                const t = document.getElementById('toast');
+                t.classList.remove('translate-x-full', 'opacity-0');
+                setTimeout(() => t.classList.add('translate-x-full', 'opacity-0'), 4000);
+
+                document.getElementById('transfer-form').reset();
+                document.getElementById('total-receive').textContent = "$0.00";
+            }, 4500);
+        });
+
+        init();
     </script>
 </body>
-
 </html>
