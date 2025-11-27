@@ -275,71 +275,116 @@
     </main>
 
     <!-- Script de Funcionalidad -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('login-form');
-            const statusMsg = document.getElementById('status-msg');
-            const msgText = document.getElementById('msg-text');
-            const submitBtn = loginForm.querySelector('button');
+    const SESSION_KEY = 'trazanet_session';
 
-            // Credenciales Demo
-            const DEMO = {
-                ruc: "20601234567",
-                user: "admin",
-                pass: "avocado123"
-            };
+    // Al cargar la página: si ya hay sesión, manda directo al dashboard
+    window.addEventListener('DOMContentLoaded', () => {
+        const existingSession =
+            localStorage.getItem(SESSION_KEY) ||
+            sessionStorage.getItem(SESSION_KEY);
 
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                // Obtener valores
-                const ruc = document.getElementById('ruc').value.trim();
-                const user = document.getElementById('user').value.trim();
-                const pass = document.getElementById('pass').value.trim();
+        if (existingSession) {
+            try {
+                const session = JSON.parse(existingSession);
+                // Si quieres, puedes validar algo del session (ej. username)
+                if (session && session.username) {
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+            } catch (e) {
+                // Si algo falla al parsear, limpiamos
+                localStorage.removeItem(SESSION_KEY);
+                sessionStorage.removeItem(SESSION_KEY);
+            }
+        }
 
-                // UI Loading
-                const originalBtnContent = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verificando Hash...';
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+        // Si no hay sesión, dejamos el formulario listo
+        initLoginForm();
+    });
 
-                setTimeout(() => {
-                    if (ruc === DEMO.ruc && user === DEMO.user && pass === DEMO.pass) {
-                        // Éxito
-                        statusMsg.className = "mt-6 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-200 text-xs flex items-center gap-3";
-                        statusMsg.innerHTML = '<i class="fa-solid fa-shield-check"></i> <span>Credenciales Validadas. Redirigiendo...</span>';
-                        statusMsg.classList.remove('hidden');
-                        
-                        setTimeout(() => {
-                            localStorage.setItem('trazzaSession', JSON.stringify({ user, token: 'xyz-hash-123' }));
-                            alert("Bienvenido al sistema TrazzaNet.\n\n(Aquí se redirigiría al Dashboard)");
-                            // window.location.href = 'dashboard.html'; // Descomentar en producción
-                            
-                            // Reset UI para demo
-                            submitBtn.innerHTML = originalBtnContent;
-                            submitBtn.disabled = false;
-                            submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
-                        }, 1000);
+    function initLoginForm() {
+        const form = document.getElementById('loginForm');
+        const errorBox = document.getElementById('login-error');
+        const errorText = document.getElementById('login-error-text');
 
-                    } else {
-                        // Error
-                        statusMsg.className = "mt-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-xs flex items-center gap-3";
-                        msgText.textContent = "Credenciales inválidas. (Prueba: 20601234567 / admin / avocado123)";
-                        statusMsg.classList.remove('hidden');
-                        
-                        // Shake Animation en inputs
-                        document.querySelectorAll('.tech-input').forEach(input => {
-                            input.classList.add('border-red-500');
-                            setTimeout(() => input.classList.remove('border-red-500'), 500);
-                        });
+        if (!form) return;
 
-                        submitBtn.innerHTML = originalBtnContent;
-                        submitBtn.disabled = false;
-                        submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
-                    }
-                }, 1500);
-            });
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const ruc = document.getElementById('ruc').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const role = document.getElementById('role').value;
+            const remember = document.getElementById('rememberMe').checked;
+
+            if (!ruc || !username || !password) {
+                errorBox.classList.remove('d-none');
+                errorText.textContent = 'Completa todos los campos para continuar.';
+                return;
+            }
+
+            // 🔐 OPCIÓN A: solo demo (no valida en backend)
+            // Deja esto en true mientras no tengas API de login real
+            const demoMode = true;
+
+            if (demoMode) {
+                saveSession({ ruc, username, role });
+                return;
+            }
+
+            // 🔐 OPCIÓN B: login REAL contra backend (cuando tengas endpoint)
+            try {
+                const resp = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ruc, username, password })
+                });
+
+                if (!resp.ok) {
+                    throw new Error('Credenciales inválidas');
+                }
+
+                const data = await resp.json();
+                // Ajusta estos campos según lo que devuelva tu backend
+                saveSession({
+                    ruc,
+                    username,
+                    role,
+                    token: data.token
+                }, remember);
+
+            } catch (err) {
+                console.error(err);
+                errorBox.classList.remove('d-none');
+                errorText.textContent = 'Credenciales inválidas o error de conexión.';
+            }
         });
-    </script>
+    }
+
+    function saveSession(payload, remember = true) {
+        const errorBox = document.getElementById('login-error');
+        if (errorBox) errorBox.classList.add('d-none');
+
+        const sessionData = {
+            ...payload,
+            loginTime: new Date().toISOString()
+        };
+
+        const json = JSON.stringify(sessionData);
+
+        if (remember) {
+            localStorage.setItem(SESSION_KEY, json);
+        } else {
+            sessionStorage.setItem(SESSION_KEY, json);
+        }
+
+        // Redirigir al dashboard
+        window.location.href = 'dashboard.html';
+    }
+    </script>        
+    
 </body>
 </html>
