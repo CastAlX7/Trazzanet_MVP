@@ -199,7 +199,8 @@
                 
                 <div class="mb-6 flex flex-col">
                     <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-bold text-white price-value" data-monthly="5,000" data-yearly="4,000">$5,000</span>
+                        <span class="text-4xl font-bold text-white price-value" data-monthly="2,500" data-yearly="24,000">$2,500</span>
+                        <span class="text-gray-500 text-lg period-label">/ mes</span>
                     </div>
                     <span class="text-gray-500 text-xs font-bold tracking-wider mt-1">POR 5,000 REGISTROS</span>
                 </div>
@@ -225,7 +226,8 @@
                 
                 <div class="mb-6 flex flex-col">
                     <div class="flex items-baseline gap-1">
-                        <span class="text-5xl font-bold text-white price-value" data-monthly="10,000" data-yearly="8,000">$10,000</span>
+                        <span class="text-5xl font-bold text-white price-value" data-monthly="6,000" data-yearly="57,600">$6,000</span>
+                        <span class="text-gray-500 text-lg period-label">/ mes</span>
                     </div>
                     <span class="text-brand-accent text-xs font-bold tracking-wider mt-1">POR 10,000 REGISTROS</span>
                 </div>
@@ -385,11 +387,9 @@
 
     <div id="video-modal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
         <div class="relative w-full max-w-5xl bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl transform scale-95 transition-transform duration-300" id="video-container">
-            
             <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-10 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full w-10 h-10 flex items-center justify-center transition border border-white/10">
                 <i class="fas fa-times"></i>
             </button>
-            
             <div class="aspect-video">
                 <video id="promo-video" controls class="w-full h-full object-cover">
                     <source src="VIDEO PROMOCIONAL TRAZZANET.mp4" type="video/mp4">
@@ -400,26 +400,30 @@
     </div>
 
     <script>
-        // Toggle de Precios
         function togglePricing() {
             const checkbox = document.getElementById('pricing-toggle');
             const prices = document.querySelectorAll('.price-value');
+            const labels = document.querySelectorAll('.period-label');
             const isYearly = checkbox.checked;
 
-            prices.forEach(price => {
+            prices.forEach((price, index) => {
                 price.style.opacity = '0';
+                if(labels[index]) labels[index].style.opacity = '0';
+                
                 setTimeout(() => {
                     if (isYearly) {
                         price.innerText = '$' + price.dataset.yearly;
+                        if(labels[index]) labels[index].innerText = '/ año';
                     } else {
                         price.innerText = '$' + price.dataset.monthly;
+                        if(labels[index]) labels[index].innerText = '/ mes';
                     }
                     price.style.opacity = '1';
+                    if(labels[index]) labels[index].style.opacity = '1';
                 }, 200);
             });
         }
 
-        // Lógica del Modal de Video
         function openVideoModal() {
             const modal = document.getElementById('video-modal');
             const container = document.getElementById('video-container');
