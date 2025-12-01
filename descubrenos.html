@@ -148,6 +148,14 @@
             70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
             100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
+
+        /* Video Styles */
+        video {
+            width: 100%;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
     </style>
 </head>
 
@@ -225,137 +233,194 @@
         <div class="flex justify-between items-center mb-10 animate-[fadeIn_0.5s_ease-out]">
             <div>
                 <h1 class="text-3xl font-bold text-white mb-2 flex items-center gap-3">
-                    <i class="fas fa-comments text-emerald-500"></i>
-                    Centro de Contacto
+                    <i class="fas fa-play-circle text-emerald-500"></i>
+                    Conoce Nuestra Plataforma
                 </h1>
-                <p class="text-gray-400 text-sm">Estamos en línea para ayudarte a integrar tu cadena de suministro.</p>
+                <p class="text-gray-400 text-sm">Descubre cómo TrazzaNet revoluciona la cadena de suministro.</p>
             </div>
             
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-full">
                     <div class="pulse-dot"></div>
-                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Soporte 24/7</span>
+                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Multimedia Center</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-[fadeIn_0.6s_ease-out]">
+        <div class="max-w-4xl mx-auto space-y-12 animate-[fadeIn_0.6s_ease-out] mb-20">
+            
+            <div class="glass-panel p-8 rounded-3xl border border-white/10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 border border-blue-500/30">
+                        <i class="fas fa-chalkboard-teacher text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">Explicación de Landing</h3>
+                        <p class="text-sm text-gray-400">Recorrido por las funcionalidades principales.</p>
+                    </div>
+                </div>
+                <div class="aspect-video bg-black/40 rounded-2xl flex items-center justify-center border border-white/5 shadow-2xl">
+                    <div class="text-center">
+                        <i class="fas fa-video-slash text-5xl text-gray-600 mb-3"></i>
+                        <p class="text-gray-500 font-medium">Video pendiente de carga</p>
+                    </div>
+                    </div>
+            </div>
 
-            <div class="space-y-6">
+            <div class="glass-panel p-8 rounded-3xl border border-white/10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/30">
+                        <i class="fas fa-rocket text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">Video Promocional TrazzaNet</h3>
+                        <p class="text-sm text-gray-400">Innovación y tecnología en el agro.</p>
+                    </div>
+                </div>
+                <div class="aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+                    <video controls class="w-full h-full object-cover">
+                        <source src="VIDEO PROMOCIONAL TRAZZANET.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl border border-white/10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 border border-red-500/30">
+                        <i class="fas fa-exclamation-triangle text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">Problemática</h3>
+                        <p class="text-sm text-gray-400">Desafíos actuales de la industria.</p>
+                    </div>
+                </div>
+                <div class="aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+                    <video controls class="w-full h-full object-cover">
+                        <source src="PROBLEMATICA.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento de video.
+                    </video>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-t border-white/10 pt-10">
+            <h2 class="text-2xl font-bold text-white mb-8 text-center">¿Necesitas ayuda? Contáctanos</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
-                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                <div class="space-y-6">
                     
-                    <h3 class="font-bold text-white mb-6 flex items-center gap-2">
-                        <i class="fab fa-whatsapp text-emerald-400 text-xl"></i> Líneas Directas
-                    </h3>
+                    <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+                        
+                        <h3 class="font-bold text-white mb-6 flex items-center gap-2">
+                            <i class="fab fa-whatsapp text-emerald-400 text-xl"></i> Líneas Directas
+                        </h3>
 
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">
-                                    <i class="fas fa-phone-alt"></i>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Soporte Técnico</p>
+                                        <p class="text-white font-mono text-lg font-bold">+51 985 554 695</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-xs text-gray-400">Soporte Técnico</p>
-                                    <p class="text-white font-mono text-lg font-bold">+51 985 554 695</p>
+                                <div class="flex gap-2">
+                                    <button onclick="copyToClipboard('+51985554695')" class="p-2 text-gray-400 hover:text-white transition" title="Copiar"><i class="far fa-copy"></i></button>
+                                    <a href="https://wa.me/51985554695" target="_blank" class="p-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" title="Abrir WhatsApp"><i class="fab fa-whatsapp"></i></a>
                                 </div>
                             </div>
-                            <div class="flex gap-2">
-                                <button onclick="copyToClipboard('+51985554695')" class="p-2 text-gray-400 hover:text-white transition" title="Copiar"><i class="far fa-copy"></i></button>
-                                <a href="https://wa.me/51985554695" target="_blank" class="p-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" title="Abrir WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                            </div>
-                        </div>
 
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">
-                                    <i class="fas fa-headset"></i>
+                            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/50 transition-all">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center">
+                                        <i class="fas fa-headset"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Ventas & Consultas</p>
+                                        <p class="text-white font-mono text-lg font-bold">+51 986 998 178</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-xs text-gray-400">Ventas & Consultas</p>
-                                    <p class="text-white font-mono text-lg font-bold">+51 986 998 178</p>
+                                <div class="flex gap-2">
+                                    <button onclick="copyToClipboard('+51986998178')" class="p-2 text-gray-400 hover:text-white transition" title="Copiar"><i class="far fa-copy"></i></button>
+                                    <a href="https://wa.me/51986998178" target="_blank" class="p-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" title="Abrir WhatsApp"><i class="fab fa-whatsapp"></i></a>
                                 </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="copyToClipboard('+51986998178')" class="p-2 text-gray-400 hover:text-white transition" title="Copiar"><i class="far fa-copy"></i></button>
-                                <a href="https://wa.me/51986998178" target="_blank" class="p-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition" title="Abrir WhatsApp"><i class="fab fa-whatsapp"></i></a>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="glass-panel p-6 rounded-2xl">
-                    <h3 class="font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="far fa-envelope text-blue-400 text-xl"></i> Correo Corporativo
-                    </h3>
-                    <div class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-900/20 to-transparent border border-blue-500/20">
-                        <div class="overflow-hidden mr-2">
-                            <p class="text-xs text-gray-400">Escríbenos a</p>
-                            <p class="text-white font-bold text-base md:text-lg truncate">trazzanet.contacto@gmail.com</p>
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <h3 class="font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="far fa-envelope text-blue-400 text-xl"></i> Correo Corporativo
+                        </h3>
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-900/20 to-transparent border border-blue-500/20">
+                            <div class="overflow-hidden mr-2">
+                                <p class="text-white font-bold text-base md:text-lg truncate">trazzanet.contacto@gmail.com</p>
+                            </div>
+                            <button onclick="copyToClipboard('trazzanet.contacto@gmail.com')" class="p-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition text-sm"><i class="far fa-copy"></i></button>
                         </div>
-                        <div class="flex gap-2 flex-shrink-0">
-                            <button onclick="copyToClipboard('trazzanet.contacto@gmail.com')" class="p-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition text-sm" title="Copiar"><i class="far fa-copy"></i></button>
-                            <a href="mailto:trazzanet.contacto@gmail.com" class="p-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition" title="Enviar Correo"><i class="fas fa-paper-plane"></i></a>
-                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="https://www.instagram.com/trazzanet/" target="_blank" class="social-card-ig glass-panel p-6 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all cursor-pointer group">
+                            <i class="fab fa-instagram text-3xl text-white group-hover:scale-110 transition-transform"></i>
+                            <div class="text-center">
+                                <p class="text-white font-bold text-sm">@Trazzanet_oficial</p>
+                                <p class="text-xs text-gray-400 group-hover:text-white/80">Síguenos</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.facebook.com/search/top?q=trazzanet.contacto%40gmail.com" target="_blank" class="social-card-fb glass-panel p-6 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all cursor-pointer group">
+                            <i class="fab fa-facebook-f text-3xl text-blue-500 group-hover:text-white transition-colors"></i>
+                            <div class="text-center">
+                                <p class="text-white font-bold">Facebook</p>
+                                <p class="text-xs text-gray-400 group-hover:text-white/80">Contáctanos</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <a href="https://www.instagram.com/trazzanet/" target="_blank" class="social-card-ig glass-panel p-6 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all cursor-pointer group">
-                        <i class="fab fa-instagram text-3xl text-white group-hover:scale-110 transition-transform"></i>
-                        <div class="text-center">
-                            <p class="text-white font-bold text-sm">@Trazzanet_oficial</p>
-                            <p class="text-xs text-gray-400 group-hover:text-white/80">Síguenos</p>
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 bg-white/5 relative">
+                    <div class="absolute top-0 right-0 p-4 opacity-50">
+                        <i class="fas fa-paper-plane text-6xl text-white/5"></i>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-white mb-2">Envíanos un mensaje</h3>
+                    <p class="text-gray-400 text-sm mb-8">Te responderemos en menos de 24 horas.</p>
+
+                    <form id="contactForm" class="space-y-5" onsubmit="handleContact(event)">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Nombre Completo</label>
+                            <input type="text" class="tech-input w-full rounded-lg p-3 text-white" placeholder="Ej: Juan Pérez" required>
                         </div>
-                    </a>
-                    
-                    <a href="https://www.facebook.com/search/top?q=trazzanet.contacto%40gmail.com" target="_blank" class="social-card-fb glass-panel p-6 rounded-2xl flex flex-col items-center justify-center gap-3 transition-all cursor-pointer group">
-                        <i class="fab fa-facebook-f text-3xl text-blue-500 group-hover:text-white transition-colors"></i>
-                        <div class="text-center">
-                            <p class="text-white font-bold">Facebook</p>
-                            <p class="text-xs text-gray-400 group-hover:text-white/80">Contáctanos</p>
+                        
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Asunto</label>
+                            <select class="tech-input w-full rounded-lg p-3 text-white">
+                                <option>Consulta General</option>
+                                <option>Soporte Técnico</option>
+                                <option>Solicitar Auditoría</option>
+                                <option>Ventas</option>
+                            </select>
                         </div>
-                    </a>
+
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Mensaje</label>
+                            <textarea rows="4" class="tech-input w-full rounded-lg p-3 text-white" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                        </button>
+                    </form>
                 </div>
 
             </div>
-
-            <div class="glass-panel p-8 rounded-2xl border border-white/10 bg-white/5 relative">
-                <div class="absolute top-0 right-0 p-4 opacity-50">
-                    <i class="fas fa-paper-plane text-6xl text-white/5"></i>
-                </div>
-
-                <h3 class="text-xl font-bold text-white mb-2">Envíanos un mensaje</h3>
-                <p class="text-gray-400 text-sm mb-8">Te responderemos en menos de 24 horas.</p>
-
-                <form id="contactForm" class="space-y-5" onsubmit="handleContact(event)">
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Nombre Completo</label>
-                        <input type="text" class="tech-input w-full rounded-lg p-3 text-white" placeholder="Ej: Juan Pérez" required>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Asunto</label>
-                        <select class="tech-input w-full rounded-lg p-3 text-white">
-                            <option>Consulta General</option>
-                            <option>Soporte Técnico</option>
-                            <option>Solicitar Auditoría</option>
-                            <option>Ventas</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Mensaje</label>
-                        <textarea rows="4" class="tech-input w-full rounded-lg p-3 text-white" placeholder="¿En qué podemos ayudarte?" required></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 transition-all transform active:scale-95 flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
-                    </button>
-                </form>
-            </div>
-
         </div>
 
     </main>
