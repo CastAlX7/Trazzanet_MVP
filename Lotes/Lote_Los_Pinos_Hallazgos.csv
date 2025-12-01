@@ -1,0 +1,11 @@
+﻿LOTE_ID,FECHA_COSECHA,VARIEDAD,FINCA,ESTACION_CONTEO,PESO_NETO_KG,NUM_FRUTOS,CALIBRE,TEMPERATURA_C,CALIDAD_STATUS
+PNS-001,2025-09-05 07:50:00,Pinkerton,Los Pinos,Estacion_2,19.8,145,12,23.4,Hallazgo
+PNS-002,2025-09-05 09:15:00,Pinkerton,Los Pinos,Estacion_2,20.5,150,14,24.5,Hallazgo
+PNS-003,2025-09-05 10:40:00,Pinkerton,Los Pinos,Estacion_1,21.2,142,12,23.8,Hallazgo
+PNS-004,2025-09-05 12:20:00,Pinkerton,Los Pinos,Estacion_2,19.5,148,14,27.5,Rechazado
+PNS-005,2025-09-05 14:00:00,Pinkerton,Los Pinos,Estacion_3,20.8,146,12,24.1,Hallazgo
+PNS-006,2025-09-05 15:30:00,Pinkerton,Los Pinos,Estacion_2,21.5,140,14,23.2,Hallazgo
+PNS-007,2025-09-06 08:30:00,Pinkerton,Los Pinos,Estacion_1,20.1,152,12,19.8,OK
+PNS-008,2025-09-06 10:00:00,Pinkerton,Los Pinos,Estacion_2,22.0,144,14,23.9,Hallazgo
+PNS-009,2025-09-06 11:45:00,Pinkerton,Los Pinos,Estacion_3,19.9,149,12,24.3,Hallazgo
+PNS-010,2025-09-06 13:20:00,Pinkerton,Los Pinos,Estacion_2,20.6,147,14,23.6,Hallazgo

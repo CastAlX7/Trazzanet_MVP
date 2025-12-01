@@ -1,0 +1,11 @@
+﻿LOTE_ID,FECHA_COSECHA,VARIEDAD,FINCA,ESTACION_CONTEO,PESO_NETO_KG,NUM_FRUTOS,CALIBRE,TEMPERATURA_C,CALIDAD_STATUS
+SID-001,2025-11-10 08:00:00,Bacon,San Isidro,Estacion_1,21.5,158,16,23.2,Hallazgo
+SID-002,2025-11-10 09:30:00,Bacon,San Isidro,Estacion_1,20.8,162,18,24.1,Hallazgo
+SID-003,2025-11-10 11:00:00,Bacon,San Isidro,Estacion_2,22.0,155,16,23.5,Hallazgo
+SID-004,2025-11-10 12:45:00,Bacon,San Isidro,Estacion_1,21.2,160,18,24.6,Hallazgo
+SID-005,2025-11-10 14:15:00,Bacon,San Isidro,Estacion_3,20.5,165,16,21.0,OK
+SID-006,2025-11-10 15:50:00,Bacon,San Isidro,Estacion_1,21.8,157,18,23.8,Hallazgo
+SID-007,2025-11-11 08:30:00,Bacon,San Isidro,Estacion_2,20.1,168,16,29.2,Rechazado
+SID-008,2025-11-11 10:10:00,Bacon,San Isidro,Estacion_1,22.5,152,18,24.3,Hallazgo
+SID-009,2025-11-11 11:50:00,Bacon,San Isidro,Estacion_3,21.0,161,16,23.6,Hallazgo
+SID-010,2025-11-11 13:30:00,Bacon,San Isidro,Estacion_1,20.4,166,18,24.0,Hallazgo

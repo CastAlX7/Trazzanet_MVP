@@ -1,0 +1,11 @@
+﻿LOTE_ID,FECHA_COSECHA,VARIEDAD,FINCA,ESTACION_CONTEO,PESO_NETO_KG,NUM_FRUTOS,CALIBRE,TEMPERATURA_C,CALIDAD_STATUS
+FTN-001,2025-05-05 07:30:00,Hass,La Fortuna,Estacion_4,22.8,150,14,23.5,Hallazgo
+FTN-002,2025-05-05 09:00:00,Hass,La Fortuna,Estacion_4,23.1,148,16,24.2,Hallazgo
+FTN-003,2025-05-05 10:30:00,Hass,La Fortuna,Estacion_2,21.9,155,14,23.8,Hallazgo
+FTN-004,2025-05-05 12:00:00,Hass,La Fortuna,Estacion_4,22.5,152,16,20.5,OK
+FTN-005,2025-05-05 13:30:00,Hass,La Fortuna,Estacion_5,23.0,149,14,24.5,Hallazgo
+FTN-006,2025-05-05 15:00:00,Hass,La Fortuna,Estacion_4,21.5,158,16,27.8,Rechazado
+FTN-007,2025-05-06 08:00:00,Hass,La Fortuna,Estacion_2,22.2,153,14,23.6,Hallazgo
+FTN-008,2025-05-06 09:30:00,Hass,La Fortuna,Estacion_4,23.5,146,16,24.1,Hallazgo
+FTN-009,2025-05-06 11:00:00,Hass,La Fortuna,Estacion_5,21.8,156,14,23.9,Hallazgo
+FTN-010,2025-05-06 12:30:00,Hass,La Fortuna,Estacion_4,22.9,150,16,24.3,Hallazgo
