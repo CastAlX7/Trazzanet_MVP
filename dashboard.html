@@ -316,32 +316,32 @@
             document.getElementById('wallet-address-short').textContent = wallet;
             document.getElementById('block-height').textContent = Math.floor(Date.now() / 10000);
 
-            // --- FUNCIÓN PRINCIPAL DE DATOS ---
+            // --- FUNCIÓN PRINCIPAL ---
             function loadDashboardData() {
                 const raw = localStorage.getItem(HISTORY_KEY);
                 const data = raw ? JSON.parse(raw) : [];
 
                 // 1. Calcular KPIs
                 const totalLotes = data.length;
+                // Transacciones estimadas
                 const totalTx = totalLotes * 3 + Math.floor(Math.random() * 5); 
+                
+                // Contar alertas reales (solo si ya pasó por auditoría)
                 const alertas = data.filter(item => 
                     item.auditStatus === 'Descarte' || 
-                    item.auditStatus === 'Hallazgo' || 
-                    item.auditStatus === 'Riesgo'
+                    item.auditStatus === 'Hallazgo'
                 ).length;
 
                 animateValue("lotes-activos", 0, totalLotes, 1000);
                 animateValue("transacciones-confirmadas", 0, totalTx, 1500);
                 document.getElementById('alertas-criticas').textContent = alertas;
 
-                // 2. Renderizar Feed
+                // 2. Renderizar Feed y Gráficos
                 renderFeed(data);
-
-                // 3. Generar y Renderizar Gráficos
                 renderCharts(data);
             }
 
-            // --- ANIMACIÓN ---
+            // --- ANIMACIÓN NÚMEROS ---
             function animateValue(id, start, end, duration) {
                 const obj = document.getElementById(id);
                 if (!obj) return;
@@ -366,7 +366,6 @@
                                 <i class="fas fa-wind text-xl"></i>
                             </div>
                             <p class="text-sm font-medium text-gray-400">Sin actividad reciente</p>
-                            <p class="text-xs text-gray-600 mt-1">Registra un lote para comenzar.</p>
                         </li>`;
                     return;
                 }
@@ -374,37 +373,41 @@
                 feedContainer.innerHTML = '';
                 const recentItems = items.slice(0, 5);
 
-                recentItems.forEach((item, index) => {
+                recentItems.forEach((item) => {
                     const li = document.createElement('li');
-                    li.className = 'group flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-all duration-200 cursor-pointer border border-transparent hover:border-white/5';
-                    li.style.animation = `slideIn 0.5s ease-out forwards ${index * 0.1}s`;
-                    li.style.opacity = '0';
-
-                    const status = item.auditStatus || item.status || 'Pendiente';
-                    let iconConfig = { icon: 'fa-cube', bg: 'bg-blue-500/20', color: 'text-blue-400' };
+                    li.className = 'group flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/5';
                     
-                    if (status === 'Confirmado' || status === 'Conforme') {
-                        iconConfig = { icon: 'fa-check-circle', bg: 'bg-emerald-500/20', color: 'text-emerald-400' };
-                    } else if (status === 'Descarte' || status === 'Riesgo') {
-                        iconConfig = { icon: 'fa-exclamation-circle', bg: 'bg-red-500/20', color: 'text-red-400' };
-                    } else if (status === 'Hallazgo') {
-                        iconConfig = { icon: 'fa-search', bg: 'bg-yellow-500/20', color: 'text-yellow-400' };
-                    }
+                    // Lógica visual de estados
+                    const audit = item.auditStatus; // Puede ser undefined
+                    const uploadStatus = item.status; // Normalmente 'Confirmado'
 
-                    const title = item.fileName || item.file || 'Registro de Bloque';
-                    const time = item.time || item.timestamp || 'Reciente';
+                    let statusText = 'Pendiente';
+                    let iconConfig = { icon: 'fa-clock', bg: 'bg-gray-500/20', color: 'text-gray-400' };
+
+                    if (audit === 'Conforme') {
+                        statusText = 'Aprobado';
+                        iconConfig = { icon: 'fa-check-circle', bg: 'bg-emerald-500/20', color: 'text-emerald-400' };
+                    } else if (audit === 'Hallazgo') {
+                        statusText = 'Con Hallazgos';
+                        iconConfig = { icon: 'fa-search', bg: 'bg-yellow-500/20', color: 'text-yellow-400' };
+                    } else if (audit === 'Descarte') {
+                        statusText = 'Rechazado';
+                        iconConfig = { icon: 'fa-ban', bg: 'bg-red-500/20', color: 'text-red-400' };
+                    } else if (uploadStatus === 'Confirmado') {
+                        statusText = 'Sin Auditar';
+                        iconConfig = { icon: 'fa-file-upload', bg: 'bg-blue-500/20', color: 'text-blue-400' };
+                    }
 
                     li.innerHTML = `
                         <div class="w-10 h-10 rounded-full ${iconConfig.bg} flex items-center justify-center shrink-0 border border-white/5 group-hover:scale-110 transition-transform">
                             <i class="fas ${iconConfig.icon} ${iconConfig.color}"></i>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-gray-200 truncate">${title}</p>
-                            <p class="text-xs text-gray-500 font-mono">Status: <span class="${iconConfig.color}">${status}</span></p>
+                            <p class="text-sm font-medium text-gray-200 truncate">${item.fileName || item.file}</p>
+                            <p class="text-xs text-gray-500 font-mono">Estado: <span class="${iconConfig.color}">${statusText}</span></p>
                         </div>
                         <div class="text-xs text-gray-500 whitespace-nowrap text-right">
-                            ${time.split(' ')[0] || time}
-                            <i class="fas fa-chevron-right ml-2 opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500"></i>
+                            ${(item.time || '').split(' ')[0]}
                         </div>
                     `;
                     li.onclick = () => alert(`Hash Transacción:\n${item.fullHash || item.id}`);
@@ -412,39 +415,43 @@
                 });
             }
 
-            // --- RENDER CHARTS (Chart.js) ---
+            // --- RENDER CHARTS (Lógica Mejorada) ---
             function renderCharts(data) {
-                // 1. Preparar Datos Fincas (Simular ubicación basada en índice)
-                const fincas = { 'Fundo Norte': 0, 'Santa Rosa': 0, 'El Valle': 0 };
-                data.forEach((item, i) => {
-                    const keys = Object.keys(fincas);
-                    // Asignación determinista simulada para que se vea consistente
-                    const finca = keys[i % keys.length];
-                    fincas[finca]++;
-                });
+                // 1. FINCAS: Asignación Determinista basada en Hash del nombre
+                const fincasNombres = ['Fundo Santa Rosa', 'Valle del Sol', 'AgroNorte', 'La Campiña'];
+                const conteoFincas = new Array(fincasNombres.length).fill(0);
 
-                // 2. Preparar Datos Calidad
-                const calidad = { 'Conforme': 0, 'Hallazgo': 0, 'Descarte': 0 };
                 data.forEach(item => {
-                    // Si no tiene auditStatus, asumimos 'Conforme' si está Confirmado
-                    let status = item.auditStatus || 'Conforme';
-                    if (status === 'Confirmado') status = 'Conforme'; // Normalizar
-                    if (status === 'Riesgo') status = 'Descarte';
-                    
-                    if (calidad[status] !== undefined) calidad[status]++;
-                    else calidad['Conforme']++; // Default
+                    const name = item.fileName || item.file || "unknown";
+                    // Hash simple del string para obtener siempre el mismo índice para el mismo archivo
+                    let hash = 0;
+                    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                    const index = Math.abs(hash) % fincasNombres.length;
+                    conteoFincas[index]++;
                 });
 
-                // --- Chart Fincas (Bar) ---
+                // 2. CALIDAD: Separar Pendientes de Auditados
+                const calidad = { 'Aprobado': 0, 'Hallazgos': 0, 'Rechazado': 0, 'Sin Auditar': 0 };
+                
+                data.forEach(item => {
+                    const audit = item.auditStatus; // undefined si no ha pasado por auditoria
+                    
+                    if (audit === 'Conforme') calidad['Aprobado']++;
+                    else if (audit === 'Hallazgo') calidad['Hallazgos']++;
+                    else if (audit === 'Descarte' || audit === 'Riesgo') calidad['Rechazado']++;
+                    else calidad['Sin Auditar']++; // Para los que solo se cargaron
+                });
+
+                // --- Gráfico Fincas (Bar) ---
                 const ctxFincas = document.getElementById('chartFincas').getContext('2d');
                 new Chart(ctxFincas, {
                     type: 'bar',
                     data: {
-                        labels: Object.keys(fincas),
+                        labels: fincasNombres,
                         datasets: [{
                             label: 'Lotes',
-                            data: Object.values(fincas),
-                            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
+                            data: conteoFincas,
+                            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'],
                             borderRadius: 4,
                             barThickness: 20
                         }]
@@ -455,15 +462,12 @@
                         plugins: { legend: { display: false } },
                         scales: {
                             y: { display: false },
-                            x: { 
-                                grid: { display: false },
-                                ticks: { color: '#9ca3af', font: { size: 10 } }
-                            }
+                            x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } }
                         }
                     }
                 });
 
-                // --- Chart Calidad (Doughnut) ---
+                // --- Gráfico Calidad (Doughnut) ---
                 const ctxCalidad = document.getElementById('chartCalidad').getContext('2d');
                 new Chart(ctxCalidad, {
                     type: 'doughnut',
@@ -471,7 +475,7 @@
                         labels: Object.keys(calidad),
                         datasets: [{
                             data: Object.values(calidad),
-                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#4b5563'], // Verde, Amarillo, Rojo, Gris
                             borderWidth: 0,
                             hoverOffset: 4
                         }]
@@ -497,21 +501,17 @@
                 navigator.clipboard.writeText(document.getElementById('wallet-address-short').textContent);
                 alert('Dirección copiada');
             };
+            
+            // Logout Corregido (Borra sesión)
             window.handleLogout = () => {
                 if(confirm("¿Cerrar sesión?")) {
-                    // 1. ELIMINAR LA LLAVE DE SESIÓN (Crucial)
                     sessionStorage.removeItem('trazzaSession');
-                    
-                    // (Opcional: Por seguridad borramos también del local por si quedó alguna versión vieja)
-                    localStorage.removeItem('trazzaSession'); 
-
-                    // 2. AHORA SÍ, REDIRIGIR
+                    localStorage.removeItem('trazzaSession');
                     window.location.href = 'index.html';
                 }
             };
 
             // Iniciar
-            document.getElementById('user-id-display').textContent = 'ID: Admin-Node';
             loadDashboardData();
         });
     </script>
