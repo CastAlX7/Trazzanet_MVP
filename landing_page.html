@@ -71,31 +71,32 @@
             right: 0;
             border-color: #00dc82;
         }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #00dc82;
-        }
         
+        /* Glass Panel Genérico */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         /* Acordeón FAQ */
-        details > summary {
-            list-style: none;
-        }
-        details > summary::-webkit-details-marker {
-            display: none;
-        }
-        details[open] summary ~ * {
-            animation: sweep .3s ease-in-out;
-        }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .3s ease-in-out; }
         @keyframes sweep {
             0%    {opacity: 0; transform: translateY(-10px)}
             100%  {opacity: 1; transform: translateY(0)}
         }
+
+        /* Modal Video */
+        #video-modal { transition: opacity 0.3s ease; }
     </style>
 </head>
 <body class="antialiased font-sans bg-hero-pattern">
 
     <nav class="w-full py-6 px-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto border-b border-white/5 sticky top-0 bg-[#02040a]/80 backdrop-blur-md z-50">
         <div class="flex items-center gap-2">
-            <img src="logo trazzanet.png" alt="Logo" class="w-12 h-12 object-contain hover:scale-110 transition-transform duration-300">
+            <img src="logo trazzanet.png" alt="Logo" class="w-10 h-10 object-contain hover:scale-110 transition-transform duration-300">
             <span class="text-2xl font-bold tracking-tighter text-white">Trazza<span class="text-brand-accent">Net</span></span>
         </div>
         <div class="hidden md:flex gap-8 text-sm font-medium">
@@ -114,19 +115,23 @@
     <header class="pt-24 pb-20 px-4 text-center max-w-5xl mx-auto relative">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-brand-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-brand-accent font-medium mb-6 animate-fade-in-up">
-            <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
-            Nueva versión v2.4 con Auditoría IA
-        </div>
-
         <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight relative z-10">
             Transparencia que <br>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent via-blue-400 to-brand-accent bg-[length:200%_auto] animate-gradient">Certifica Valor.</span>
         </h1>
         
-        <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed relative z-10">
+        <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed relative z-10">
             Elimina el fraude alimentario y accede a mercados premium. Trazabilidad inmutable desde el campo hasta la exportación con la seguridad de Blockchain.
         </p>
+
+        <div class="flex justify-center gap-4 mb-12 relative z-10">
+            <button onclick="openVideoModal()" class="flex items-center gap-3 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-brand-accent/50 rounded-full text-white transition-all group backdrop-blur-sm shadow-lg hover:shadow-brand-accent/10">
+                <div class="w-8 h-8 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(0,220,130,0.5)]">
+                    <i class="fas fa-play text-black text-xs ml-0.5"></i>
+                </div>
+                <span class="font-medium text-sm tracking-wide group-hover:text-brand-accent transition-colors">Ver Video Promocional</span>
+            </button>
+        </div>
         
         <div class="flex flex-wrap justify-center gap-8 md:gap-16 border-y border-white/5 py-8 bg-white/[0.02] backdrop-blur-sm rounded-2xl mx-4 relative z-10">
             <div class="text-center group cursor-default">
@@ -143,16 +148,6 @@
             </div>
         </div>
     </header>
-
-    <section class="py-10 border-b border-white/5">
-        <p class="text-center text-xs text-gray-600 uppercase tracking-widest mb-8 font-bold">Empresas que confían en TrazzaNet</p>
-        <div class="flex flex-wrap justify-center gap-12 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-            <div class="flex items-center gap-2 text-xl font-bold font-mono"><i class="fas fa-leaf"></i> AGROEXPORT</div>
-            <div class="flex items-center gap-2 text-xl font-bold font-mono"><i class="fas fa-carrot"></i> BioFoods</div>
-            <div class="flex items-center gap-2 text-xl font-bold font-mono"><i class="fas fa-shipping-fast"></i> LogiFresh</div>
-            <div class="flex items-center gap-2 text-xl font-bold font-mono"><i class="fas fa-globe-americas"></i> GlobalGAP Partners</div>
-        </div>
-    </section>
 
     <section id="beneficios" class="py-24 px-4 max-w-7xl mx-auto">
         <div class="text-center mb-16">
@@ -204,20 +199,14 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-
             <div class="pricing-card rounded-2xl p-8 flex flex-col">
                 <h3 class="text-xl font-bold text-white mb-2">Productor Inicial</h3>
                 <p class="text-sm text-gray-400 mb-6 h-10">Para quienes inician su certificación digital.</p>
-                
                 <div class="mb-6 flex items-baseline gap-1">
                     <span class="text-4xl font-bold text-white price-value" data-monthly="50" data-yearly="40">$50</span>
                     <span class="text-gray-500">/ mes</span>
                 </div>
-
-                <button class="w-full py-3 rounded-xl border border-white/20 hover:border-brand-accent hover:text-brand-accent text-white font-bold transition mb-8">
-                    Comenzar Prueba
-                </button>
-
+                <button class="w-full py-3 rounded-xl border border-white/20 hover:border-brand-accent hover:text-brand-accent text-white font-bold transition mb-8">Comenzar Prueba</button>
                 <ul class="space-y-4 text-sm text-gray-300 flex-1">
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> Registro manual de lotes</li>
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> Trazabilidad básica (QR)</li>
@@ -229,20 +218,14 @@
             <div class="pricing-card rounded-2xl p-8 border-brand-accent/50 bg-gradient-to-b from-[#0f1f1a] to-brand-dark transform md:-translate-y-4 shadow-2xl relative flex flex-col">
                 <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-brand-accent to-blue-500"></div>
                 <div class="absolute top-4 right-4 badge-popular px-3 py-1 rounded-full">Recomendado</div>
-
                 <h3 class="text-xl font-bold text-white mb-2">Agro Exportador</h3>
                 <p class="text-sm text-gray-400 mb-6 h-10">Para exportadores a Europa y USA.</p>
-                
                 <div class="mb-6 flex items-baseline gap-1">
                     <span class="text-5xl font-bold text-white price-value" data-monthly="200" data-yearly="160">$200</span>
                     <span class="text-gray-500">/ mes</span>
                 </div>
                 <p class="text-xs text-brand-accent mb-6 bg-brand-accent/10 p-2 rounded text-center">+ 0.5% comisión por lote certificado</p>
-
-                <button class="w-full py-4 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-black font-bold mb-8 shadow-lg shadow-brand-accent/20 transition hover:scale-[1.02]">
-                    Solicitar Acceso
-                </button>
-
+                <button class="w-full py-4 rounded-xl bg-brand-accent hover:bg-brand-accentHover text-black font-bold mb-8 shadow-lg shadow-brand-accent/20 transition hover:scale-[1.02]">Solicitar Acceso</button>
                 <ul class="space-y-4 text-sm text-gray-300 flex-1">
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> <strong>Todo lo de Inicial +</strong></li>
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> Blockchain Inmutable (Ledger)</li>
@@ -255,15 +238,10 @@
             <div class="pricing-card rounded-2xl p-8 flex flex-col">
                 <h3 class="text-xl font-bold text-white mb-2">Corporativo</h3>
                 <p class="text-sm text-gray-400 mb-6 h-10">Grandes cooperativas y multinacionales.</p>
-                
                 <div class="mb-6 flex items-baseline gap-1">
                     <span class="text-4xl font-bold text-white">A Medida</span>
                 </div>
-
-                <button class="w-full py-3 rounded-xl border border-white/20 hover:border-brand-accent hover:text-brand-accent text-white font-bold transition mb-8">
-                    Contactar Ventas
-                </button>
-
+                <button class="w-full py-3 rounded-xl border border-white/20 hover:border-brand-accent hover:text-brand-accent text-white font-bold transition mb-8">Contactar Ventas</button>
                 <ul class="space-y-4 text-sm text-gray-300 flex-1">
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> <strong>Todo lo de Exportador +</strong></li>
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> API de Integración (ERP)</li>
@@ -271,13 +249,11 @@
                     <li class="flex gap-3"><i class="fas fa-check text-brand-accent"></i> Soporte Prioritario 24/7</li>
                 </ul>
             </div>
-
         </div>
     </section>
 
     <section id="faq" class="py-20 px-4 max-w-3xl mx-auto">
         <h2 class="text-3xl font-bold text-white text-center mb-12">Preguntas Frecuentes</h2>
-        
         <div class="space-y-4">
             <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden">
                 <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-5 text-white hover:bg-white/5 transition">
@@ -288,7 +264,6 @@
                     No. TrazzaNet es una plataforma SaaS en la nube. Puedes cargar tus archivos CSV/Excel desde cualquier computadora o tableta. Nosotros nos encargamos de la infraestructura Blockchain.
                 </div>
             </details>
-
             <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden">
                 <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-5 text-white hover:bg-white/5 transition">
                     <span>¿Qué pasa si dejo de pagar la suscripción?</span>
@@ -298,7 +273,6 @@
                     Tus datos históricos seguirán en la Blockchain (son inmutables), pero perderás acceso al Dashboard de análisis y no podrás registrar nuevos lotes hasta reactivar tu plan.
                 </div>
             </details>
-
             <details class="group bg-white/5 rounded-xl border border-white/10 overflow-hidden">
                 <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-5 text-white hover:bg-white/5 transition">
                     <span>¿La auditoría de IA garantiza la certificación real?</span>
@@ -311,10 +285,46 @@
         </div>
     </section>
 
+    <section class="py-20 px-4 border-t border-white/10 bg-black/40">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-white mb-8">Contáctanos</h2>
+            
+            <div class="glass-panel p-10 rounded-3xl border border-white/10 flex flex-col md:flex-row items-center justify-around gap-8">
+                <div class="text-left">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-accent/20 flex items-center justify-center text-brand-accent">
+                            <i class="fas fa-phone-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Líneas Directas</p>
+                            <p class="text-white font-mono font-medium text-lg mt-1">+51 985 554 695</p>
+                            <p class="text-white font-mono font-medium text-lg">+51 986 998 178</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block w-px h-24 bg-white/10"></div>
+                
+                <div class="text-left">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                            <i class="far fa-envelope text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Correo Corporativo</p>
+                            <p class="text-white font-mono text-lg mt-1">trazzanet.contacto@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="border-t border-white/10 bg-[#010205] py-12">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 md:col-span-1">
                 <div class="flex items-center gap-2 mb-4">
+                    <img src="logo trazzanet.png" alt="Logo" class="w-8 h-8 object-contain grayscale hover:grayscale-0 transition">
                     <span class="text-xl font-bold text-white">Trazza<span class="text-brand-accent">Net</span></span>
                 </div>
                 <p class="text-xs text-gray-500">
@@ -353,6 +363,20 @@
         </div>
     </footer>
 
+    <div id="video-modal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+        <div class="relative w-full max-w-5xl bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl transform scale-95 transition-transform duration-300" id="video-container">
+            <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-10 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 rounded-full w-10 h-10 flex items-center justify-center transition border border-white/10">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="aspect-video">
+                <video id="promo-video" controls class="w-full h-full object-cover">
+                    <source src="VIDEO PROMOCIONAL TRAZZANET.mp4" type="video/mp4">
+                    Tu navegador no soporta video HTML5.
+                </video>
+            </div>
+        </div>
+    </div>
+
     <script>
         function togglePricing() {
             const checkbox = document.getElementById('pricing-toggle');
@@ -360,7 +384,6 @@
             const isYearly = checkbox.checked;
 
             prices.forEach(price => {
-                // Animación simple de opacidad
                 price.style.opacity = '0';
                 setTimeout(() => {
                     if (isYearly) {
@@ -372,6 +395,42 @@
                 }, 200);
             });
         }
+
+        function openVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const container = document.getElementById('video-container');
+            const video = document.getElementById('promo-video');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                container.classList.remove('scale-95');
+                container.classList.add('scale-100');
+                video.play();
+            }, 10);
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const container = document.getElementById('video-container');
+            const video = document.getElementById('promo-video');
+            
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                video.pause();
+                video.currentTime = 0;
+            }, 300);
+        }
+
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
     </script>
 </body>
 </html>
